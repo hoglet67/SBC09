@@ -1,0 +1,197 @@
+
+*******************************************************************************
+                                     PAL2
+*******************************************************************************
+
+CUPL(WM)        5.0a Serial# MW-10400000
+Device          g22v10  Library DLIB-h-40-1
+Created         Wed Oct 12 11:07:57 2022
+Name            PAL2        
+Partno          00          
+Revision        01          
+Date            10/09/2022  
+Designer        David Banks 
+Company         NA          
+Assembly        None        
+Location        
+
+===============================================================================
+                            Expanded Product Terms
+===============================================================================
+
+INVALID =>
+    16KMODE & QA21 & !RnW
+
+IO =>
+    !A8 & A13 & A14 & A15 & A12_A11_A10
+  # !A9 & A13 & A14 & A15 & A12_A11_A10
+
+IOEXT =>
+    !A8 & A9 & A13 & A14 & A15 & A12_A11_A10
+  # A8 & !A9 & A13 & A14 & A15 & A12_A11_A10
+  # A7 & !A9 & A13 & A14 & A15 & A12_A11_A10
+  # A7 & !A8 & A13 & A14 & A15 & A12_A11_A10
+  # A6 & !A9 & A13 & A14 & A15 & A12_A11_A10
+  # A6 & !A8 & A13 & A14 & A15 & A12_A11_A10
+
+IOINT =>
+    !A6 & !A7 & !A8 & !A9 & A13 & A14 & A15 & A12_A11_A10
+
+QA13 =>
+    !16KMODE & QA21
+  # 16KMODE & A13
+
+nCSEXT =>
+    A8 & A9 & A13 & A14 & A15 & A12_A11_A10 & QA19 & QA20
+  # A6 & !A7 & !A8 & !A9 & A13 & A14 & A15 & A12_A11_A10
+  # A7 & !A8 & !A9 & A13 & A14 & A15 & A12_A11_A10
+  # A8 & !A9 & A13 & A14 & A15 & A12_A11_A10
+  # !A8 & A9 & A13 & A14 & A15 & A12_A11_A10
+  # !A12_A11_A10 & QA19 & QA20
+  # !A15 & QA19 & QA20
+  # !A14 & QA19 & QA20
+  # !A13 & QA19 & QA20
+
+nCSIOINT =>
+    !A6 & !A7 & !A8 & !A9 & A13 & A14 & A15 & A12_A11_A10
+
+nCSRAM =>
+    A8 & A9 & !QA19 & QA20 & RnW
+  # A8 & A9 & !QA19 & QA20 & !QA21
+  # !16KMODE & A8 & A9 & !QA19 & QA20
+  # !A12_A11_A10 & !QA19 & QA20 & RnW
+  # !A15 & !QA19 & QA20 & RnW
+  # !A14 & !QA19 & QA20 & RnW
+  # !A13 & !QA19 & QA20 & RnW
+  # !A12_A11_A10 & !QA19 & QA20 & !QA21
+  # !A15 & !QA19 & QA20 & !QA21
+  # !A14 & !QA19 & QA20 & !QA21
+  # !A13 & !QA19 & QA20 & !QA21
+  # !16KMODE & !A12_A11_A10 & !QA19 & QA20
+  # !16KMODE & !A15 & !QA19 & QA20
+  # !16KMODE & !A14 & !QA19 & QA20
+  # !16KMODE & !A13 & !QA19 & QA20
+
+nCSROM0 =>
+    A8 & A9 & !QA19 & !QA20 & RnW
+  # A8 & A9 & !QA19 & !QA20 & !QA21
+  # !16KMODE & A8 & A9 & !QA19 & !QA20
+  # !A12_A11_A10 & !QA19 & !QA20 & RnW
+  # !A15 & !QA19 & !QA20 & RnW
+  # !A14 & !QA19 & !QA20 & RnW
+  # !A13 & !QA19 & !QA20 & RnW
+  # !A12_A11_A10 & !QA19 & !QA20 & !QA21
+  # !A15 & !QA19 & !QA20 & !QA21
+  # !A14 & !QA19 & !QA20 & !QA21
+  # !A13 & !QA19 & !QA20 & !QA21
+  # !16KMODE & !A12_A11_A10 & !QA19 & !QA20
+  # !16KMODE & !A15 & !QA19 & !QA20
+  # !16KMODE & !A14 & !QA19 & !QA20
+  # !16KMODE & !A13 & !QA19 & !QA20
+
+nCSROM1 =>
+    A8 & A9 & QA19 & !QA20 & RnW
+  # A8 & A9 & QA19 & !QA20 & !QA21
+  # !16KMODE & A8 & A9 & QA19 & !QA20
+  # !A12_A11_A10 & QA19 & !QA20 & RnW
+  # !A15 & QA19 & !QA20 & RnW
+  # !A14 & QA19 & !QA20 & RnW
+  # !A13 & QA19 & !QA20 & RnW
+  # !A12_A11_A10 & QA19 & !QA20 & !QA21
+  # !A15 & QA19 & !QA20 & !QA21
+  # !A14 & QA19 & !QA20 & !QA21
+  # !A13 & QA19 & !QA20 & !QA21
+  # !16KMODE & !A12_A11_A10 & QA19 & !QA20
+  # !16KMODE & !A15 & QA19 & !QA20
+  # !16KMODE & !A14 & QA19 & !QA20
+  # !16KMODE & !A13 & QA19 & !QA20
+
+nENMMU0 =>
+    !A13 & !nENMMU
+  # 16KMODE & !nENMMU
+
+nENMMU1 =>
+    !16KMODE & A13 & !nENMMU
+
+QA13.oe  =>
+    1 
+
+QA19.oe  =>
+    0 
+
+QA20.oe  =>
+    0 
+
+nCSEXT.oe  =>
+    1 
+
+nCSIOINT.oe  =>
+    1 
+
+nCSRAM.oe  =>
+    1 
+
+nCSROM0.oe  =>
+    1 
+
+nCSROM1.oe  =>
+    1 
+
+nENMMU0.oe  =>
+    1 
+
+nENMMU1.oe  =>
+    1 
+
+
+===============================================================================
+                                 Symbol Table
+===============================================================================
+
+Pin Variable                                    Pterms   Max     Min    
+Pol   Name              Ext     Pin     Type     Used   Pterms  Level   
+--- --------            ---     ---     ----    ------  ------  -----   
+
+    16KMODE                     2        V        -       -       -     
+    A6                          4        V        -       -       -     
+    A7                          5        V        -       -       -     
+    A8                          6        V        -       -       -     
+    A9                          7        V        -       -       -     
+    A13                         9        V        -       -       -     
+    A14                         10       V        -       -       -     
+    A15                         11       V        -       -       -     
+    A12_A11_A10                 8        V        -       -       -     
+    INVALID                     0        I        1       -       -     
+    IO                          0        I        2       -       -     
+    IOEXT                       0        I        6       -       -     
+    IOINT                       0        I        1       -       -     
+    QA13                        16       V        2       12      4     
+    QA19                        15       V        -       -       -     
+    QA20                        14       V        -       -       -     
+    QA21                        13       V        -       -       -     
+    RnW                         3        V        -       -       -     
+    nCSEXT                      21       V        9       12      4     
+    nCSIOINT                    22       V        1       10      4     
+    nCSRAM                      20       V        15      14      4     
+    nCSROM0                     18       V        15      16      4     
+    nCSROM1                     19       V        15      16      4     
+    nENMMU                      1        V        -       -       -     
+    nENMMU0                     23       V        2       8       4     
+    nENMMU1                     17       V        1       14      4     
+    QA13                oe      16       D        1       1       0     
+    QA19                oe      15       D        1       1       0     
+    QA20                oe      14       D        1       1       0     
+    nCSEXT              oe      21       D        1       1       0     
+    nCSIOINT            oe      22       D        1       1       0     
+    nCSRAM              oe      20       D        1       1       0     
+    nCSROM0             oe      18       D        1       1       0     
+    nCSROM1             oe      19       D        1       1       0     
+    nENMMU0             oe      23       D        1       1       0     
+    nENMMU1             oe      17       D        1       1       0     
+
+
+LEGEND    D : default variable         F : field      G : group
+          I : intermediate variable    N : node       M : extended node
+          U : undefined                V : variable   X : extended variable
+          T : function
+

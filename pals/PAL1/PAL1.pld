@@ -1,0 +1,87 @@
+Name     PAL1        ;
+PartNo   00          ;
+Date     10/09/2022  ;
+Revision 01          ;
+Designer David Banks ;
+Company  NA          ;
+Assembly None        ;
+Location             ;
+Device   g22v10      ;
+
+/* *************** INPUT PINS *********************/
+
+PIN 1    = CLKX4;
+PIN 2    = MRDY;
+PIN 3    = BA;
+PIN 4    = BS;
+PIN 5    = RnW;
+PIN 6    = A4;
+PIN 7    = A5;
+PIN 8    = A8;
+PIN 9    = A10;
+PIN 10   = A11;
+PIN 11   = A12;
+PIN 13   = E;
+
+PIN 14   = A12_A11_A10;
+PIN 15   = nCSIOINT; // input
+PIN 16   = nCSUART;
+PIN 17   = nWRMMU1;
+PIN 18   = nWRMMU0;
+PIN 19   = nWR;
+PIN 20   = nRD;
+PIN 21   = A8X;
+PIN 22   = EX;
+PIN 23   = QX;
+
+
+// In E-mode, drive E and Q to the CPU
+//
+// Note: E lags Q
+
+FIELD count = [EX, QX];
+
+$DEFINE s0 'b'00
+$DEFINE s1 'b'01
+$DEFINE s2 'b'11
+$DEFINE s3 'b'10
+
+SEQUENCE count {
+  PRESENT s0
+    NEXT s1;
+  PRESENT s1
+    NEXT s2;
+  PRESENT s2
+    NEXT s3;
+  PRESENT s3
+    IF MRDY NEXT s0;
+    DEFAULT NEXT s3;
+}
+
+
+EX.AR = 'b'0; 
+EX.SP = 'b'0; 
+QX.AR = 'b'0; 
+QX.SP = 'b'0;
+
+A8OUT   = A8 $ (BS & !BA & RnW);
+
+// A5 A4
+//  0  0 UART 
+//  0  1 MMU0
+//  1  0 MMU1
+//  0  1  1 MMU0+1
+
+
+nWRMMU0 = !(E & !nCSIOINT & A4 & !RnW);
+
+nWRMMU1 = !(E & !nCSIOINT & A5 & !RnW);
+
+nCSUART = !(E & !nCSIOINT & !A5 & !A4);
+
+A12_A11_A10 = A12 & A11 & A10;
+
+nRD = !(E & RnW);
+
+nWR = !(E & !RnW);
+
