@@ -11,48 +11,43 @@ Device   g22v10      ;
 /* *************** INPUT PINS *********************/
 
 PIN 1    = nENMMU;
-PIN 2    = 16KMODE;
-PIN 3    = RnW;
-PIN 4    = A6;
-PIN 5    = A7;
-PIN 6    = A8;
-PIN 7    = A9;
-PIN 8    = A12_A11_A10;
+PIN 2    = A6;
+PIN 3    = A7;
+PIN 4    = A8;
+PIN 5    = A9;
+PIN 6    = A10;
+PIN 7    = A11;
+PIN 8    = A12;
 PIN 9    = A13;
 PIN 10   = A14;
 PIN 11   = A15;
-PIN 13   = QA21;
+PIN 13   = 16KMODE;
 
-PIN 14   = QA20;
-PIN 15   = QA19;
-PIN 16   = QA13;
-PIN 17   = nENMMU1;
-PIN 18   = nCSROM0;
-PIN 19   = nCSROM1;
-PIN 20   = nCSRAM;
-PIN 21   = nCSEXT;
-PIN 22   = nCSIOINT;
-PIN 23   = nENMMU0;
+PIN 14   = nENMMU1;
+PIN 15   = nENMMU0;
+PIN 16   = SPARE;
+PIN 17   = nCSIOINT;
+PIN 18   = nCSEXT;
+PIN 19   = nCSRAM;
+PIN 20   = nCSROM1;
+PIN 21   = nCSROM0;
+PIN 22   = QA20;
+PIN 23   = QA19;
 
 // Intermediates
 
-IO       = A15 & A14 & A13 & A12_A11_A10 & (!A9 # !A8);
+// Decode &FC00-&FEFF
+IO       = A15 & A14 & A13 & A12 & A11 & A10 & (!A9 # !A8);
 
-IOINT    = A15 & A14 & A13 & A12_A11_A10 & !A9 & !A8 & !A7 & !A6;
-
-//IOEXT    = A15 & A14 & A13 & A12_A11_A10 & ( A9 # A8 # A7 # A6);
-
-IOEXT    = IO & !IOINT;
-
-INVALID  = !RnW & 16KMODE & QA21;
+// Decde &FC00-&FC3F
+IOINT    = A15 & A14 & A13 & A12 & A11 & A10 & !A9 & !A8 & !A7 & !A6;
 
 // Outputs
 
-nCSROM0  = !( !INVALID & !QA20 & !QA19 & !IO);
-nCSROM1  = !( !INVALID & !QA20 &  QA19 & !IO);
-nCSRAM   = !( !INVALID &  QA20 & !QA19 & !IO);
-nCSEXT   = !(         (QA20 &  QA19 & !IOINT) #  IOEXT);
+nCSROM0  = !( !QA20 & !QA19 & !IO);
+nCSROM1  = !( !QA20 &  QA19 & !IO);
+nCSRAM   = !(  QA20 & !QA19 & !IO);
+nCSEXT   = !( (QA20 &  QA19 #  IO) & !IOINT);
 nCSIOINT = !(IOINT);
 nENMMU0  = !((!nENMMU & !16KMODE & !A13) # (!nENMMU & 16KMODE));
 nENMMU1  = !( !nENMMU & !16KMODE &  A13 );
-QA13     = (16KMODE & A13)  # (!16KMODE & QA21);

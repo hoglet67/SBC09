@@ -18,12 +18,12 @@ PIN 5    = RnW;
 PIN 6    = A4;
 PIN 7    = A5;
 PIN 8    = A8;
-PIN 9    = A10;
-PIN 10   = A11;
-PIN 11   = A12;
+PIN 9    = A13;
+PIN 10   = 16KMODE;
+PIN 11   = QA21;
 PIN 13   = E;
 
-PIN 14   = A12_A11_A10;
+PIN 14   = QA13;
 PIN 15   = nCSIOINT; // input
 PIN 16   = nCSUART;
 PIN 17   = nWRMMU1;
@@ -59,19 +59,18 @@ SEQUENCE count {
 }
 
 
-EX.AR = 'b'0; 
-EX.SP = 'b'0; 
-QX.AR = 'b'0; 
+EX.AR = 'b'0;
+EX.SP = 'b'0;
+QX.AR = 'b'0;
 QX.SP = 'b'0;
 
 A8OUT   = A8 $ (BS & !BA & RnW);
 
 // A5 A4
-//  0  0 UART 
+//  0  0 UART
 //  0  1 MMU0
 //  1  0 MMU1
 //  0  1  1 MMU0+1
-
 
 nWRMMU0 = !(E & !nCSIOINT & A4 & !RnW);
 
@@ -79,9 +78,8 @@ nWRMMU1 = !(E & !nCSIOINT & A5 & !RnW);
 
 nCSUART = !(E & !nCSIOINT & !A5 & !A4);
 
-A12_A11_A10 = A12 & A11 & A10;
-
 nRD = !(E & RnW);
 
-nWR = !(E & !RnW);
+nWR = !(E & !RnW & (!16KMODE # !QA21));
 
+QA13 = (16KMODE & A13)  # (!16KMODE & QA21);

@@ -5,7 +5,7 @@
 
 CUPL(WM)        5.0a Serial# MW-10400000
 Device          g22v10  Library DLIB-h-40-1
-Created         Wed Oct 12 11:07:57 2022
+Created         Wed Oct 12 11:09:35 2022
 Name            PAL1        
 Partno          00          
 Revision        01          
@@ -18,9 +18,6 @@ Location
 ===============================================================================
                             Expanded Product Terms
 ===============================================================================
-
-A12_A11_A10 =>
-    A10 & A11 & A12
 
 A8OUT =>
     A8 & !BS
@@ -37,6 +34,10 @@ EX.ar  =>
 
 EX.sp  =>
     0 
+
+QA13 =>
+    !16KMODE & QA21
+  # 16KMODE & A13
 
 QX.d  =>
     !EX
@@ -57,7 +58,8 @@ nRD =>
     E & RnW
 
 nWR =>
-    E & !RnW
+    E & !QA21 & !RnW
+  # !16KMODE & E & !RnW
 
 nWRMMU0 =>
     A4 & E & !RnW & !nCSIOINT
@@ -65,10 +67,10 @@ nWRMMU0 =>
 nWRMMU1 =>
     A5 & E & !RnW & !nCSIOINT
 
-A12_A11_A10.oe  =>
+EX.oe  =>
     1 
 
-EX.oe  =>
+QA13.oe  =>
     1 
 
 QX.oe  =>
@@ -101,13 +103,11 @@ Pin Variable                                    Pterms   Max     Min
 Pol   Name              Ext     Pin     Type     Used   Pterms  Level   
 --- --------            ---     ---     ----    ------  ------  -----   
 
+    16KMODE                     10       V        -       -       -     
     A4                          6        V        -       -       -     
     A5                          7        V        -       -       -     
     A8                          8        V        -       -       -     
-    A10                         9        V        -       -       -     
-    A11                         10       V        -       -       -     
-    A12                         11       V        -       -       -     
-    A12_A11_A10                 14       V        1       8       4     
+    A13                         9        V        -       -       -     
     A8OUT                       0        I        4       -       -     
     A8X                         21       V        -       -       -     
     BA                          3        V        -       -       -     
@@ -119,6 +119,8 @@ Pol   Name              Ext     Pin     Type     Used   Pterms  Level
     EX                  ar      22       X        1       1       1     
     EX                  sp      22       X        1       1       1     
     MRDY                        2        V        -       -       -     
+    QA13                        14       V        2       8       4     
+    QA21                        11       V        -       -       -     
     QX                          23       V        -       -       -     
     QX                  d       23       X        1       8       4     
     QX                  ar      23       X        1       1       1     
@@ -128,11 +130,11 @@ Pol   Name              Ext     Pin     Type     Used   Pterms  Level
     nCSIOINT                    15       V        -       -       -     
     nCSUART                     16       V        1       12      4     
     nRD                         20       V        1       14      4     
-    nWR                         19       V        1       16      4     
+    nWR                         19       V        2       16      4     
     nWRMMU0                     18       V        1       16      4     
     nWRMMU1                     17       V        1       14      4     
-    A12_A11_A10         oe      14       D        1       1       0     
     EX                  oe      22       D        1       1       0     
+    QA13                oe      14       D        1       1       0     
     QX                  oe      23       D        1       1       0     
     nCSIOINT            oe      15       D        1       1       0     
     nCSUART             oe      16       D        1       1       0     
@@ -212,8 +214,8 @@ Pin #20  05814 Mode  x-
  02112 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
 Pin #19  05816 Mode  x- 
  02156 -------------------------------------------- 
- 02200 -----------------x------------------------x- 
- 02244 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
+ 02200 -----------------x-----------------------xx- 
+ 02244 -----------------x-------------------x----x- 
  02288 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
  02332 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
  02376 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
@@ -290,8 +292,8 @@ Pin #15  05824 Mode  x-
  05324 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
 Pin #14  05826 Mode  -- 
  05368 -------------------------------------------- 
- 05412 --------------------------------x---x---x--- 
- 05456 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
+ 05412 -------------------------------------x--x--- 
+ 05456 --------------------------------x---x------- 
  05500 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
  05544 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
  05588 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
@@ -317,9 +319,9 @@ LEGEND    X : fuse not blown
                        A4 x---|6           19|---x nWR                      
                        A5 x---|7           18|---x nWRMMU0                  
                        A8 x---|8           17|---x nWRMMU1                  
-                      A10 x---|9           16|---x nCSUART                  
-                      A11 x---|10          15|---x nCSIOINT                 
-                      A12 x---|11          14|---x A12_A11_A10              
+                      A13 x---|9           16|---x nCSUART                  
+                  16KMODE x---|10          15|---x nCSIOINT                 
+                     QA21 x---|11          14|---x QA13                     
                       GND x---|12          13|---x E                        
                               |______________|
 
