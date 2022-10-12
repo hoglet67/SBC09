@@ -39,8 +39,8 @@ PIN 23   = QA19;
 // Decode &FC00-&FEFF
 IO       = A15 & A14 & A13 & A12 & A11 & A10 & (!A9 # !A8);
 
-// Decde &FC00-&FC3F
-IOINT    = A15 & A14 & A13 & A12 & A11 & A10 & !A9 & !A8 & !A7 & !A6;
+// Decde &FE00-&FE3F
+IOINT    = A15 & A14 & A13 & A12 & A11 & A10 & A9 & !A8 & !A7 & !A6;
 
 // Outputs
 

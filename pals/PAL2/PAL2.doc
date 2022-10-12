@@ -5,7 +5,7 @@
 
 CUPL(WM)        5.0a Serial# MW-10400000
 Device          g22v10  Library DLIB-h-40-1
-Created         Wed Oct 12 11:09:35 2022
+Created         Wed Oct 12 11:55:59 2022
 Name            PAL2        
 Partno          00          
 Revision        01          
@@ -24,23 +24,22 @@ IO =>
   # !A9 & A10 & A11 & A12 & A13 & A14 & A15
 
 IOINT =>
-    !A6 & !A7 & !A8 & !A9 & A10 & A11 & A12 & A13 & A14 & A15
+    !A6 & !A7 & !A8 & A9 & A10 & A11 & A12 & A13 & A14 & A15
 
 nCSEXT =>
-    A8 & A9 & A10 & A11 & A12 & A13 & A14 & A15 & QA19 & QA20
-  # A6 & !A7 & !A8 & !A9 & A10 & A11 & A12 & A13 & A14 & A15
-  # A7 & !A8 & !A9 & A10 & A11 & A12 & A13 & A14 & A15
-  # A8 & !A9 & A10 & A11 & A12 & A13 & A14 & A15
-  # !A8 & A9 & A10 & A11 & A12 & A13 & A14 & A15
+    A7 & !A8 & A10 & A11 & A12 & A13 & A14 & A15
+  # A6 & !A8 & A10 & A11 & A12 & A13 & A14 & A15
+  # !A9 & A10 & A11 & A12 & A13 & A14 & A15
   # !A15 & QA19 & QA20
   # !A14 & QA19 & QA20
   # !A13 & QA19 & QA20
   # !A12 & QA19 & QA20
   # !A11 & QA19 & QA20
   # !A10 & QA19 & QA20
+  # A8 & QA19 & QA20
 
 nCSIOINT =>
-    !A6 & !A7 & !A8 & !A9 & A10 & A11 & A12 & A13 & A14 & A15
+    !A6 & !A7 & !A8 & A9 & A10 & A11 & A12 & A13 & A14 & A15
 
 nCSRAM =>
     A8 & A9 & !QA19 & QA20
@@ -128,7 +127,7 @@ Pol   Name              Ext     Pin     Type     Used   Pterms  Level
     QA19                        23       V        -       -       -     
     QA20                        22       V        -       -       -     
     SPARE                       16       V        -       -       -     
-    nCSEXT                      18       V        11      16      4     
+    nCSEXT                      18       V        10      16      4     
     nCSIOINT                    17       V        1       14      4     
     nCSRAM                      19       V        7       16      4     
     nCSROM0                     21       V        7       12      4     
@@ -235,17 +234,17 @@ Pin #19  05816 Mode  x-
  02860 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
 Pin #18  05818 Mode  x- 
  02904 -------------------------------------------- 
- 02948 --x---x-----x---x---x---x---x---x---x---x--- 
- 02992 ----x----x---x---x--x---x---x---x---x---x--- 
- 03036 --------x----x---x--x---x---x---x---x---x--- 
- 03080 ------------x----x--x---x---x---x---x---x--- 
- 03124 -------------x--x---x---x---x---x---x---x--- 
- 03168 --x---x----------------------------------x-- 
- 03212 --x---x------------------------------x------ 
- 03256 --x---x--------------------------x---------- 
- 03300 --x---x----------------------x-------------- 
- 03344 --x---x------------------x------------------ 
- 03388 --x---x--------------x---------------------- 
+ 02948 --------x----x------x---x---x---x---x---x--- 
+ 02992 ----x--------x------x---x---x---x---x---x--- 
+ 03036 -----------------x--x---x---x---x---x---x--- 
+ 03080 --x---x----------------------------------x-- 
+ 03124 --x---x------------------------------x------ 
+ 03168 --x---x--------------------------x---------- 
+ 03212 --x---x----------------------x-------------- 
+ 03256 --x---x------------------x------------------ 
+ 03300 --x---x--------------x---------------------- 
+ 03344 --x---x-----x------------------------------- 
+ 03388 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
  03432 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
  03476 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
  03520 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
@@ -253,7 +252,7 @@ Pin #18  05818 Mode  x-
  03608 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
 Pin #17  05820 Mode  x- 
  03652 -------------------------------------------- 
- 03696 -----x---x---x---x--x---x---x---x---x---x--- 
+ 03696 -----x---x---x--x---x---x---x---x---x---x--- 
  03740 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
  03784 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
  03828 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
