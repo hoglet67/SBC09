@@ -11023,7 +11023,7 @@
     (property "Value" "Conn_02x25_Odd_Even" (id 1) (at 383.54 228.6 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (property "Footprint" "Connector_PinSocket_2.54mm:PinSocket_2x25_P2.54mm_Horizontal" (id 2) (at 384.81 194.31 0)
+    (property "Footprint" "" (id 2) (at 384.81 194.31 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Datasheet" "~" (id 3) (at 384.81 194.31 0)
@@ -12458,7 +12458,7 @@
     (property "Reference" "RN2" (id 0) (at 213.36 107.95 90)
       (effects (font (size 1.27 1.27)) (justify left))
     )
-    (property "Value" "" (id 1) (at 213.36 110.49 90)
+    (property "Value" "10K" (id 1) (at 213.36 110.49 90)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Footprint" "Resistor_THT:R_Array_SIP5" (id 2) (at 214.63 125.095 90)
@@ -13607,7 +13607,7 @@
       (reference "J5") (unit 1) (value "DB9_Female_MountingHoles") (footprint "Connector_Dsub:DSUB-9_Female_Horizontal_P2.77x2.84mm_EdgePinOffset7.70mm_Housed_MountingHolesOffset9.12mm")
     )
     (path "/4334d44f-de7d-4517-a909-c9112eb26575"
-      (reference "J6") (unit 1) (value "Conn_02x25_Odd_Even") (footprint "Connector_PinSocket_2.54mm:PinSocket_2x25_P2.54mm_Horizontal")
+      (reference "J6") (unit 1) (value "Conn_02x25_Odd_Even") (footprint "Connector_PinSocket_2.54mm:PinSocket_2x25_P2.54mm_Vertical")
     )
     (path "/fe230f19-7585-4378-b283-9afb8d5f868f"
       (reference "JP1") (unit 1) (value "Jumper_2_Open") (footprint "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical")
