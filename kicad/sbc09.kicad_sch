@@ -13351,7 +13351,7 @@
     (property "Value" "LED" (id 1) (at 184.15 161.29 90)
       (effects (font (size 1.27 1.27)) (justify right))
     )
-    (property "Footprint" "LED_THT:LED_D3.0mm" (id 2) (at 190.5 160.02 0)
+    (property "Footprint" "" (id 2) (at 190.5 160.02 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Datasheet" "~" (id 3) (at 190.5 160.02 0)
@@ -13679,7 +13679,7 @@
       (reference "C23") (unit 1) (value "1u") (footprint "Capacitor_THT:CP_Radial_D5.0mm_P2.50mm")
     )
     (path "/fae83aca-d871-4dad-8dca-794c894d9124"
-      (reference "D1") (unit 1) (value "LED") (footprint "LED_THT:LED_D3.0mm")
+      (reference "D1") (unit 1) (value "LED") (footprint "LED_THT:LED_D3.0mm_Horizontal_O1.27mm_Z2.0mm")
     )
     (path "/0fdc7ebb-4b15-4947-a92f-73b17a1787e1"
       (reference "H1") (unit 1) (value "2.5mm") (footprint "MountingHole:MountingHole_2.7mm")
@@ -13697,10 +13697,10 @@
       (reference "J1") (unit 1) (value "Conn_01x03_Male") (footprint "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical")
     )
     (path "/c8679364-5ecf-4ff5-92b0-70a3c93f3773"
-      (reference "J2") (unit 1) (value "Conn_01x06_Male") (footprint "Connector_PinSocket_2.54mm:PinSocket_1x06_P2.54mm_Vertical")
+      (reference "J2") (unit 1) (value "Conn_01x06_Male") (footprint "Connector_PinSocket_2.54mm:PinSocket_1x06_P2.54mm_Horizontal")
     )
     (path "/04d3812c-7a47-4d20-b313-0d4dd0f3856c"
-      (reference "J3") (unit 1) (value "Conn_01x06_Male") (footprint "Connector_PinSocket_2.54mm:PinSocket_1x06_P2.54mm_Vertical")
+      (reference "J3") (unit 1) (value "Conn_01x06_Male") (footprint "Connector_PinSocket_2.54mm:PinSocket_1x06_P2.54mm_Horizontal")
     )
     (path "/acbf984b-95e6-48f0-909b-46f570b1f9ff"
       (reference "J4") (unit 1) (value "Conn_01x06_Male") (footprint "Connector_PinSocket_2.54mm:PinSocket_1x06_P2.54mm_Vertical")
