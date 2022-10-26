@@ -13188,7 +13188,7 @@
     (in_bom yes) (on_board yes) (fields_autoplaced)
     (uuid ea3b1f56-76ac-49a6-b527-33d801875fe4)
     (property "Reference" "J5" (id 0) (at 307.34 196.85 0))
-    (property "Value" "" (id 1) (at 307.34 196.85 0)
+    (property "Value" "Conn_02x05_Odd_Even" (id 1) (at 307.34 196.85 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Footprint" "" (id 2) (at 306.07 205.74 0)
@@ -13305,7 +13305,7 @@
     (property "Value" "LED" (id 1) (at 184.15 161.29 90)
       (effects (font (size 1.27 1.27)) (justify right))
     )
-    (property "Footprint" "" (id 2) (at 190.5 160.02 0)
+    (property "Footprint" "LED_THT:LED_D3.0mm_Horizontal_O1.27mm_Z2.0mm" (id 2) (at 190.5 160.02 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Datasheet" "~" (id 3) (at 190.5 160.02 0)
@@ -13660,7 +13660,7 @@
       (reference "J4") (unit 1) (value "Conn_01x06_Male") (footprint "Connector_PinSocket_2.54mm:PinSocket_1x06_P2.54mm_Horizontal")
     )
     (path "/ea3b1f56-76ac-49a6-b527-33d801875fe4"
-      (reference "J5") (unit 1) (value "Conn_02x05_Odd_Even") (footprint "Connector_PinHeader_2.54mm:PinHeader_2x05_P2.54mm_Vertical")
+      (reference "J5") (unit 1) (value "Conn_02x05_Odd_Even") (footprint "Connector_IDC:IDC-Header_2x05_P2.54mm_Vertical")
     )
     (path "/4334d44f-de7d-4517-a909-c9112eb26575"
       (reference "J6") (unit 1) (value "Conn_02x25_Odd_Even") (footprint "Connector_PinSocket_2.54mm:PinSocket_2x25_P2.54mm_Horizontal")
