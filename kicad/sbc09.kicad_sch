@@ -12691,7 +12691,7 @@
     (property "Value" "SW_Push" (id 1) (at 7.62 34.29 90)
       (effects (font (size 1.27 1.27)) (justify right) hide)
     )
-    (property "Footprint" "Button_Switch_THT:SW_TH_Tactile_Omron_B3F-10xx" (id 2) (at 12.7 31.75 0)
+    (property "Footprint" "" (id 2) (at 12.7 31.75 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Datasheet" "~" (id 3) (at 12.7 31.75 0)
@@ -13350,7 +13350,7 @@
     (property "Value" "LED" (id 1) (at 184.15 161.29 90)
       (effects (font (size 1.27 1.27)) (justify right))
     )
-    (property "Footprint" "LED_THT:LED_D3.0mm_Horizontal_O1.27mm_Z2.0mm" (id 2) (at 190.5 160.02 0)
+    (property "Footprint" "" (id 2) (at 190.5 160.02 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Datasheet" "~" (id 3) (at 190.5 160.02 0)
@@ -13678,7 +13678,7 @@
       (reference "C23") (unit 1) (value "1u") (footprint "Capacitor_THT:CP_Radial_D5.0mm_P2.50mm")
     )
     (path "/fae83aca-d871-4dad-8dca-794c894d9124"
-      (reference "D1") (unit 1) (value "LED") (footprint "LED_THT:LED_D3.0mm_Horizontal_O1.27mm_Z2.0mm")
+      (reference "D1") (unit 1) (value "LED") (footprint "LED_THT:LED_D3.0mm_Horizontal_O6.35mm_Z2.0mm")
     )
     (path "/0fdc7ebb-4b15-4947-a92f-73b17a1787e1"
       (reference "H1") (unit 1) (value "2.5mm") (footprint "MountingHole:MountingHole_2.7mm")
@@ -13783,7 +13783,7 @@
       (reference "RN4") (unit 1) (value "4K7") (footprint "Resistor_THT:R_Array_SIP5")
     )
     (path "/bfcdb47c-dd19-4a95-86c4-e5b0ffd29fe9"
-      (reference "SW1") (unit 1) (value "SW_Push") (footprint "Button_Switch_THT:SW_TH_Tactile_Omron_B3F-10xx")
+      (reference "SW1") (unit 1) (value "SW_Push") (footprint "Button_Switch_THT:SW_Tactile_SPST_Angled_PTS645Vx83-2LFS")
     )
     (path "/b94ab99f-52e3-4ccf-b6fb-e7021a9f054f"
       (reference "U1") (unit 1) (value "74LS245") (footprint "Package_DIP:DIP-20_W7.62mm_Socket")
