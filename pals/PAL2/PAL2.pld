@@ -26,11 +26,11 @@ PIN 13   = 16KMODE;
 PIN 14   = !ENMMU1;
 PIN 15   = !ENMMU0;
 PIN 16   = SPARE;
-PIN 17   = !CSIOINT;
-PIN 18   = !CSEXT;
-PIN 19   = !CSRAM;
-PIN 20   = !CSROM1;
-PIN 21   = !CSROM0;
+PIN 17   = !CSRAM;
+PIN 18   = !CSROM1;
+PIN 19   = !CSROM0;
+PIN 20   = !CSEXT;
+PIN 21   = !CSIOINT;
 PIN 22   = QA20;
 PIN 23   = QA19;
 
@@ -51,9 +51,9 @@ IOINT    = A15 & A14 & A13 & A12 & A11 & A10 & A9 & !A8 & !A7 & !A6;
 
 // Outputs
 
-CSROM0  = ((ENMMU & !QA20 & !QA19) # (!ENMMU &  A15 & !A14)) & !IO;
-CSROM1  = ((ENMMU & !QA20 &  QA19) # (!ENMMU &  A15 &  A14)) & !IO;
-CSRAM   = ((ENMMU &  QA20 & !QA19) # (!ENMMU & !A15       )) & !IO;
+CSROM0  = ((ENMMU & !QA20 & !QA19) # (!ENMMU & A15)) & !IO;
+CSROM1  =  (ENMMU & !QA20 &  QA19) & !IO;
+CSRAM   = ((ENMMU &  QA20 & !QA19) # (!ENMMU & !A15)) & !IO;
 CSEXT   =  (ENMMU & (QA20 &  QA19 # IO) & !IOINT);
 CSIOINT = IOINT;
 ENMMU0  = (ENMMU & !16KMODE & !A13) # (ENMMU & 16KMODE);
