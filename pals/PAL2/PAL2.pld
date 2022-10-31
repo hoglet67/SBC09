@@ -10,7 +10,7 @@ Device   g22v10      ;
 
 /* *************** INPUT PINS *********************/
 
-PIN 1    = nENMMU;
+PIN 1    = !ENMMU;
 PIN 2    = A6;
 PIN 3    = A7;
 PIN 4    = A8;
@@ -23,14 +23,14 @@ PIN 10   = A14;
 PIN 11   = A15;
 PIN 13   = 16KMODE;
 
-PIN 14   = nENMMU1;
-PIN 15   = nENMMU0;
+PIN 14   = !ENMMU1;
+PIN 15   = !ENMMU0;
 PIN 16   = SPARE;
-PIN 17   = nCSIOINT;
-PIN 18   = nCSEXT;
-PIN 19   = nCSRAM;
-PIN 20   = nCSROM1;
-PIN 21   = nCSROM0;
+PIN 17   = !CSIOINT;
+PIN 18   = !CSEXT;
+PIN 19   = !CSRAM;
+PIN 20   = !CSROM1;
+PIN 21   = !CSROM0;
 PIN 22   = QA20;
 PIN 23   = QA19;
 
@@ -44,10 +44,10 @@ IOINT    = A15 & A14 & A13 & A12 & A11 & A10 & A9 & !A8 & !A7 & !A6;
 
 // Outputs
 
-nCSROM0  = !( !QA20 & !QA19 & !IO);
-nCSROM1  = !( !QA20 &  QA19 & !IO);
-nCSRAM   = !(  QA20 & !QA19 & !IO);
-nCSEXT   = !( (QA20 &  QA19 #  IO) & !IOINT);
-nCSIOINT = !(IOINT);
-nENMMU0  = !((!nENMMU & !16KMODE & !A13) # (!nENMMU & 16KMODE));
-nENMMU1  = !( !nENMMU & !16KMODE &  A13 );
+CSROM0  =  !QA20 & !QA19 & !IO;
+CSROM1  =  !QA20 &  QA19 & !IO;
+CSRAM   =   QA20 & !QA19 & !IO;
+CSEXT   =  (QA20 &  QA19 #  IO) & !IOINT;
+CSIOINT = IOINT;
+ENMMU0  = (ENMMU & !16KMODE & !A13) # (ENMMU & 16KMODE);
+ENMMU1  =  ENMMU & !16KMODE &  A13 ;
