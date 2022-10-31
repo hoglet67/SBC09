@@ -24,12 +24,12 @@ PIN 11   = QA21;
 PIN 13   = E;
 
 PIN 14   = QA13;
-PIN 15   = nCSIOINT; // input
-PIN 16   = nCSUART;
-PIN 17   = nWRMMU1;
-PIN 18   = nWRMMU0;
-PIN 19   = nWR;
-PIN 20   = nRD;
+PIN 15   = !CSIOINT; // input
+PIN 16   = !CSUART;
+PIN 17   = !WRMMU1;
+PIN 18   = !WRMMU0;
+PIN 19   = !WR;
+PIN 20   = !RD;
 PIN 21   = A8X;
 PIN 22   = EX;
 PIN 23   = QX;
@@ -72,14 +72,14 @@ A8OUT   = A8 $ (BS & !BA & RnW);
 //  1  0 MMU1
 //  0  1  1 MMU0+1
 
-nWRMMU0 = !(E & !nCSIOINT & A4 & !RnW);
+WRMMU0 = E & CSIOINT & A4 & !RnW;
 
-nWRMMU1 = !(E & !nCSIOINT & A5 & !RnW);
+WRMMU1 = E & CSIOINT & A5 & !RnW;
 
-nCSUART = !(E & !nCSIOINT & !A5 & !A4);
+CSUART = E & CSIOINT & !A5 & !A4;
 
-nRD = !(E & RnW);
+RD = E & RnW;
 
-nWR = !(E & !RnW & (!16KMODE # !QA21));
+WR = E & !RnW & (!16KMODE # !QA21);
 
 QA13 = (16KMODE & A13)  # (!16KMODE & QA21);
