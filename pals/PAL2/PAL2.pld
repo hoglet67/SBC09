@@ -42,12 +42,19 @@ IO       = A15 & A14 & A13 & A12 & A11 & A10 & (!A9 # !A8);
 // Decde &FE00-&FE3F
 IOINT    = A15 & A14 & A13 & A12 & A11 & A10 & A9 & !A8 & !A7 & !A6;
 
+
+// QA20 QA19 Device
+//    0    0    ROM0
+//    0    1    ROM1
+//    1    0    RAM
+//    1    1    External
+
 // Outputs
 
-CSROM0  =  !QA20 & !QA19 & !IO;
-CSROM1  =  !QA20 &  QA19 & !IO;
-CSRAM   =   QA20 & !QA19 & !IO;
-CSEXT   =  (QA20 &  QA19 #  IO) & !IOINT;
+CSROM0  = ((ENMMU & !QA20 & !QA19) # (!ENMMU &  A15 & !A14)) & !IO;
+CSROM1  = ((ENMMU & !QA20 &  QA19) # (!ENMMU &  A15 &  A14)) & !IO;
+CSRAM   = ((ENMMU &  QA20 & !QA19) # (!ENMMU & !A15       )) & !IO;
+CSEXT   =  (ENMMU & (QA20 &  QA19 # IO) & !IOINT);
 CSIOINT = IOINT;
 ENMMU0  = (ENMMU & !16KMODE & !A13) # (ENMMU & 16KMODE);
 ENMMU1  =  ENMMU & !16KMODE &  A13 ;
