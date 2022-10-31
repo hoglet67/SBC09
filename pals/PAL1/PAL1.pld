@@ -64,7 +64,7 @@ EX.SP = 'b'0;
 QX.AR = 'b'0;
 QX.SP = 'b'0;
 
-A8OUT   = A8 $ (BS & !BA & RnW);
+A8X = A8 $ (BS & !BA & RnW);
 
 // A5 A4
 //  0  0 UART
