@@ -11931,7 +11931,7 @@
     (property "Reference" "U3" (id 0) (at 384.0606 83.82 0)
       (effects (font (size 1.27 1.27)) (justify right))
     )
-    (property "Value" "74LS245" (id 1) (at 384.0606 86.36 0)
+    (property "Value" "" (id 1) (at 384.0606 86.36 0)
       (effects (font (size 1.27 1.27)) (justify right))
     )
     (property "Footprint" "Package_DIP:DIP-20_W7.62mm_Socket" (id 2) (at 383.54 104.14 0)
@@ -12224,7 +12224,7 @@
     (property "Reference" "U2" (id 0) (at 384.0606 27.94 0)
       (effects (font (size 1.27 1.27)) (justify right))
     )
-    (property "Value" "74LS245" (id 1) (at 384.0606 30.48 0)
+    (property "Value" "" (id 1) (at 384.0606 30.48 0)
       (effects (font (size 1.27 1.27)) (justify right))
     )
     (property "Footprint" "Package_DIP:DIP-20_W7.62mm_Socket" (id 2) (at 383.54 48.26 0)
@@ -12417,7 +12417,7 @@
     (property "Reference" "U1" (id 0) (at 343.4206 137.16 0)
       (effects (font (size 1.27 1.27)) (justify right))
     )
-    (property "Value" "74LS245" (id 1) (at 343.4206 139.7 0)
+    (property "Value" "" (id 1) (at 343.4206 139.7 0)
       (effects (font (size 1.27 1.27)) (justify right))
     )
     (property "Footprint" "Package_DIP:DIP-20_W7.62mm_Socket" (id 2) (at 342.9 157.48 0)
@@ -13715,13 +13715,13 @@
       (reference "SW1") (unit 1) (value "SW_Push") (footprint "Button_Switch_THT:SW_Tactile_SPST_Angled_PTS645Vx83-2LFS")
     )
     (path "/b94ab99f-52e3-4ccf-b6fb-e7021a9f054f"
-      (reference "U1") (unit 1) (value "74LS245") (footprint "Package_DIP:DIP-20_W7.62mm_Socket")
+      (reference "U1") (unit 1) (value "74HCT245") (footprint "Package_DIP:DIP-20_W7.62mm_Socket")
     )
     (path "/ac5972a1-fe98-469b-83c0-ddd983b35429"
-      (reference "U2") (unit 1) (value "74LS245") (footprint "Package_DIP:DIP-20_W7.62mm_Socket")
+      (reference "U2") (unit 1) (value "74HCT245") (footprint "Package_DIP:DIP-20_W7.62mm_Socket")
     )
     (path "/8faef091-bd23-44f5-86d7-3dbb33eb4c2b"
-      (reference "U3") (unit 1) (value "74LS245") (footprint "Package_DIP:DIP-20_W7.62mm_Socket")
+      (reference "U3") (unit 1) (value "74HCT245") (footprint "Package_DIP:DIP-20_W7.62mm_Socket")
     )
     (path "/625a12c3-d955-4962-8e19-1bdba92d86fb"
       (reference "U4") (unit 1) (value "MC6809E") (footprint "Package_DIP:DIP-40_W15.24mm_Socket")
