@@ -64,7 +64,9 @@ EX.SP = 'b'0;
 QX.AR = 'b'0;
 QX.SP = 'b'0;
 
+// Tristate A8X when BA is high, as buffers reversed
 A8X = A8 $ (BS & !BA & RnW);
+A8X.OE = !BA;
 
 // A5 A4
 //  0  0 UART

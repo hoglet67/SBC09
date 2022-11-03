@@ -5,7 +5,7 @@
 
 CUPL(WM)        5.0a Serial# MW-10400000
 Device          g22v10  Library DLIB-h-40-1
-Created         Thu Nov 03 08:57:19 2022
+Created         Thu Nov 03 11:57:20 2022
 Name            PAL1        
 Partno          00          
 Revision        01          
@@ -24,6 +24,9 @@ A8X =>
   # A8 & !BS
   # A8 & !RnW
   # !A8 & !BA & BS & RnW
+
+A8X.oe  =>
+    !BA
 
 CSUART =>
     !A4 & !A5 & CSIOINT & E
@@ -67,9 +70,6 @@ WRMMU1 =>
 count =>
     EX , QX
 
-A8X.oe  =>
-    1 
-
 CSIOINT.oe  =>
     0 
 
@@ -112,6 +112,7 @@ Pol   Name              Ext     Pin     Type     Used   Pterms  Level
     A8                          8        V        -       -       -     
     A13                         9        V        -       -       -     
     A8X                         21       V        4       12      2     
+    A8X                 oe      21       X        1       1       1     
     BA                          3        V        -       -       -     
     BS                          4        V        -       -       -     
     CLKX4                       1        V        -       -       -     
@@ -135,7 +136,6 @@ Pol   Name              Ext     Pin     Type     Used   Pterms  Level
  !  WRMMU0                      18       V        1       16      2     
  !  WRMMU1                      17       V        1       14      2     
     count                       0        F        -       -       -     
-    A8X                 oe      21       D        1       1       0     
     CSIOINT             oe      15       D        1       1       0     
     CSUART              oe      16       D        1       1       0     
     EX                  oe      22       D        1       1       0     
@@ -186,7 +186,7 @@ Pin #22  05810 Mode  -x
  00836 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
  00880 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
 Pin #21  05812 Mode  -- 
- 00924 -------------------------------------------- 
+ 00924 ---------x---------------------------------- 
  00968 --------x-------------------x--------------- 
  01012 -------------x--------------x--------------- 
  01056 -----------------x----------x--------------- 
