@@ -5,7 +5,7 @@
 
 CUPL(WM)        5.0a Serial# MW-10400000
 Device          g22v10  Library DLIB-h-40-1
-Created         Mon Oct 31 17:30:06 2022
+Created         Thu Nov 03 08:57:19 2022
 Name            PAL1        
 Partno          00          
 Revision        01          
@@ -40,7 +40,7 @@ EX.sp  =>
 
 QA13 =>
     16KMODE & A13
-  # !16KMODE & QA21
+  # !16KMODE & QA19
 
 QX.d  =>
     !EX
@@ -56,7 +56,7 @@ RD =>
 
 WR =>
     !16KMODE & E & !RnW
-  # E & !QA21 & !RnW
+  # E & !QA19 & !RnW
 
 WRMMU0 =>
     A4 & CSIOINT & E & !RnW
@@ -124,7 +124,7 @@ Pol   Name              Ext     Pin     Type     Used   Pterms  Level
     EX                  sp      22       X        1       1       1     
     MRDY                        2        V        -       -       -     
     QA13                        14       V        2       8       2     
-    QA21                        11       V        -       -       -     
+    QA19                        11       V        -       -       -     
     QX                          23       V        -       -       -     
     QX                  d       23       X        1       8       2     
     QX                  ar      23       X        1       1       1     
@@ -324,7 +324,7 @@ LEGEND    X : fuse not blown
                        A8 x---|8           17|---x !WRMMU1                  
                       A13 x---|9           16|---x !CSUART                  
                   16KMODE x---|10          15|---x !CSIOINT                 
-                     QA21 x---|11          14|---x QA13                     
+                     QA19 x---|11          14|---x QA13                     
                       GND x---|12          13|---x E                        
                               |______________|
 

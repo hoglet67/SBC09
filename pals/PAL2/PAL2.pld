@@ -31,8 +31,8 @@ PIN 18   = !CSROM1;
 PIN 19   = !CSROM0;
 PIN 20   = !CSEXT;
 PIN 21   = !CSIOINT;
-PIN 22   = QA20;
-PIN 23   = QA19;
+PIN 22   = QA21;
+PIN 23   = QA20;
 
 // Intermediates
 
@@ -43,7 +43,7 @@ IO       = A15 & A14 & A13 & A12 & A11 & A10 & (!A9 # !A8);
 IOINT    = A15 & A14 & A13 & A12 & A11 & A10 & A9 & !A8 & !A7 & !A6;
 
 
-// QA20 QA19 Device
+// QA21 QA20 Device
 //    0    0    ROM0
 //    0    1    ROM1
 //    1    0    RAM
@@ -51,10 +51,10 @@ IOINT    = A15 & A14 & A13 & A12 & A11 & A10 & A9 & !A8 & !A7 & !A6;
 
 // Outputs
 
-CSROM0  = ((ENMMU & !QA20 & !QA19) # (!ENMMU & A15)) & !IO;
-CSROM1  =  (ENMMU & !QA20 &  QA19) & !IO;
-CSRAM   = ((ENMMU &  QA20 & !QA19) # (!ENMMU & !A15)) & !IO;
-CSEXT   =  (ENMMU & (QA20 &  QA19 # IO) & !IOINT);
+CSROM0  = ((ENMMU & !QA21 & !QA20) # (!ENMMU & A15)) & !IO;
+CSROM1  =  (ENMMU & !QA21 &  QA20) & !IO;
+CSRAM   = ((ENMMU &  QA21 & !QA20) # (!ENMMU & !A15)) & !IO;
+CSEXT   =  (ENMMU & (QA21 &  QA20 # IO) & !IOINT);
 CSIOINT = IOINT;
 ENMMU0  = (ENMMU & !16KMODE & !A13) # (ENMMU & 16KMODE);
 ENMMU1  =  ENMMU & !16KMODE &  A13 ;

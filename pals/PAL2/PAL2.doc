@@ -5,7 +5,7 @@
 
 CUPL(WM)        5.0a Serial# MW-10400000
 Device          g22v10  Library DLIB-h-40-1
-Created         Mon Oct 31 17:30:06 2022
+Created         Thu Nov 03 08:57:20 2022
 Name            PAL2        
 Partno          00          
 Revision        01          
@@ -20,13 +20,13 @@ Location
 ===============================================================================
 
 CSEXT =>
-    A8 & ENMMU & QA19 & QA20
-  # !A10 & ENMMU & QA19 & QA20
-  # !A11 & ENMMU & QA19 & QA20
-  # !A12 & ENMMU & QA19 & QA20
-  # !A13 & ENMMU & QA19 & QA20
-  # !A14 & ENMMU & QA19 & QA20
-  # !A15 & ENMMU & QA19 & QA20
+    A8 & ENMMU & QA20 & QA21
+  # !A10 & ENMMU & QA20 & QA21
+  # !A11 & ENMMU & QA20 & QA21
+  # !A12 & ENMMU & QA20 & QA21
+  # !A13 & ENMMU & QA20 & QA21
+  # !A14 & ENMMU & QA20 & QA21
+  # !A15 & ENMMU & QA20 & QA21
   # !A9 & A10 & A11 & A12 & A13 & A14 & A15 & ENMMU
   # A6 & !A8 & A10 & A11 & A12 & A13 & A14 & A15 & ENMMU
   # A7 & !A8 & A10 & A11 & A12 & A13 & A14 & A15 & ENMMU
@@ -36,13 +36,13 @@ CSIOINT =>
 
 CSRAM =>
     !A15 & !ENMMU
-  # !A15 & !QA19 & QA20
-  # !A10 & ENMMU & !QA19 & QA20
-  # !A11 & ENMMU & !QA19 & QA20
-  # !A12 & ENMMU & !QA19 & QA20
-  # !A13 & ENMMU & !QA19 & QA20
-  # !A14 & ENMMU & !QA19 & QA20
-  # A8 & A9 & ENMMU & !QA19 & QA20
+  # !A15 & !QA20 & QA21
+  # !A10 & ENMMU & !QA20 & QA21
+  # !A11 & ENMMU & !QA20 & QA21
+  # !A12 & ENMMU & !QA20 & QA21
+  # !A13 & ENMMU & !QA20 & QA21
+  # !A14 & ENMMU & !QA20 & QA21
+  # A8 & A9 & ENMMU & !QA20 & QA21
 
 CSROM0 =>
     !A10 & A15 & !ENMMU
@@ -51,22 +51,22 @@ CSROM0 =>
   # !A13 & A15 & !ENMMU
   # !A14 & A15 & !ENMMU
   # A8 & A9 & A15 & !ENMMU
-  # !A10 & A15 & !QA19 & !QA20
-  # !A11 & A15 & !QA19 & !QA20
-  # !A12 & A15 & !QA19 & !QA20
-  # !A13 & A15 & !QA19 & !QA20
-  # !A14 & A15 & !QA19 & !QA20
-  # !A15 & ENMMU & !QA19 & !QA20
-  # A8 & A9 & A15 & !QA19 & !QA20
+  # !A10 & A15 & !QA20 & !QA21
+  # !A11 & A15 & !QA20 & !QA21
+  # !A12 & A15 & !QA20 & !QA21
+  # !A13 & A15 & !QA20 & !QA21
+  # !A14 & A15 & !QA20 & !QA21
+  # !A15 & ENMMU & !QA20 & !QA21
+  # A8 & A9 & A15 & !QA20 & !QA21
 
 CSROM1 =>
-    !A10 & ENMMU & QA19 & !QA20
-  # !A11 & ENMMU & QA19 & !QA20
-  # !A12 & ENMMU & QA19 & !QA20
-  # !A13 & ENMMU & QA19 & !QA20
-  # !A14 & ENMMU & QA19 & !QA20
-  # !A15 & ENMMU & QA19 & !QA20
-  # A8 & A9 & ENMMU & QA19 & !QA20
+    !A10 & ENMMU & QA20 & !QA21
+  # !A11 & ENMMU & QA20 & !QA21
+  # !A12 & ENMMU & QA20 & !QA21
+  # !A13 & ENMMU & QA20 & !QA21
+  # !A14 & ENMMU & QA20 & !QA21
+  # !A15 & ENMMU & QA20 & !QA21
+  # A8 & A9 & ENMMU & QA20 & !QA21
 
 ENMMU0 =>
     16KMODE & ENMMU
@@ -109,10 +109,10 @@ ENMMU0.oe  =>
 ENMMU1.oe  =>
     1 
 
-QA19.oe  =>
+QA20.oe  =>
     0 
 
-QA20.oe  =>
+QA21.oe  =>
     0 
 
 
@@ -147,8 +147,8 @@ Pol   Name              Ext     Pin     Type     Used   Pterms  Level
     IOINT                       0        I        1       -       -     
     QA14                        16       V        1       12      2     
     QA14                oe      16       X        1       1       1     
-    QA19                        23       V        -       -       -     
-    QA20                        22       V        -       -       -     
+    QA20                        23       V        -       -       -     
+    QA21                        22       V        -       -       -     
     CSEXT               oe      20       D        1       1       0     
     CSIOINT             oe      21       D        1       1       0     
     CSRAM               oe      17       D        1       1       0     
@@ -156,8 +156,8 @@ Pol   Name              Ext     Pin     Type     Used   Pterms  Level
     CSROM1              oe      18       D        1       1       0     
     ENMMU0              oe      15       D        1       1       0     
     ENMMU1              oe      14       D        1       1       0     
-    QA19                oe      23       D        1       1       0     
-    QA20                oe      22       D        1       1       0     
+    QA20                oe      23       D        1       1       0     
+    QA21                oe      22       D        1       1       0     
 
 
 LEGEND    D : default variable         F : field      G : group
@@ -328,8 +328,8 @@ LEGEND    X : fuse not blown
                                ______________
                               |     PAL2     |
                    !ENMMU x---|1           24|---x Vcc                      
-                       A6 x---|2           23|---x QA19                     
-                       A7 x---|3           22|---x QA20                     
+                       A6 x---|2           23|---x QA20                     
+                       A7 x---|3           22|---x QA21                     
                        A8 x---|4           21|---x !CSIOINT                 
                        A9 x---|5           20|---x !CSEXT                   
                       A10 x---|6           19|---x !CSROM0                  
