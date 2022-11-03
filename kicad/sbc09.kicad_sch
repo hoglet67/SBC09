@@ -8326,8 +8326,8 @@
     (effects (font (size 1.27 1.27)) (justify left bottom))
     (uuid 06f6c9eb-fc4e-4f9a-b2a2-8825aa4bd6c6)
   )
-  (text "QA13 comes from PAL2\n\n8K Mode:\n  QA21 => QA13\n\n16K Mode:\n   A13 => QA13\n  QA21 => Write Protect\n"
-    (at 131.445 163.83 0)
+  (text "QA13 comes from PAL2\n\n8K Mode:\n  QA19 => QA13\n\n16K Mode:\n   A13 => QA13\n  QA19 => Write Protect\n"
+    (at 142.24 160.02 0)
     (effects (font (size 1.27 1.27)) (justify left bottom))
     (uuid 10ca95db-e7f5-4d28-87a1-10894a763514)
   )
