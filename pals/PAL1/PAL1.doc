@@ -5,7 +5,7 @@
 
 CUPL(WM)        5.0a Serial# MW-10400000
 Device          g22v10  Library DLIB-h-40-1
-Created         Thu Nov 03 11:57:20 2022
+Created         Sun Nov 06 17:38:43 2022
 Name            PAL1        
 Partno          00          
 Revision        01          
@@ -41,10 +41,6 @@ EX.ar  =>
 EX.sp  =>
     0 
 
-QA13 =>
-    16KMODE & A13
-  # !16KMODE & QA19
-
 QX.d  =>
     !EX
 
@@ -79,9 +75,6 @@ CSUART.oe  =>
 EX.oe  =>
     1 
 
-QA13.oe  =>
-    1 
-
 QX.oe  =>
     1 
 
@@ -110,7 +103,6 @@ Pol   Name              Ext     Pin     Type     Used   Pterms  Level
     A4                          6        V        -       -       -     
     A5                          7        V        -       -       -     
     A8                          8        V        -       -       -     
-    A13                         9        V        -       -       -     
     A8X                         21       V        4       12      2     
     A8X                 oe      21       X        1       1       1     
     BA                          3        V        -       -       -     
@@ -124,7 +116,6 @@ Pol   Name              Ext     Pin     Type     Used   Pterms  Level
     EX                  ar      22       X        1       1       1     
     EX                  sp      22       X        1       1       1     
     MRDY                        2        V        -       -       -     
-    QA13                        14       V        2       8       2     
     QA19                        11       V        -       -       -     
     QX                          23       V        -       -       -     
     QX                  d       23       X        1       8       2     
@@ -139,7 +130,6 @@ Pol   Name              Ext     Pin     Type     Used   Pterms  Level
     CSIOINT             oe      15       D        1       1       0     
     CSUART              oe      16       D        1       1       0     
     EX                  oe      22       D        1       1       0     
-    QA13                oe      14       D        1       1       0     
     QX                  oe      23       D        1       1       0     
     RD                  oe      20       D        1       1       0     
     WR                  oe      19       D        1       1       0     
@@ -293,10 +283,10 @@ Pin #15  05824 Mode  x-
  05236 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
  05280 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
  05324 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
-Pin #14  05826 Mode  -- 
- 05368 -------------------------------------------- 
- 05412 --------------------------------x---x------- 
- 05456 -------------------------------------x--x--- 
+Pin #14  05826 Mode  xx 
+ 05368 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
+ 05412 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
+ 05456 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
  05500 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
  05544 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
  05588 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
@@ -322,9 +312,9 @@ LEGEND    X : fuse not blown
                        A4 x---|6           19|---x !WR                      
                        A5 x---|7           18|---x !WRMMU0                  
                        A8 x---|8           17|---x !WRMMU1                  
-                      A13 x---|9           16|---x !CSUART                  
+                          x---|9           16|---x !CSUART                  
                   16KMODE x---|10          15|---x !CSIOINT                 
-                     QA19 x---|11          14|---x QA13                     
+                     QA19 x---|11          14|---x                          
                       GND x---|12          13|---x E                        
                               |______________|
 

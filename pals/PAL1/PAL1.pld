@@ -18,12 +18,12 @@ PIN 5    = RnW;
 PIN 6    = A4;
 PIN 7    = A5;
 PIN 8    = A8;
-PIN 9    = A13;
+//PIN 9
 PIN 10   = 16KMODE;
 PIN 11   = QA19;
 PIN 13   = E;
 
-PIN 14   = QA13;
+//PIN 14
 PIN 15   = !CSIOINT; // input
 PIN 16   = !CSUART;
 PIN 17   = !WRMMU1;
@@ -83,5 +83,3 @@ CSUART = E & CSIOINT & !A5 & !A4;
 RD = E & RnW;
 
 WR = E & !RnW & (!16KMODE # !QA19);
-
-QA13 = (16KMODE & A13)  # (!16KMODE & QA19);

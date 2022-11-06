@@ -11,37 +11,28 @@ Device   g22v10      ;
 /* *************** INPUT PINS *********************/
 
 PIN 1    = !ENMMU;
-PIN 2    = A6;
-PIN 3    = A7;
-PIN 4    = A8;
-PIN 5    = A9;
-PIN 6    = A10;
-PIN 7    = A11;
-PIN 8    = A12;
+PIN 2    = 16KMODE;
+PIN 3    = QA19;
+PIN 4    = QA20;
+PIN 5    = QA21;
+PIN 6    = !CSIO;
+PIN 7    = !CSIOINT;
+// PIN 8
 PIN 9    = A13;
 PIN 10   = A14;
 PIN 11   = A15;
-PIN 13   = 16KMODE;
+// PIN 13
 
 PIN 14   = !ENMMU1;
 PIN 15   = !ENMMU0;
-PIN 16   = QA14;
+// PIN 16
 PIN 17   = !CSRAM;
 PIN 18   = !CSROM1;
 PIN 19   = !CSROM0;
 PIN 20   = !CSEXT;
-PIN 21   = !CSIOINT;
-PIN 22   = QA21;
-PIN 23   = QA20;
-
-// Intermediates
-
-// Decode &FC00-&FEFF
-IO       = A15 & A14 & A13 & A12 & A11 & A10 & (!A9 # !A8);
-
-// Decde &FE00-&FE3F
-IOINT    = A15 & A14 & A13 & A12 & A11 & A10 & A9 & !A8 & !A7 & !A6;
-
+// PIN 21
+PIN 22   = QA14;
+PIN 23   = QA13;
 
 // QA21 QA20 Device
 //    0    0    ROM0
@@ -51,13 +42,14 @@ IOINT    = A15 & A14 & A13 & A12 & A11 & A10 & A9 & !A8 & !A7 & !A6;
 
 // Outputs
 
-CSROM0  = ((ENMMU & !QA21 & !QA20) # (!ENMMU & A15)) & !IO;
-CSROM1  =  (ENMMU & !QA21 &  QA20) & !IO;
-CSRAM   = ((ENMMU &  QA21 & !QA20) # (!ENMMU & !A15)) & !IO;
-CSEXT   =  (ENMMU & (QA21 &  QA20 # IO) & !IOINT);
-CSIOINT = IOINT;
+CSROM0  = ((ENMMU & !QA21 & !QA20) # (!ENMMU & A15)) & !CSIO;
+CSROM1  =  (ENMMU & !QA21 &  QA20) & !CSIO;
+CSRAM   = ((ENMMU &  QA21 & !QA20) # (!ENMMU & !A15)) & !CSIO;
+CSEXT   =  (ENMMU & (QA21 &  QA20 # CSIO) & !CSIOINT);
 ENMMU0  = (ENMMU & !16KMODE & !A13) # (ENMMU & 16KMODE);
 ENMMU1  =  ENMMU & !16KMODE &  A13 ;
+
+QA13 = (16KMODE & A13)  # (!16KMODE & QA19);
 
 // When MMU Disabled, pass through A14->QA14 else tristate
 
