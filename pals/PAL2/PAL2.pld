@@ -10,14 +10,14 @@ Device   g22v10      ;
 
 /* *************** INPUT PINS *********************/
 
-PIN 1    = !ENMMU;
-PIN 2    = 16KMODE;
-PIN 3    = QA19;
-PIN 4    = QA20;
-PIN 5    = QA21;
-PIN 6    = !CSIO;
-PIN 7    = !CSIOINT;
-// PIN 8
+PIN 1    = E;
+PIN 2    = !ENMMU;
+PIN 3    = 16KMODE;
+PIN 4    = QA19;
+PIN 5    = QA20;
+PIN 6    = QA21;
+PIN 7    = !CSIO;
+PIN 8    = !CSIOINT;
 PIN 9    = A13;
 PIN 10   = A14;
 PIN 11   = A15;
