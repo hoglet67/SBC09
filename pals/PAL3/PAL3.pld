@@ -21,6 +21,11 @@ PIN 8    = A13;
 PIN 9    = A14;
 PIN 11   = A15;
 
+//PIN 13
+//PIN 14
+//PIN 15
+//PIN 16
+
 PIN 17   = !CSIOEXT;
 PIN 18   = !CSIOINT;
 PIN 19   = !CSIO;

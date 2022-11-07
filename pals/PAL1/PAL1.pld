@@ -23,8 +23,8 @@ PIN 10   = 16KMODE;
 PIN 11   = QA19;
 PIN 13   = E;
 
-// PIN 14
-// PIN 15
+PIN 14   = Q;
+PIN 15   = DIREXT;
 PIN 16   = !CSUART;
 PIN 17   = !WRMMU1;
 PIN 18   = !WRMMU0;
@@ -78,8 +78,11 @@ WRMMU0 = E & CSIOINT & A4 & !RnW;
 
 WRMMU1 = E & CSIOINT & A5 & !RnW;
 
-CSUART = E & CSIOINT & !A5 & !A4;
+// CSUART = E & CSIOINT & !A5 & !A4;
+CSUART = ((RnW & (E # Q)) # (!RnW & (E & Q))) & CSIOINT & !A5 & !A4;
 
 RD = E & RnW;
 
 WR = E & !RnW & (!16KMODE # !QA19);
+
+DIREXT = RnW $ BA;

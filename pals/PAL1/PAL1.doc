@@ -5,7 +5,7 @@
 
 CUPL(WM)        5.0a Serial# MW-10400000
 Device          g22v10  Library DLIB-h-40-1
-Created         Sun Nov 06 19:05:27 2022
+Created         Sun Nov 06 20:02:36 2022
 Name            PAL1        
 Partno          00          
 Revision        01          
@@ -29,7 +29,13 @@ A8X.oe  =>
     !BA
 
 CSUART =>
-    !A4 & !A5 & CSIOINT & E
+    !A4 & !A5 & CSIOINT & E & Q
+  # !A4 & !A5 & CSIOINT & E & RnW
+  # !A4 & !A5 & CSIOINT & Q & RnW
+
+DIREXT =>
+    !BA & RnW
+  # BA & !RnW
 
 EX.d  =>
     QX
@@ -69,8 +75,14 @@ count =>
 CSUART.oe  =>
     1 
 
+DIREXT.oe  =>
+    1 
+
 EX.oe  =>
     1 
+
+Q.oe  =>
+    0 
 
 QX.oe  =>
     1 
@@ -106,13 +118,15 @@ Pol   Name              Ext     Pin     Type     Used   Pterms  Level
     BS                          4        V        -       -       -     
     CLKX4                       1        V        -       -       -     
  !  CSIOINT                     9        V        -       -       -     
- !  CSUART                      16       V        1       12      2     
+ !  CSUART                      16       V        3       12      2     
+    DIREXT                      15       V        2       10      2     
     E                           13       V        -       -       -     
     EX                          22       V        -       -       -     
     EX                  d       22       X        2       10      2     
     EX                  ar      22       X        1       1       1     
     EX                  sp      22       X        1       1       1     
     MRDY                        2        V        -       -       -     
+    Q                           14       V        -       -       -     
     QA19                        11       V        -       -       -     
     QX                          23       V        -       -       -     
     QX                  d       23       X        1       8       2     
@@ -125,7 +139,9 @@ Pol   Name              Ext     Pin     Type     Used   Pterms  Level
  !  WRMMU1                      17       V        1       14      2     
     count                       0        F        -       -       -     
     CSUART              oe      16       D        1       1       0     
+    DIREXT              oe      15       D        1       1       0     
     EX                  oe      22       D        1       1       0     
+    Q                   oe      14       D        1       1       0     
     QX                  oe      23       D        1       1       0     
     RD                  oe      20       D        1       1       0     
     WR                  oe      19       D        1       1       0     
@@ -255,9 +271,9 @@ Pin #17  05820 Mode  x-
  04268 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
 Pin #16  05822 Mode  x- 
  04312 -------------------------------------------- 
- 04356 ---------------------x---x-------x--------x- 
- 04400 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
- 04444 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
+ 04356 ---------------------x---x-------x----x---x- 
+ 04400 ----------------x----x---x-------x--------x- 
+ 04444 ----------------x----x---x-------x----x----- 
  04488 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
  04532 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
  04576 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
@@ -267,10 +283,10 @@ Pin #16  05822 Mode  x-
  04752 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
  04796 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
  04840 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
-Pin #15  05824 Mode  xx 
- 04884 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
- 04928 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
- 04972 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
+Pin #15  05824 Mode  -- 
+ 04884 -------------------------------------------- 
+ 04928 ---------x------x--------------------------- 
+ 04972 --------x--------x-------------------------- 
  05016 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
  05060 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
  05104 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
@@ -279,7 +295,7 @@ Pin #15  05824 Mode  xx
  05236 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
  05280 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
  05324 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
-Pin #14  05826 Mode  xx 
+Pin #14  05826 Mode  x- 
  05368 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
  05412 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
  05456 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
@@ -309,8 +325,8 @@ LEGEND    X : fuse not blown
                        A5 x---|7           18|---x !WRMMU0                  
                        A8 x---|8           17|---x !WRMMU1                  
                  !CSIOINT x---|9           16|---x !CSUART                  
-                  16KMODE x---|10          15|---x                          
-                     QA19 x---|11          14|---x                          
+                  16KMODE x---|10          15|---x DIREXT                   
+                     QA19 x---|11          14|---x Q                        
                       GND x---|12          13|---x E                        
                               |______________|
 
