@@ -21,7 +21,7 @@ PIN 8    = !CSIOINT;
 PIN 9    = A13;
 PIN 10   = A14;
 PIN 11   = A15;
-// PIN 13
+PIN 13   = BA;
 
 PIN 14   = !ENMMU1;
 PIN 15   = !ENMMU0;
@@ -45,7 +45,7 @@ PIN 23   = QA13;
 CSROM0  = ((ENMMU & !QA21 & !QA20) # (!ENMMU & A15)) & !CSIO;
 CSROM1  =  (ENMMU & !QA21 &  QA20) & !CSIO;
 CSRAM   = ((ENMMU &  QA21 & !QA20) # (!ENMMU & !A15)) & !CSIO;
-CSEXT   =  (ENMMU & (QA21 &  QA20 # CSIO) & !CSIOINT);
+CSEXT   =  BA $ (ENMMU & (QA21 &  QA20 # CSIO) & !CSIOINT);
 ENMMU0  = (ENMMU & !16KMODE & !A13) # (ENMMU & 16KMODE);
 ENMMU1  =  ENMMU & !16KMODE &  A13 ;
 

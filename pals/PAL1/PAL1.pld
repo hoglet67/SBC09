@@ -85,4 +85,4 @@ RD = E & RnW;
 
 WR = E & !RnW & (!16KMODE # !QA19);
 
-DIREXT = RnW $ BA;
+DIREXT  =  BA $ RnW;

@@ -5,7 +5,7 @@
 
 CUPL(WM)        5.0a Serial# MW-10400000
 Device          g22v10  Library DLIB-h-40-1
-Created         Sun Nov 06 20:02:36 2022
+Created         Mon Nov 07 13:52:58 2022
 Name            PAL2        
 Partno          00          
 Revision        01          
@@ -20,8 +20,12 @@ Location
 ===============================================================================
 
 CSEXT =>
-    CSIO & !CSIOINT & ENMMU
-  # !CSIOINT & ENMMU & QA20 & QA21
+    BA & CSIOINT
+  # BA & !ENMMU
+  # BA & !CSIO & !QA20
+  # BA & !CSIO & !QA21
+  # !BA & CSIO & !CSIOINT & ENMMU
+  # !BA & !CSIOINT & ENMMU & QA20 & QA21
 
 CSRAM =>
     !A15 & !CSIO & !ENMMU
@@ -85,7 +89,8 @@ Pol   Name              Ext     Pin     Type     Used   Pterms  Level
     A13                         9        V        -       -       -     
     A14                         10       V        -       -       -     
     A15                         11       V        -       -       -     
- !  CSEXT                       20       V        2       14      2     
+    BA                          13       V        -       -       -     
+ !  CSEXT                       20       V        6       14      2     
  !  CSIO                        7        V        -       -       -     
  !  CSIOINT                     8        V        -       -       -     
  !  CSRAM                       17       V        2       14      2     
@@ -164,12 +169,12 @@ Pin #21  05812 Mode  xx
  01452 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
 Pin #20  05814 Mode  x- 
  01496 -------------------------------------------- 
- 01540 -----x-------------------x--x--------------- 
- 01584 -----x----------x---x-------x--------------- 
- 01628 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
- 01672 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
- 01716 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
- 01760 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
+ 01540 -----------------------------x------------x- 
+ 01584 ----x-------------------------------------x- 
+ 01628 -----------------x------x-----------------x- 
+ 01672 ---------------------x--x-----------------x- 
+ 01716 -----x-------------------x--x--------------x 
+ 01760 -----x----------x---x-------x--------------x 
  01804 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
  01848 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
  01892 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
@@ -288,6 +293,6 @@ LEGEND    X : fuse not blown
                       A13 x---|9           16|---x                          
                       A14 x---|10          15|---x !ENMMU0                  
                       A15 x---|11          14|---x !ENMMU1                  
-                      GND x---|12          13|---x                          
+                      GND x---|12          13|---x BA                       
                               |______________|
 
