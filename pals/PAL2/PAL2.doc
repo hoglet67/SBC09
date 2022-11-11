@@ -5,7 +5,7 @@
 
 CUPL(WM)        5.0a Serial# MW-10400000
 Device          g22v10  Library DLIB-h-40-1
-Created         Mon Nov 07 13:52:58 2022
+Created         Fri Nov 11 11:46:42 2022
 Name            PAL2        
 Partno          00          
 Revision        01          
@@ -18,6 +18,18 @@ Location
 ===============================================================================
                             Expanded Product Terms
 ===============================================================================
+
+BUFDIR =>
+    !BA & RnW
+  # BA & !RnW
+
+BUFEN =>
+    BA & CSIOINT
+  # BA & !ENMMU
+  # BA & !CSIO & !QA20
+  # BA & !CSIO & !QA21
+  # !BA & CSIO & !CSIOINT & ENMMU
+  # !BA & !CSIOINT & ENMMU & QA20 & QA21
 
 CSEXT =>
     BA & CSIOINT
@@ -45,15 +57,11 @@ ENMMU0 =>
 ENMMU1 =>
     !16KMODE & A13 & ENMMU
 
-QA13 =>
-    16KMODE & A13
-  # !16KMODE & QA19
+BUFDIR.oe  =>
+    1 
 
-QA14 =>
-    A14
-
-QA14.oe  =>
-    !ENMMU
+BUFEN.oe  =>
+    1 
 
 CSEXT.oe  =>
     1 
@@ -73,9 +81,6 @@ ENMMU0.oe  =>
 ENMMU1.oe  =>
     1 
 
-QA13.oe  =>
-    1 
-
 
 ===============================================================================
                                  Symbol Table
@@ -90,6 +95,8 @@ Pol   Name              Ext     Pin     Type     Used   Pterms  Level
     A14                         10       V        -       -       -     
     A15                         11       V        -       -       -     
     BA                          13       V        -       -       -     
+    BUFDIR                      22       V        2       10      2     
+ !  BUFEN                       21       V        6       12      2     
  !  CSEXT                       20       V        6       14      2     
  !  CSIO                        7        V        -       -       -     
  !  CSIOINT                     8        V        -       -       -     
@@ -100,19 +107,17 @@ Pol   Name              Ext     Pin     Type     Used   Pterms  Level
  !  ENMMU                       2        V        -       -       -     
  !  ENMMU0                      15       V        2       10      2     
  !  ENMMU1                      14       V        1       8       2     
-    QA13                        23       V        2       8       2     
-    QA14                        22       V        1       10      2     
-    QA14                oe      22       X        1       1       1     
-    QA19                        4        V        -       -       -     
     QA20                        5        V        -       -       -     
     QA21                        6        V        -       -       -     
+    RnW                         4        V        -       -       -     
+    BUFDIR              oe      22       D        1       1       0     
+    BUFEN               oe      21       D        1       1       0     
     CSEXT               oe      20       D        1       1       0     
     CSRAM               oe      17       D        1       1       0     
     CSROM0              oe      19       D        1       1       0     
     CSROM1              oe      18       D        1       1       0     
     ENMMU0              oe      15       D        1       1       0     
     ENMMU1              oe      14       D        1       1       0     
-    QA13                oe      23       D        1       1       0     
 
 
 LEGEND    D : default variable         F : field      G : group
@@ -131,10 +136,10 @@ SP
 AR 
  00000 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
 
-Pin #23  05808 Mode  -- 
- 00044 -------------------------------------------- 
- 00088 --------x-----------------------x----------- 
- 00132 ---------x--x------------------------------- 
+Pin #23  05808 Mode  xx 
+ 00044 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
+ 00088 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
+ 00132 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
  00176 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
  00220 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
  00264 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
@@ -142,9 +147,9 @@ Pin #23  05808 Mode  --
  00352 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
  00396 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
 Pin #22  05810 Mode  -- 
- 00440 ----x--------------------------------------- 
- 00484 ------------------------------------x------- 
- 00528 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
+ 00440 -------------------------------------------- 
+ 00484 ------------x------------------------------x 
+ 00528 -------------x----------------------------x- 
  00572 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
  00616 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
  00660 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
@@ -153,14 +158,14 @@ Pin #22  05810 Mode  --
  00792 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
  00836 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
  00880 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
-Pin #21  05812 Mode  xx 
- 00924 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
- 00968 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
- 01012 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
- 01056 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
- 01100 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
- 01144 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
- 01188 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
+Pin #21  05812 Mode  x- 
+ 00924 -------------------------------------------- 
+ 00968 -----------------------------x------------x- 
+ 01012 ----x-------------------------------------x- 
+ 01056 -----------------x------x-----------------x- 
+ 01100 ---------------------x--x-----------------x- 
+ 01144 -----x-------------------x--x--------------x 
+ 01188 -----x----------x---x-------x--------------x 
  01232 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
  01276 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
  01320 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
@@ -283,9 +288,9 @@ LEGEND    X : fuse not blown
                                ______________
                               |     PAL2     |
                         E x---|1           24|---x Vcc                      
-                   !ENMMU x---|2           23|---x QA13                     
-                  16KMODE x---|3           22|---x QA14                     
-                     QA19 x---|4           21|---x                          
+                   !ENMMU x---|2           23|---x                          
+                  16KMODE x---|3           22|---x BUFDIR                   
+                      RnW x---|4           21|---x !BUFEN                   
                      QA20 x---|5           20|---x !CSEXT                   
                      QA21 x---|6           19|---x !CSROM0                  
                     !CSIO x---|7           18|---x !CSROM1                  

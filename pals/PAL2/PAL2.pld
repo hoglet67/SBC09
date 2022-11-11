@@ -13,7 +13,7 @@ Device   g22v10      ;
 PIN 1    = E;
 PIN 2    = !ENMMU;
 PIN 3    = 16KMODE;
-PIN 4    = QA19;
+PIN 4    = RnW;
 PIN 5    = QA20;
 PIN 6    = QA21;
 PIN 7    = !CSIO;
@@ -30,9 +30,9 @@ PIN 17   = !CSRAM;
 PIN 18   = !CSROM1;
 PIN 19   = !CSROM0;
 PIN 20   = !CSEXT;
-// PIN 21
-PIN 22   = QA14;
-PIN 23   = QA13;
+PIN 21   = !BUFEN;
+PIN 22   = BUFDIR;
+// PIN 23
 
 // QA21 QA20 Device
 //    0    0    ROM0
@@ -49,9 +49,5 @@ CSEXT   =  BA $ (ENMMU & (QA21 &  QA20 # CSIO) & !CSIOINT);
 ENMMU0  = (ENMMU & !16KMODE & !A13) # (ENMMU & 16KMODE);
 ENMMU1  =  ENMMU & !16KMODE &  A13 ;
 
-QA13 = (16KMODE & A13)  # (!16KMODE & QA19);
-
-// When MMU Disabled, pass through A14->QA14 else tristate
-
-QA14    = A14;
-QA14.OE = !ENMMU;
+BUFEN   =  BA $ (ENMMU & (QA21 &  QA20 # CSIO) & !CSIOINT); // Same as CSEXT for now
+BUFDIR  =  BA $ RnW;
