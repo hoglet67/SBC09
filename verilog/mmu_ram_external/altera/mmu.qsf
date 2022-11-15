@@ -1,0 +1,119 @@
+# -------------------------------------------------------------------------- #
+#
+# Copyright (C) 1991-2013 Altera Corporation
+# Your use of Altera Corporation's design tools, logic functions
+# and other software and tools, and its AMPP partner logic
+# functions, and any output files from any of the foregoing
+# (including device programming or simulation files), and any
+# associated documentation or information are expressly subject
+# to the terms and conditions of the Altera Program License
+# Subscription Agreement, Altera MegaCore Function License
+# Agreement, or other applicable license agreement, including,
+# without limitation, that your use is for the sole purpose of
+# programming logic devices manufactured by Altera and sold by
+# Altera or its authorized distributors.  Please refer to the
+# applicable agreement for further details.
+#
+# -------------------------------------------------------------------------- #
+#
+# Quartus II 32-bit
+# Version 13.0.1 Build 232 06/12/2013 Service Pack 1 SJ Web Edition
+# Date created = 16:57:10  November 12, 2022
+#
+# -------------------------------------------------------------------------- #
+#
+# Notes:
+#
+# 1) The default values for assignments are stored in the file:
+#		mmu_assignment_defaults.qdf
+#    If this file doesn't exist, see file:
+#		assignment_defaults.qdf
+#
+# 2) Altera recommends that you do not modify this file. This
+#    file is updated automatically by the Quartus II software
+#    and any changes you make may be lost or overwritten.
+#
+# -------------------------------------------------------------------------- #
+
+
+set_global_assignment -name FAMILY MAX7000S
+set_global_assignment -name DEVICE "EPM7128SLC84-7"
+set_global_assignment -name TOP_LEVEL_ENTITY mmu
+set_global_assignment -name ORIGINAL_QUARTUS_VERSION "13.0 SP1"
+set_global_assignment -name PROJECT_CREATION_TIME_DATE "16:57:10  NOVEMBER 12, 2022"
+set_global_assignment -name LAST_QUARTUS_VERSION "13.0 SP1"
+set_global_assignment -name PROJECT_OUTPUT_DIRECTORY output_files
+set_global_assignment -name DEVICE_FILTER_PACKAGE PLCC
+set_global_assignment -name DEVICE_FILTER_PIN_COUNT 84
+set_global_assignment -name DEVICE_FILTER_SPEED_GRADE 7
+set_global_assignment -name ERROR_CHECK_FREQUENCY_DIVISOR "-1"
+set_global_assignment -name MIN_CORE_JUNCTION_TEMP 0
+set_global_assignment -name MAX_CORE_JUNCTION_TEMP 85
+set_global_assignment -name EDA_SIMULATION_TOOL "ModelSim-Altera (VHDL)"
+set_global_assignment -name EDA_OUTPUT_DATA_FORMAT VHDL -section_id eda_simulation
+set_global_assignment -name VERILOG_FILE ../mmu.v
+set_global_assignment -name MAX7000_OPTIMIZATION_TECHNIQUE AREA
+set_global_assignment -name SYNTH_TIMING_DRIVEN_SYNTHESIS OFF
+set_global_assignment -name MAX7000_DEVICE_IO_STANDARD TTL
+set_location_assignment PIN_1 -to nRESET
+set_location_assignment PIN_2 -to E
+set_location_assignment PIN_50 -to A8X
+set_location_assignment PIN_17 -to ADDR[0]
+set_location_assignment PIN_5 -to QX
+set_location_assignment PIN_8 -to EX
+set_location_assignment PIN_9 -to BUFDIR
+set_location_assignment PIN_10 -to MRDY
+set_location_assignment PIN_11 -to nBUFEN
+set_location_assignment PIN_12 -to BS
+set_location_assignment PIN_15 -to BA
+set_location_assignment PIN_16 -to RnW
+set_location_assignment PIN_18 -to ADDR[1]
+set_location_assignment PIN_20 -to ADDR[2]
+set_location_assignment PIN_21 -to ADDR[3]
+set_location_assignment PIN_22 -to ADDR[4]
+set_location_assignment PIN_24 -to ADDR[5]
+set_location_assignment PIN_25 -to ADDR[6]
+set_location_assignment PIN_27 -to ADDR[7]
+set_location_assignment PIN_28 -to ADDR[8]
+set_location_assignment PIN_29 -to ADDR[9]
+set_location_assignment PIN_30 -to ADDR[10]
+set_location_assignment PIN_31 -to ADDR[11]
+set_location_assignment PIN_33 -to ADDR[13]
+set_location_assignment PIN_34 -to ADDR[12]
+set_location_assignment PIN_35 -to ADDR[15]
+set_location_assignment PIN_36 -to ADDR[14]
+set_location_assignment PIN_37 -to DATA[0]
+set_location_assignment PIN_39 -to DATA[1]
+set_location_assignment PIN_40 -to DATA[2]
+set_location_assignment PIN_41 -to DATA[3]
+set_location_assignment PIN_44 -to DATA[4]
+set_location_assignment PIN_45 -to DATA[5]
+set_location_assignment PIN_46 -to DATA[6]
+set_location_assignment PIN_48 -to DATA[7]
+set_location_assignment PIN_49 -to nRD
+set_location_assignment PIN_51 -to nWR
+set_location_assignment PIN_52 -to QA13
+set_location_assignment PIN_54 -to MMU_DATA[4]
+set_location_assignment PIN_55 -to MMU_DATA[3]
+set_location_assignment PIN_56 -to MMU_DATA[5]
+set_location_assignment PIN_57 -to MMU_DATA[2]
+set_location_assignment PIN_58 -to MMU_DATA[1]
+set_location_assignment PIN_60 -to MMU_DATA[0]
+set_location_assignment PIN_61 -to MMU_DATA[6]
+set_location_assignment PIN_63 -to MMU_DATA[7]
+set_location_assignment PIN_64 -to MMU_ADDR[1]
+set_location_assignment PIN_65 -to MMU_ADDR[0]
+set_location_assignment PIN_67 -to MMU_ADDR[2]
+set_location_assignment PIN_68 -to MMU_ADDR[3]
+set_location_assignment PIN_69 -to MMU_nRD
+set_location_assignment PIN_70 -to MMU_ADDR[4]
+set_location_assignment PIN_73 -to MMU_ADDR[5]
+set_location_assignment PIN_74 -to MMU_ADDR[7]
+set_location_assignment PIN_75 -to MMU_nWR
+set_location_assignment PIN_76 -to MMU_ADDR[6]
+set_location_assignment PIN_77 -to nCSUART
+set_location_assignment PIN_79 -to nCSROM1
+set_location_assignment PIN_4 -to nCSEXT
+set_location_assignment PIN_80 -to nCSRAM
+set_location_assignment PIN_81 -to nCSROM0
+set_location_assignment PIN_83 -to CLKX4
