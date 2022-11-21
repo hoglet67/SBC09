@@ -57,7 +57,7 @@ set_global_assignment -name SYNTH_TIMING_DRIVEN_SYNTHESIS OFF
 set_global_assignment -name MAX7000_DEVICE_IO_STANDARD TTL
 set_location_assignment PIN_1 -to nRESET
 set_location_assignment PIN_2 -to E
-set_location_assignment PIN_50 -to A8X
+set_location_assignment PIN_50 -to A11X
 set_location_assignment PIN_17 -to ADDR[0]
 set_location_assignment PIN_5 -to QX
 set_location_assignment PIN_8 -to EX
