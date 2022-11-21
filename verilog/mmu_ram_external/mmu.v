@@ -56,7 +56,6 @@ module mmu
 
    always @(negedge E, negedge nRESET) begin
       if (!nRESET) begin
-         mode8k     <= 1'b1;
          {mode8k, enmmu} <= 2'b0;
          access_key <= 5'b0;
          task_key <= 5'b0;
