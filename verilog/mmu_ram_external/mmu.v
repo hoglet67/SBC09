@@ -81,13 +81,17 @@ module mmu
       end
    end
 
-   assign DATA = E && RnW && ADDR == IO_PAGE + 16'h0010 ? {5'b0, S, mode8k, enmmu} :
-                 E && RnW && ADDR == IO_PAGE + 16'h0011 ? {3'b0, access_key} :
-                 E && RnW && ADDR == IO_PAGE + 16'h0012 ? {3'b0, task_key} :
-                 E && RnW && ADDR == IO_PAGE + 16'h0013 ? {8'h3b} :
-                 E && RnW && ADDR == IO_PAGE + 16'h0014 ? {8'h3b} :
-                 E && mmu_access_rd                     ? MMU_DATA :
-                 8'hZZ;
+   wire [7:0] data_out = ADDR == IO_PAGE + 16'h0010 ? {5'b0, S, mode8k, enmmu} :
+                         ADDR == IO_PAGE + 16'h0011 ? {3'b0, access_key} :
+                         ADDR == IO_PAGE + 16'h0012 ? {3'b0, task_key} :
+                         ADDR == IO_PAGE + 16'h0013 ? {8'h3b} :
+                         ADDR == IO_PAGE + 16'h0014 ? {8'h3b} :
+                         MMU_DATA;
+
+   wire       data_en = E & RnW & (mmu_access | ({ADDR[15:4], 4'b0} == IO_PAGE + 16'h0010));
+
+   //Yosys will only infer tristate buffers when the ZZ is in the outer most MUX.
+   assign DATA = data_en ? data_out : 8'hZZ;
 
    //DB: mask out bottom part ADDR when in 16k mode
    assign MMU_ADDR = mmu_access     ? {access_key, ADDR[2:0]} :
@@ -99,7 +103,13 @@ module mmu
 
    //DB: I add an extra gating signal here, this might not work for a non-E part?
    assign MMU_nWR  = !(E &  mmu_access_wr);
-   assign MMU_DATA = (mmu_access_wr & E) ? DATA : enmmu ? 8'hZZ : {5'b00000, ADDR[15:13]};
+
+   wire [7:0] mmu_data_out = mmu_access_wr ? DATA : {5'b00000, ADDR[15:13]};
+
+   wire       mmu_data_en = (mmu_access_wr & E) | !enmmu;
+
+   //Yosys will only infer tristate buffers when the ZZ is in the outer most MUX.
+   assign MMU_DATA = mmu_data_en ? mmu_data_out : 8'hZZ;
 
    assign QA13 = mode8k ? MMU_DATA[5] : ADDR[13];
 
