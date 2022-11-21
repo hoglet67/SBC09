@@ -17,7 +17,7 @@ module mmu
    inout [7:0]  MMU_DATA,
 
    // Memory / Device Selects
-   output       A8X,
+   output       A11X,
    output       QA13,
    output       nRD,
    output       nWR,
@@ -45,12 +45,14 @@ module mmu
    wire mmu_access = {ADDR[15:3], 3'b000} == IO_PAGE + 16'h0020;
    wire mmu_access_rd = mmu_access & RnW;
    wire mmu_access_wr = mmu_access & !RnW;
+   wire access_vector = (!BA & BS & RnW);
 
    // Internal Registers
    reg            enmmu;
    reg            mode8k;
    reg [4:0]      access_key;
    reg [4:0]      task_key;
+   reg            S;
 
    always @(negedge E, negedge nRESET) begin
       if (!nRESET) begin
@@ -58,6 +60,7 @@ module mmu
          {mode8k, enmmu} <= 2'b0;
          access_key <= 5'b0;
          task_key <= 5'b0;
+         S <= 1'b1;
       end else begin
          if (!RnW && ADDR == IO_PAGE + 16'h0010) begin
             {mode8k, enmmu} <= DATA[1:0];
@@ -68,19 +71,35 @@ module mmu
          if (!RnW && ADDR == IO_PAGE + 16'h0012) begin
             task_key <= DATA[4:0];
          end
+         if (RnW && ADDR == IO_PAGE + 16'h0013) begin
+            //DB: switch task automatically when access RTI
+            S <= 1'b0;
+         end
+         if (access_vector) begin
+            //DB: switch task automatically when vector fetch
+            S <= 1'b1;
+         end
       end
    end
 
-   assign DATA = E && RnW && ADDR == IO_PAGE + 16'h0010 ? {6'b0, mode8k, enmmu} :
+   assign DATA = E && RnW && ADDR == IO_PAGE + 16'h0010 ? {5'b0, S, mode8k, enmmu} :
                  E && RnW && ADDR == IO_PAGE + 16'h0011 ? {3'b0, access_key} :
                  E && RnW && ADDR == IO_PAGE + 16'h0012 ? {3'b0, task_key} :
+                 E && RnW && ADDR == IO_PAGE + 16'h0013 ? {8'h3b} :
+                 E && RnW && ADDR == IO_PAGE + 16'h0014 ? {8'h3b} :
                  E && mmu_access_rd                     ? MMU_DATA :
                  8'hZZ;
 
-   assign MMU_ADDR = mmu_access ? {access_key, ADDR[2:0]} : {task_key, ADDR[15:13]};
+   //DB: mask out bottom part ADDR when in 16k mode
+   assign MMU_ADDR = mmu_access     ? {access_key, ADDR[2:0]} :
+                     access_vector  ? {5'b0, ADDR[15:14], ADDR[13] & mode8k} :
+                     S              ? {5'b0, ADDR[15:14], ADDR[13] & mode8k} :
+                     {task_key, ADDR[15:14], ADDR[13] & mode8k};
 // assign MMU_nCS  = 1'b0;
    assign MMU_nRD  = !(enmmu & !mmu_access_wr);
-   assign MMU_nWR  = !(E     &  mmu_access_wr);
+
+   //DB: I add an extra gating signal here, this might not work for a non-E part?
+   assign MMU_nWR  = !(E &  mmu_access_wr);
    assign MMU_DATA = (mmu_access_wr & E) ? DATA : enmmu ? 8'hZZ : {5'b00000, ADDR[15:13]};
 
    assign QA13 = mode8k ? MMU_DATA[5] : ADDR[13];
@@ -92,10 +111,14 @@ module mmu
         2'b10: EX <= 1'b1;
         2'b11: QX <= 1'b0;
         2'b01: if (MRDY) EX <= 0;
+        default: begin
+           QX <= 1'b0;
+           EX <= 1'b0;
+        end
       endcase
    end
 
-   assign A8X = ADDR[8] ^ (!BA & BS & RnW);
+   assign A11X = ADDR[11] ^ access_vector;
    assign nRD = !(E & RnW);
    assign nWR = !(E & !RnW);
    assign nCSUART = !(E & {ADDR[15:4], 4'b0000} == IO_PAGE);
