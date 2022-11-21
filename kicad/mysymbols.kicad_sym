@@ -201,7 +201,7 @@
         (number "5" (effects (font (size 1.27 1.27))))
       )
       (pin output line (at 22.86 24.13 180) (length 3.81)
-        (name "A8X" (effects (font (size 1.27 1.27))))
+        (name "A11X" (effects (font (size 1.27 1.27))))
         (number "50" (effects (font (size 1.27 1.27))))
       )
       (pin output inverted (at 22.86 16.51 180) (length 3.81)
