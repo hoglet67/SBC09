@@ -1,0 +1,280 @@
+Name     mmu            ;
+PartNo   00             ;
+Date     21/11/2022     ;
+Revision 01             ;
+Designer David Banks    ;
+Company  NA             ;
+Assembly None           ;
+Location                ;
+Device   f1508ispplcc84 ;
+
+property	atmel {cascade_logic  on       };
+property	atmel {fast_inlatch   on       };
+property	atmel {foldback_logic on       };
+property	atmel {logic_doubling on       };
+property	atmel {optimize       on       };
+property	atmel {output_fast    off      };
+property	atmel {pin_keep       off      };
+property	atmel {preassign      keep     };
+property	atmel {security       off      };
+property	atmel {xor_synthesis  off      };
+
+pin 50 = A11X;
+pin 17 = ADDR0;
+pin 18 = ADDR1;
+pin 20 = ADDR2;
+pin 21 = ADDR3;
+pin 22 = ADDR4;
+pin 24 = ADDR5;
+pin 25 = ADDR6;
+pin 27 = ADDR7;
+pin 28 = ADDR8;
+pin 29 = ADDR9;
+pin 30 = ADDR10;
+pin 31 = ADDR11;
+pin 33 = ADDR12;
+pin 34 = ADDR13;
+pin 35 = ADDR14;
+pin 36 = ADDR15;
+pin 15 = BA;
+pin 12 = BS;
+pin  9 = BUFDIR;
+pin 83 = CLKX4;
+pin 37 = DATA0;
+pin 39 = DATA1;
+pin 40 = DATA2;
+pin 41 = DATA3;
+pin 44 = DATA4;
+pin 45 = DATA5;
+pin 46 = DATA6;
+pin 48 = DATA7;
+pin  8 = EX;
+pin  2 = E;
+pin 65 = MMU_ADDR0;
+pin 64 = MMU_ADDR1;
+pin 67 = MMU_ADDR2;
+pin 68 = MMU_ADDR3;
+pin 70 = MMU_ADDR4;
+pin 73 = MMU_ADDR5;
+pin 76 = MMU_ADDR6;
+pin 74 = MMU_ADDR7;
+pin 60 = MMU_DATA0;
+pin 58 = MMU_DATA1;
+pin 57 = MMU_DATA2;
+pin 55 = MMU_DATA3;
+pin 54 = MMU_DATA4;
+pin 56 = MMU_DATA5;
+pin 61 = MMU_DATA6;
+pin 63 = MMU_DATA7;
+pin 69 = MMU_nRD;
+pin 75 = MMU_nWR;
+pin 10 = MRDY;
+pin 52 = QA13;
+pin  5 = QX;
+pin  1 = !RESET;
+pin 16 = RnW;
+pin 11 = nBUFEN;
+pin  4 = nCSEXT;
+pin 80 = nCSRAM;
+pin 81 = nCSROM0;
+pin 79 = nCSROM1;
+pin 77 = nCSUART;
+pin 49 = nRD;
+pin 51 = nWR;
+
+// Internal combinatorial nodes (to prevent an explosion of product terms)
+
+// These are needed in order that the design fits
+pinnode = io_access;
+pinnode = io_access_int;
+pinnode = mmu_access;
+
+// These just make the fitter file more readable
+pinnode = data_oe;
+pinnode = mmu_data_oe;
+
+// Internal registers
+
+pinnode = enmmu;
+pinnode = mode8k;
+pinnode = S;
+pinnode = access_key0;
+pinnode = access_key1;
+pinnode = access_key2;
+pinnode = access_key3;
+pinnode = access_key4;
+pinnode = task_key0;
+pinnode = task_key1;
+pinnode = task_key2;
+pinnode = task_key3;
+pinnode = task_key4;
+
+// In E-mode, drive E and Q to the CPU
+//
+// Note: E lags Q
+
+FIELD count = [EX, QX];
+
+$DEFINE s0 'b'00
+$DEFINE s1 'b'01
+$DEFINE s2 'b'11
+$DEFINE s3 'b'10
+
+SEQUENCE count {
+  PRESENT s0
+    NEXT s1;
+  PRESENT s1
+    NEXT s2;
+  PRESENT s2
+    NEXT s3;
+  PRESENT s3
+    IF MRDY NEXT s0;
+    DEFAULT NEXT s3;
+}
+
+EX.CK = CLKX4;
+QX.CK = CLKX4;
+
+FIELD a = [ADDR15..ADDR0];
+
+io_access     = a:['h'FE00..FEFF];
+io_access_int = a:['h'FE00..FE2F];
+mmu_access    = a:['h'FE20..FE27];
+
+mmu_access_rd = mmu_access &  RnW;
+mmu_access_wr = mmu_access & !RnW;
+
+access_vector = !BA & BS & RnW;
+
+mode8k.CK = !E;
+mode8k.AR = RESET;
+mode8k.CE = !RnW & a:'h'FE10;
+mode8k.D = DATA1;
+
+enmmu.CK = !E;
+enmmu.AR = RESET;
+enmmu.CE = !RnW & a:'h'FE10;
+enmmu.D = DATA0;
+
+access_key0.CK = !E;
+access_key1.CK = !E;
+access_key2.CK = !E;
+access_key3.CK = !E;
+access_key4.CK = !E;
+
+access_key0.AR = RESET;
+access_key1.AR = RESET;
+access_key2.AR = RESET;
+access_key3.AR = RESET;
+access_key4.AR = RESET;
+
+access_key0.CE =!RnW & a:'h'FE11;
+access_key1.CE =!RnW & a:'h'FE11;
+access_key2.CE =!RnW & a:'h'FE11;
+access_key3.CE =!RnW & a:'h'FE11;
+access_key4.CE =!RnW & a:'h'FE11;
+
+access_key0.D = DATA0;
+access_key1.D = DATA1;
+access_key2.D = DATA2;
+access_key3.D = DATA3;
+access_key4.D = DATA4;
+
+task_key0.CK = !E;
+task_key1.CK = !E;
+task_key2.CK = !E;
+task_key3.CK = !E;
+task_key4.CK = !E;
+
+task_key0.AR = RESET;
+task_key1.AR = RESET;
+task_key2.AR = RESET;
+task_key3.AR = RESET;
+task_key4.AR = RESET;
+
+task_key0.CE =!RnW & a:'h'FE12;
+task_key1.CE =!RnW & a:'h'FE12;
+task_key2.CE =!RnW & a:'h'FE12;
+task_key3.CE =!RnW & a:'h'FE12;
+task_key4.CE =!RnW & a:'h'FE12;
+
+task_key0.D = DATA0;
+task_key1.D = DATA1;
+task_key2.D = DATA2;
+task_key3.D = DATA3;
+task_key4.D = DATA4;
+
+S.CK = !E;
+S.AP = RESET;
+S.D = access_vector # (S & !(RnW & a:'h'FE13));
+
+
+data_oe = E & RnW & (mmu_access # a:['h'FE10..FE1F]);
+
+DATA0.OE = data_oe;
+DATA1.OE = data_oe;
+DATA2.OE = data_oe;
+DATA3.OE = data_oe;
+DATA4.OE = data_oe;
+DATA5.OE = data_oe;
+DATA6.OE = data_oe;
+DATA7.OE = data_oe;
+
+
+// 3B RTI = 0011 1011
+
+DATA0 = a:'h'FE10 & enmmu  # a:'h'FE11 & access_key0 # a:'h'FE12 & task_key0 # a:'h'FE13 # !a:['h'FE10..FE13] & MMU_DATA0;
+DATA1 = a:'h'FE10 & mode8k # a:'h'FE11 & access_key1 # a:'h'FE12 & task_key1 # a:'h'FE13 # !a:['h'FE10..FE13] & MMU_DATA1;
+DATA2 = a:'h'FE10 & S      # a:'h'FE11 & access_key2 # a:'h'FE12 & task_key2             # !a:['h'FE10..FE13] & MMU_DATA2;
+DATA3 =                      a:'h'FE11 & access_key3 # a:'h'FE12 & task_key3 # a:'h'FE13 # !a:['h'FE10..FE13] & MMU_DATA3;
+DATA4 =                      a:'h'FE11 & access_key4 # a:'h'FE12 & task_key4 # a:'h'FE13 # !a:['h'FE10..FE13] & MMU_DATA4;
+DATA5 =                                                                        a:'h'FE13 # !a:['h'FE10..FE13] & MMU_DATA5;
+DATA6 =                                                                                    !a:['h'FE10..FE13] & MMU_DATA6;
+DATA7 =                                                                                    !a:['h'FE10..FE13] & MMU_DATA7;
+
+MMU_ADDR0 = mmu_access & ADDR0       # !mmu_access & ADDR13 & mode8k;
+MMU_ADDR1 = mmu_access & ADDR1       # !mmu_access & ADDR14;
+MMU_ADDR2 = mmu_access & ADDR2       # !mmu_access & ADDR15;
+MMU_ADDR3 = mmu_access & access_key0 # !mmu_access & !access_vector & !S & task_key0;
+MMU_ADDR4 = mmu_access & access_key1 # !mmu_access & !access_vector & !S & task_key1;
+MMU_ADDR5 = mmu_access & access_key2 # !mmu_access & !access_vector & !S & task_key2;
+MMU_ADDR6 = mmu_access & access_key3 # !mmu_access & !access_vector & !S & task_key3;
+MMU_ADDR7 = mmu_access & access_key4 # !mmu_access & !access_vector & !S & task_key4;
+
+MMU_nRD  = !(enmmu & !mmu_access_wr);
+MMU_nWR  = !(E &  mmu_access_wr);
+
+mmu_data_oe = (mmu_access_wr & E) # !enmmu;
+
+MMU_DATA0.OE = mmu_data_oe;
+MMU_DATA1.OE = mmu_data_oe;
+MMU_DATA2.OE = mmu_data_oe;
+MMU_DATA3.OE = mmu_data_oe;
+MMU_DATA4.OE = mmu_data_oe;
+MMU_DATA5.OE = mmu_data_oe;
+MMU_DATA6.OE = mmu_data_oe;
+MMU_DATA7.OE = mmu_data_oe;
+
+MMU_DATA0 = mmu_access_wr & DATA0 # !mmu_access_wr & ADDR13;
+MMU_DATA1 = mmu_access_wr & DATA1 # !mmu_access_wr & ADDR14;
+MMU_DATA2 = mmu_access_wr & DATA2 # !mmu_access_wr & ADDR15;
+MMU_DATA3 = mmu_access_wr & DATA3;
+MMU_DATA4 = mmu_access_wr & DATA4;
+MMU_DATA5 = mmu_access_wr & DATA5;
+MMU_DATA6 = mmu_access_wr & DATA6;
+MMU_DATA7 = mmu_access_wr & DATA7;
+
+A11X = ADDR11 $ access_vector;
+
+nRD = !(E & RnW);
+
+nWR = !(E & !RnW);
+
+nCSUART = !(E & a:['H'FE00..FE0F]);
+
+nCSROM0 = !(((enmmu & !MMU_DATA7 & !MMU_DATA6) # (!enmmu &  ADDR15)) & !io_access);
+nCSROM1 = !(  enmmu & !MMU_DATA7 &  MMU_DATA6                        & !io_access);
+nCSRAM  = !(((enmmu &  MMU_DATA7 & !MMU_DATA6) # (!enmmu & !ADDR15)) & !io_access);
+nCSEXT  = !(BA $ (enmmu & (MMU_DATA7 & MMU_DATA6 # io_access) & !io_access_int));
+nBUFEN  = !(BA $ (enmmu & (MMU_DATA7 & MMU_DATA6 # io_access) & !io_access_int));
+BUFDIR  =   BA $ RnW;
