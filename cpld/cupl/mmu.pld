@@ -8,6 +8,8 @@ Assembly None           ;
 Location                ;
 Device   f1508ispplcc84 ;
 
+// Using defaults allow fitter command line overrides to work properly
+//
 //property	atmel {cascade_logic  on       };
 //property	atmel {fast_inlatch   on       };
 //property	atmel {foldback_logic on       };
@@ -68,13 +70,14 @@ pin 61 = MMU_DATA6;
 pin 63 = MMU_DATA7;
 pin 69 = MMU_nRD;
 pin 75 = MMU_nWR;
-pin 10 = MRDY;
+pin 84 = MRDY;       // Changed from 10
 pin 52 = QA13;
 pin  5 = QX;
 pin  1 = !RESET;
 pin 16 = RnW;
 pin 11 = nBUFEN;
 pin  4 = nCSEXT;
+pin 10 = nCSEXTIO;   // Changed from 6
 pin 80 = nCSRAM;
 pin 81 = nCSROM0;
 pin 79 = nCSROM1;
@@ -86,7 +89,7 @@ pin 51 = nWR;
 
 // These are needed in order that the design fits
 pinnode = io_access;
-pinnode = io_access_int;
+pinnode = io_access_ext;
 pinnode = mmu_access;
 
 // These just make the fitter file more readable
@@ -137,23 +140,34 @@ QX.CK = CLKX4;
 
 FIELD a = [ADDR15..ADDR0];
 
-io_access     = a:['h'FE00..FEFF];
-io_access_int = a:['h'FE00..FE2F];
-mmu_access    = a:['h'FE20..FE27];
+// Address definitions
+addr_io       = a:['h'FC00..FEFF];
+addr_io_ext   = a:['h'FC00..FDFF] # a:['h'FE30..FEFF];
+addr_uart     = a:['h'FE00..FE0F];
+addr_mmu      = a:['h'FE10..FE2F];
+addr_mmu_reg  = a:['h'FE10..FE1F];
+addr_mmu_ram  = a:['h'FE20..FE27];
+addr_mmu_r0   = a:'h'FE10;
+addr_mmu_r1   = a:'h'FE11;
+addr_mmu_r2   = a:'h'FE12;
+addr_mmu_r3   = a:'h'FE13;
 
-mmu_access_rd = mmu_access &  RnW;
-mmu_access_wr = mmu_access & !RnW;
+io_access     = addr_io;
+io_access_ext = addr_io_ext;
+mmu_access    = addr_mmu_ram;
+mmu_access_rd = addr_mmu_ram &  RnW;
+mmu_access_wr = addr_mmu_ram & !RnW;
 
 access_vector = !BA & BS & RnW;
 
 mode8k.CK = !E;
 mode8k.AR = RESET;
-mode8k.CE = !RnW & a:'h'FE10;
+mode8k.CE = !RnW & addr_mmu_r0;
 mode8k.D = DATA1;
 
 enmmu.CK = !E;
 enmmu.AR = RESET;
-enmmu.CE = !RnW & a:'h'FE10;
+enmmu.CE = !RnW & addr_mmu_r0;
 enmmu.D = DATA0;
 
 access_key0.CK = !E;
@@ -168,11 +182,11 @@ access_key2.AR = RESET;
 access_key3.AR = RESET;
 access_key4.AR = RESET;
 
-access_key0.CE =!RnW & a:'h'FE11;
-access_key1.CE =!RnW & a:'h'FE11;
-access_key2.CE =!RnW & a:'h'FE11;
-access_key3.CE =!RnW & a:'h'FE11;
-access_key4.CE =!RnW & a:'h'FE11;
+access_key0.CE =!RnW & addr_mmu_r1;
+access_key1.CE =!RnW & addr_mmu_r1;
+access_key2.CE =!RnW & addr_mmu_r1;
+access_key3.CE =!RnW & addr_mmu_r1;
+access_key4.CE =!RnW & addr_mmu_r1;
 
 access_key0.D = DATA0;
 access_key1.D = DATA1;
@@ -192,11 +206,11 @@ task_key2.AR = RESET;
 task_key3.AR = RESET;
 task_key4.AR = RESET;
 
-task_key0.CE =!RnW & a:'h'FE12;
-task_key1.CE =!RnW & a:'h'FE12;
-task_key2.CE =!RnW & a:'h'FE12;
-task_key3.CE =!RnW & a:'h'FE12;
-task_key4.CE =!RnW & a:'h'FE12;
+task_key0.CE =!RnW & addr_mmu_r2;
+task_key1.CE =!RnW & addr_mmu_r2;
+task_key2.CE =!RnW & addr_mmu_r2;
+task_key3.CE =!RnW & addr_mmu_r2;
+task_key4.CE =!RnW & addr_mmu_r2;
 
 task_key0.D = DATA0;
 task_key1.D = DATA1;
@@ -206,10 +220,9 @@ task_key4.D = DATA4;
 
 S.CK = !E;
 S.AP = RESET;
-S.D = access_vector # (S & !(RnW & a:'h'FE13));
+S.D = access_vector # (S & !(RnW & addr_mmu_r3));
 
-
-data_oe = E & RnW & (mmu_access # a:['h'FE10..FE1F]);
+data_oe = E & RnW & addr_mmu;
 
 DATA0.OE = data_oe;
 DATA1.OE = data_oe;
@@ -223,14 +236,14 @@ DATA7.OE = data_oe;
 
 // 3B RTI = 0011 1011
 
-DATA0 = a:'h'FE10 & enmmu  # a:'h'FE11 & access_key0 # a:'h'FE12 & task_key0 # a:'h'FE13 # !a:['h'FE10..FE13] & MMU_DATA0;
-DATA1 = a:'h'FE10 & mode8k # a:'h'FE11 & access_key1 # a:'h'FE12 & task_key1 # a:'h'FE13 # !a:['h'FE10..FE13] & MMU_DATA1;
-DATA2 = a:'h'FE10 & S      # a:'h'FE11 & access_key2 # a:'h'FE12 & task_key2             # !a:['h'FE10..FE13] & MMU_DATA2;
-DATA3 =                      a:'h'FE11 & access_key3 # a:'h'FE12 & task_key3 # a:'h'FE13 # !a:['h'FE10..FE13] & MMU_DATA3;
-DATA4 =                      a:'h'FE11 & access_key4 # a:'h'FE12 & task_key4 # a:'h'FE13 # !a:['h'FE10..FE13] & MMU_DATA4;
-DATA5 =                                                                        a:'h'FE13 # !a:['h'FE10..FE13] & MMU_DATA5;
-DATA6 =                                                                                    !a:['h'FE10..FE13] & MMU_DATA6;
-DATA7 =                                                                                    !a:['h'FE10..FE13] & MMU_DATA7;
+DATA0 = addr_mmu_r0 & enmmu  # addr_mmu_r1 & access_key0 # addr_mmu_r2 & task_key0 # addr_mmu_r3 # addr_mmu_ram & MMU_DATA0;
+DATA1 = addr_mmu_r0 & mode8k # addr_mmu_r1 & access_key1 # addr_mmu_r2 & task_key1 # addr_mmu_r3 # addr_mmu_ram & MMU_DATA1;
+DATA2 = addr_mmu_r0 & S      # addr_mmu_r1 & access_key2 # addr_mmu_r2 & task_key2               # addr_mmu_ram & MMU_DATA2;
+DATA3 =                        addr_mmu_r1 & access_key3 # addr_mmu_r2 & task_key3 # addr_mmu_r3 # addr_mmu_ram & MMU_DATA3;
+DATA4 =                        addr_mmu_r1 & access_key4 # addr_mmu_r2 & task_key4 # addr_mmu_r3 # addr_mmu_ram & MMU_DATA4;
+DATA5 =                                                                              addr_mmu_r3 # addr_mmu_ram & MMU_DATA5;
+DATA6 =                                                                                            addr_mmu_ram & MMU_DATA6;
+DATA7 =                                                                                            addr_mmu_ram & MMU_DATA7;
 
 MMU_ADDR0 = mmu_access & ADDR0       # !mmu_access & ADDR13 & mode8k;
 MMU_ADDR1 = mmu_access & ADDR1       # !mmu_access & ADDR14;
@@ -241,8 +254,8 @@ MMU_ADDR5 = mmu_access & access_key2 # !mmu_access & !access_vector & !S & task_
 MMU_ADDR6 = mmu_access & access_key3 # !mmu_access & !access_vector & !S & task_key3;
 MMU_ADDR7 = mmu_access & access_key4 # !mmu_access & !access_vector & !S & task_key4;
 
-MMU_nRD  = !(enmmu & !mmu_access_wr);
-MMU_nWR  = !(E &  mmu_access_wr);
+MMU_nRD  = !(enmmu & !mmu_access_wr);  // TODO: Fix Reads when MMU disabled
+MMU_nWR  = !(E & mmu_access_wr);
 
 mmu_data_oe = (mmu_access_wr & E) # !enmmu;
 
@@ -264,17 +277,21 @@ MMU_DATA5 = mmu_access_wr & DATA5;
 MMU_DATA6 = mmu_access_wr & DATA6;
 MMU_DATA7 = mmu_access_wr & DATA7;
 
+QA13 = mode8k & MMU_DATA5 # !mode8k & ADDR13;
+
 A11X = ADDR11 $ access_vector;
 
 nRD = !(E & RnW);
 
 nWR = !(E & !RnW);
 
-nCSUART = !(E & a:['H'FE00..FE0F]);
+nCSUART = !(E & addr_uart);
 
-nCSROM0 = !(((enmmu & !MMU_DATA7 & !MMU_DATA6) # (!enmmu &  ADDR15)) & !io_access);
-nCSROM1 = !(  enmmu & !MMU_DATA7 &  MMU_DATA6                        & !io_access);
-nCSRAM  = !(((enmmu &  MMU_DATA7 & !MMU_DATA6) # (!enmmu & !ADDR15)) & !io_access);
-nCSEXT  = !(BA $ (enmmu & (MMU_DATA7 & MMU_DATA6 # io_access) & !io_access_int));
-nBUFEN  = !(BA $ (enmmu & (MMU_DATA7 & MMU_DATA6 # io_access) & !io_access_int));
-BUFDIR  =   BA $ RnW;
+nCSROM0  = !(((enmmu & !MMU_DATA7 & !MMU_DATA6) # (!enmmu &  ADDR15)) & !io_access);
+nCSROM1  = !(  enmmu & !MMU_DATA7 &  MMU_DATA6                        & !io_access);
+nCSRAM   = !(((enmmu &  MMU_DATA7 & !MMU_DATA6) # (!enmmu & !ADDR15)) & !io_access);
+nCSEXT   = !(  enmmu &  MMU_DATA7 &  MMU_DATA6                        & !io_access);
+nCSEXTIO = !(io_access_ext);
+
+nBUFEN   = BA $ (nCSEXT & nCSEXTIO);
+BUFDIR   = BA $ RnW;
