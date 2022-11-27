@@ -141,8 +141,15 @@ QX.CK = CLKX4;
 FIELD a = [ADDR15..ADDR0];
 
 // Address definitions
-addr_io       = a:['h'FC00..FEFF];
-addr_io_ext   = a:['h'FC00..FDFF] # a:['h'FE30..FEFF];
+
+// IO Space includes &FCxx and &FDxx
+//addr_io       = a:['h'FC00..FEFF];
+//addr_io_ext   = a:['h'FC00..FDFF] # a:['h'FE30..FEFF];
+
+// IO Space excludes &FCxx and &FDxx
+addr_io       = a:['h'FE00..FEFF];
+addr_io_ext   = a:['h'FE30..FEFF];
+
 addr_uart     = a:['h'FE00..FE0F];
 addr_mmu      = a:['h'FE10..FE2F];
 addr_mmu_r0   = a:'h'FE10;
