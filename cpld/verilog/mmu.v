@@ -63,14 +63,14 @@ module mmu
    reg            mode8k;
    reg [4:0]      access_key;
    reg [4:0]      task_key;
-   reg            S;
+   reg            U;
 
    always @(negedge E, negedge nRESET) begin
       if (!nRESET) begin
          {mode8k, enmmu} <= 2'b0;
          access_key <= 5'b0;
          task_key <= 5'b0;
-         S <= 1'b1;
+         U <= 1'b0;
       end else begin
          if (!RnW && ADDR == MMU_REG_BASE) begin
             {mode8k, enmmu} <= DATA[1:0];
@@ -83,10 +83,10 @@ module mmu
          end
          if (access_vector) begin
             //DB: switch task automatically when vector fetch
-            S <= 1'b1;
+            U <= 1'b0;
          end else if (RnW && ADDR == MMU_REG_BASE + 3) begin
             //DB: switch task automatically when access RTI
-            S <= 1'b0;
+            U <= 1'b1;
          end
       end
    end
@@ -95,7 +95,7 @@ module mmu
 
    always @(*) begin
       case (ADDR)
-        MMU_REG_BASE     : data_out = {5'b0, S, mode8k, enmmu};
+        MMU_REG_BASE     : data_out = {5'b0, !U, mode8k, enmmu};
         MMU_REG_BASE + 1 : data_out = {3'b0, access_key};
         MMU_REG_BASE + 2 : data_out = {3'b0, task_key};
         MMU_REG_BASE + 3 : data_out = {8'h3b};
@@ -112,8 +112,8 @@ module mmu
    assign MMU_ADDR[2:0] = mmu_access ? ADDR[2:0] : { ADDR[15:14], ADDR[13] & mode8k };
 
    // Note: ORing works because the two conditions are mutually exclusive, which
-   // they are if MMU access is only allowed when S=1.
-   assign MMU_ADDR[7:3] = access_key & {5{mmu_access}} | task_key & {5{(!access_vector & !S)}};
+   // they are if MMU access is only allowed when U=0.
+   assign MMU_ADDR[7:3] = access_key & {5{mmu_access}} | task_key & {5{(!access_vector & U)}};
 
 // assign MMU_ADDR[7:3] = mmu_access            ? access_key :
 //                        (!access_vector & !S) ? task_key   :
