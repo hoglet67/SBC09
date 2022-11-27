@@ -99,7 +99,11 @@ module mmu
         MMU_REG_BASE + 1 : data_out = {3'b0, access_key};
         MMU_REG_BASE + 2 : data_out = {3'b0, task_key};
         MMU_REG_BASE + 3 : data_out = {8'h3b};
-        default: data_out = MMU_DATA;
+        default:
+          if ({ADDR[15:4], 4'b0} == MMU_RAM_BASE)
+            data_out = MMU_DATA;
+          else
+            data_out = 8'h00;
       endcase
    end
 
