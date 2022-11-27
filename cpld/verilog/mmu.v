@@ -166,7 +166,7 @@ module mmu
    assign nCSEXT   = !(  enmmu & MMU_DATA[7:6] == 2'b11                          & !io_access);
    assign nCSEXTIO = !(io_access_ext);
 
-   assign nBUFEN   = BA ^ (!nCSEXT | !nCSEXTIO);
+   assign nBUFEN   = BA ^ !(!nCSEXT | !nCSEXTIO);
    assign BUFDIR   = BA ^ RnW;
 
 endmodule
