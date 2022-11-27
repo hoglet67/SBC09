@@ -145,12 +145,11 @@ addr_io       = a:['h'FC00..FEFF];
 addr_io_ext   = a:['h'FC00..FDFF] # a:['h'FE30..FEFF];
 addr_uart     = a:['h'FE00..FE0F];
 addr_mmu      = a:['h'FE10..FE2F];
-addr_mmu_reg  = a:['h'FE10..FE1F];
-addr_mmu_ram  = a:['h'FE20..FE27];
 addr_mmu_r0   = a:'h'FE10;
 addr_mmu_r1   = a:'h'FE11;
 addr_mmu_r2   = a:'h'FE12;
 addr_mmu_r3   = a:'h'FE13;
+addr_mmu_ram  = a:['h'FE20..FE27];
 
 io_access     = addr_io;
 io_access_ext = addr_io_ext;
