@@ -1,0 +1,12 @@
+Populate this directory with files with the following sha1sum:
+
+277101814ca48a4873251ef83a2f4f2af4714d9b  cupl.dl
+71fc3f3df947980bee84c9971d1fd6bd1ff03981  cupl.exe
+8ca1f83baea6e76e6bacfdcb27c6e0c4d1919cad  cupla.dll
+0661d10242510ee7f13b40bcea961d207341d901  cuplb.dll
+70bf4526624d490a791f4a0b07901a2447d8fa88  cuplc.dll
+daa4b9a2737db37de474f7bee309dd98662c9e51  cuplk.dll
+c5c7fd8a1868e263f7d73c41beee9af0c7874e10  cuplm.dll
+a15c731a67a54bef3e22c4324b3733072695ff91  cuplx.dll
+189b6754244b2617eb43ce32fe6fa4032e61d46d  csima.dll
+070f419528e11e29d848de0484424f7d8e96d291  vsima.dll

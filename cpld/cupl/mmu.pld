@@ -8,16 +8,16 @@ Assembly None           ;
 Location                ;
 Device   f1508ispplcc84 ;
 
-property	atmel {cascade_logic  on       };
-property	atmel {fast_inlatch   on       };
-property	atmel {foldback_logic on       };
-property	atmel {logic_doubling on       };
-property	atmel {optimize       on       };
-property	atmel {output_fast    off      };
-property	atmel {pin_keep       off      };
-property	atmel {preassign      keep     };
-property	atmel {security       off      };
-property	atmel {xor_synthesis  off      };
+//property	atmel {cascade_logic  on       };
+//property	atmel {fast_inlatch   on       };
+//property	atmel {foldback_logic on       };
+//property	atmel {logic_doubling on       };
+//property	atmel {optimize       on       };
+//property	atmel {output_fast    off      };
+//property	atmel {pin_keep       off      };
+//property	atmel {preassign      keep     };
+//property	atmel {security       off      };
+//property	atmel {xor_synthesis  off      };
 
 pin 50 = A11X;
 pin 17 = ADDR0;
