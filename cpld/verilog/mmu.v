@@ -42,7 +42,7 @@ module mmu
 
    );
 
-   parameter IO_ADDR_MIN  = 16'hFE00;
+   parameter IO_ADDR_MIN  = 16'hFC00;
    parameter IO_ADDR_MAX  = 16'hFEFF;
    parameter UART_BASE    = 16'hFE00;
    parameter MMU_REG_BASE = 16'hFE10;
@@ -50,7 +50,9 @@ module mmu
 
    (* keep *) wire io_access = ADDR >= IO_ADDR_MIN && ADDR <= IO_ADDR_MAX;
 
-   (* keep *) wire io_access_ext = io_access & {ADDR[15:4], 4'b0} != UART_BASE & {ADDR[15:4], 4'b0} != MMU_REG_BASE & {ADDR[15:4], 4'b0} != MMU_RAM_BASE;
+   (* keep *) wire io_access_int = {ADDR[15:4], 4'b0} == UART_BASE | {ADDR[15:4], 4'b0} == MMU_REG_BASE | {ADDR[15:4], 4'b0} == MMU_RAM_BASE;
+
+   (* keep *) wire io_access_ext = io_access & !io_access_int;
 
    (* keep *) wire mmu_access = {ADDR[15:3], 3'b000} == MMU_RAM_BASE;
 
