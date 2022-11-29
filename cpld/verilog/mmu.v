@@ -12,7 +12,6 @@ module mmu
    inout [7:0]  DATA,
 
    // MMU RAM
-
    output [7:0] MMU_ADDR,
    output       MMU_nRD,
    output       MMU_nWR,
@@ -39,15 +38,13 @@ module mmu
    input        MRDY,
    output reg   QX,
    output reg   EX
-
    );
 
    parameter IO_ADDR_MIN  = 16'hFC00;
    parameter IO_ADDR_MAX  = 16'hFEFF;
 
-   parameter UART_BASE    = 16'hFE00;
-   parameter MMU_REG_BASE = 16'hFE10;
-   parameter MMU_RAM_BASE = 16'hFE20;
+   parameter UART_BASE    = 16'hFE00; // 16 bytes
+   parameter MMU_BASE     = 16'hFE10; // 16 bytes (8 bytes of regs, 8 bytes of ram)
 
    // Internal Registers
    reg            enmmu;
@@ -58,14 +55,14 @@ module mmu
    reg            U;
 
    // Is the hardware accessible to the current task?
-   wire           hw_en = !enmmu | !U | !protect;
+   (* xkeep *) wire hw_en = !enmmu | !U | !protect;
 
-   (* keep *) wire io_access      = hw_en && ADDR >= IO_ADDR_MIN && ADDR <= IO_ADDR_MAX;
-   (* keep *) wire uart_access    = hw_en && {ADDR[15:4], 4'b0000} == UART_BASE;
-   (* keep *) wire mmu_reg_access = hw_en && {ADDR[15:4], 4'b0000} == MMU_REG_BASE;
-   (* keep *) wire mmu_ram_access = hw_en && {ADDR[15:4], 4'b0000} == MMU_RAM_BASE;
-   (* keep *) wire mmu_access     = mmu_reg_access | mmu_ram_access;
-   (* keep *) wire io_access_ext  = io_access & !mmu_access & !uart_access;
+   (* xkeep *) wire io_access      = hw_en && ADDR >= IO_ADDR_MIN && ADDR <= IO_ADDR_MAX;
+   (* xkeep *) wire uart_access    = hw_en && {ADDR[15:4], 4'b0000} == UART_BASE;
+   (* xkeep *) wire mmu_access     = hw_en && {ADDR[15:4], 4'b0000} == MMU_BASE;
+   (* xkeep *) wire mmu_reg_access = mmu_access & !ADDR[3];
+   (* xkeep *) wire mmu_ram_access = mmu_access &  ADDR[3];
+   (* xkeep *) wire io_access_ext  = io_access & !mmu_access & !uart_access;
 
    wire access_vector = (!BA & BS & RnW);
 
@@ -76,19 +73,19 @@ module mmu
          task_key <= 5'b0;
          U <= 1'b0;
       end else begin
-         if (!RnW && hw_en && ADDR == MMU_REG_BASE) begin
+         if (!RnW && mmu_reg_access && ADDR[2:0] == 3'b000) begin
             {protect, mode8k, enmmu} <= DATA[2:0];
          end
-         if (!RnW && hw_en && ADDR == MMU_REG_BASE + 1) begin
+         if (!RnW && mmu_reg_access && ADDR[2:0] == 3'b001) begin
             access_key <= DATA[4:0];
          end
-         if (!RnW && hw_en && ADDR == MMU_REG_BASE + 2) begin
+         if (!RnW && mmu_reg_access && ADDR[2:0] == 3'b010) begin
             task_key <= DATA[4:0];
          end
          if (access_vector) begin
             //DB: switch task automatically when vector fetch
             U <= 1'b0;
-         end else if (RnW && ADDR == MMU_REG_BASE + 3) begin
+         end else if (RnW && mmu_reg_access && ADDR[2:0] == 3'b011) begin
             //DB: switch task automatically when access RTI
             U <= 1'b1;
          end
@@ -98,16 +95,16 @@ module mmu
    reg [7:0] data_out;
 
    always @(*) begin
-      case (ADDR)
-        MMU_REG_BASE     : data_out = {4'b0, !U, protect, mode8k, enmmu};
-        MMU_REG_BASE + 1 : data_out = {3'b0, access_key};
-        MMU_REG_BASE + 2 : data_out = {3'b0, task_key};
-        MMU_REG_BASE + 3 : data_out = {8'h3b};
+      if (ADDR[3])
+        data_out = MMU_DATA;
+      else
+        case (ADDR[2:0])
+          3'b000 : data_out = {4'b0, !U, protect, mode8k, enmmu};
+          3'b001 : data_out = {3'b0, access_key};
+          3'b010 : data_out = {3'b0, task_key};
+          3'b011 : data_out = {8'h3b};
         default:
-          if ({ADDR[15:4], 4'b0000} == MMU_RAM_BASE)
-            data_out = MMU_DATA;
-          else
-            data_out = 8'h00;
+          data_out = 8'h00;
       endcase
    end
 
