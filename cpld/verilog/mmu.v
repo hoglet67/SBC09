@@ -36,139 +36,69 @@ module mmu
    // Clock Generator (for the E Parts)
    input        CLKX4,
    input        MRDY,
-   output reg   QX,
-   output reg   EX
+   output       QX,
+   output       EX
    );
 
    parameter IO_ADDR_MIN  = 16'hFC00;
    parameter IO_ADDR_MAX  = 16'hFEFF;
+   parameter UART_BASE    = 16'hFE00;
+   parameter MMU_BASE     = 16'hFE10;
 
-   parameter UART_BASE    = 16'hFE00; // 16 bytes
-   parameter MMU_BASE     = 16'hFE10; // 16 bytes (8 bytes of regs, 8 bytes of ram)
+   wire [7:0]  DATA_out;
+   wire        DATA_oe;
+   wire [7:0]  MMU_DATA_out;
+   wire        MMU_DATA_oe;
 
-   // Internal Registers
-   reg            enmmu;
-   reg            mode8k;
-   reg            protect;
-   reg [4:0]      access_key;
-   reg [4:0]      task_key;
-   reg            U;
+   mmu_int
+     #(
+       .IO_ADDR_MIN(IO_ADDR_MIN),
+       .IO_ADDR_MAX(IO_ADDR_MAX),
+       .UART_BASE(UART_BASE),
+       .MMU_BASE(UART_BASE)
+       )
+   e_mmu_int
+     (
+      // CPU
+      .E(E),
+      .ADDR(ADDR),
+      .BA(BA),
+      .BS(BS),
+      .RnW(RnW),
+      .nRESET(nRESET),
+      .DATA_in(DATA),
+      .DATA_out(DATA_out),
+      .DATA_oe(DATA_oe),
+      // MMU RAM
+      .MMU_ADDR(MMU_ADDR),
+      .MMU_nRD(MMU_nRD),
+      .MMU_nWR(MMU_nWR),
+      .MMU_DATA_in(MMU_DATA),
+      .MMU_DATA_out(MMU_DATA_out),
+      .MMU_DATA_oe(MMU_DATA_oe),
+      // Memory / Device Selects
+      .A11X(A11X),
+      .QA13(QA13),
+      .nRD(nRD),
+      .nWR(nWR),
+      .nCSEXT(nCSEXT),
+      .nCSEXTIO(nCSEXTIO),
+      .nCSROM0(nCSROM0),
+      .nCSROM1(nCSROM1),
+      .nCSRAM(nCSRAM),
+      .nCSUART(nCSUART),
+      // External Bus Control
+      .BUFDIR(BUFDIR),
+      .nBUFEN(nBUFEN),
+      // Clock Generator (for the E Parts)
+      .CLKX4(CLKX4),
+      .MRDY(MRDY),
+      .QX(QX),
+      .EX(EX)
+      );
 
-   // Is the hardware accessible to the current task?
-   (* xkeep *) wire hw_en = !enmmu | !U | !protect;
-
-   (* xkeep *) wire io_access      = hw_en && ADDR >= IO_ADDR_MIN && ADDR <= IO_ADDR_MAX;
-   (* xkeep *) wire uart_access    = hw_en && {ADDR[15:4], 4'b0000} == UART_BASE;
-   (* xkeep *) wire mmu_access     = hw_en && {ADDR[15:4], 4'b0000} == MMU_BASE;
-   (* xkeep *) wire mmu_reg_access = mmu_access & !ADDR[3];
-   (* xkeep *) wire mmu_ram_access = mmu_access &  ADDR[3];
-   (* xkeep *) wire io_access_ext  = io_access & !mmu_access & !uart_access;
-
-   wire access_vector = (!BA & BS & RnW);
-
-   always @(negedge E, negedge nRESET) begin
-      if (!nRESET) begin
-         {protect, mode8k, enmmu} <= 3'b0;
-         access_key <= 5'b0;
-         task_key <= 5'b0;
-         U <= 1'b0;
-      end else begin
-         if (!RnW && mmu_reg_access && ADDR[2:0] == 3'b000) begin
-            {protect, mode8k, enmmu} <= DATA[2:0];
-         end
-         if (!RnW && mmu_reg_access && ADDR[2:0] == 3'b001) begin
-            access_key <= DATA[4:0];
-         end
-         if (!RnW && mmu_reg_access && ADDR[2:0] == 3'b010) begin
-            task_key <= DATA[4:0];
-         end
-         if (access_vector) begin
-            //DB: switch task automatically when vector fetch
-            U <= 1'b0;
-         end else if (RnW && mmu_reg_access && ADDR[2:0] == 3'b011) begin
-            //DB: switch task automatically when access RTI
-            U <= 1'b1;
-         end
-      end
-   end
-
-   reg [7:0] data_out;
-
-   always @(*) begin
-      if (ADDR[3])
-        data_out = MMU_DATA;
-      else
-        case (ADDR[2:0])
-          3'b000 : data_out = {4'b0, !U, protect, mode8k, enmmu};
-          3'b001 : data_out = {3'b0, access_key};
-          3'b010 : data_out = {3'b0, task_key};
-          3'b011 : data_out = {8'h3b};
-        default:
-          data_out = 8'h00;
-      endcase
-   end
-
-   wire data_en = E & RnW & mmu_access;
-
-   //Yosys will only infer tristate buffers when the ZZ is in the outer most MUX.
-   assign DATA = data_en ? data_out : 8'hZZ;
-
-   //DB: mask out bottom part ADDR when in 16k mode
-   assign MMU_ADDR[2:0] = mmu_ram_access ? ADDR[2:0] : { ADDR[15:14], ADDR[13] & mode8k };
-
-   // Note: ORing works because the two conditions are mutually exclusive, which
-   // they are if MMU access is only allowed when U=0.
-   assign MMU_ADDR[7:3] = access_key & {5{mmu_ram_access}} | task_key & {5{(!access_vector & U)}};
-
-   // TODO: There is a good changce this expression is wrong
-   assign MMU_nRD  = !(E &  RnW & mmu_ram_access | enmmu & !io_access);
-
-   //DB: I add an extra gating signal here, this might not work for a non-E part?
-   assign MMU_nWR  = !(E & !RnW & mmu_ram_access);
-
-   wire [7:0] mmu_data_out = (mmu_ram_access & !RnW) ? DATA : {5'b00000, ADDR[15:13]};
-
-   wire       mmu_data_en  = (mmu_ram_access & !RnW & E) | !enmmu;
-
-   //Yosys will only infer tristate buffers when the ZZ is in the outer most MUX.
-   assign MMU_DATA = mmu_data_en ? mmu_data_out : 8'hZZ;
-
-   assign QA13 = mode8k ? MMU_DATA[5] : ADDR[13];
-
-   always @(posedge CLKX4) begin
-      // Q leads E, stop in state QX=0 EX=1
-`ifdef use_alternative_clkgen
-      // This uses 3 product terms
-      QX <= !EX;
-      EX <= (EX & !MRDY) | QX;
-`else
-      // This uses 8 product terms, because it triggers inefficient use of clock enable
-      case ({QX, EX})
-        2'b00: QX <= 1'b1;
-        2'b10: EX <= 1'b1;
-        2'b11: QX <= 1'b0;
-        2'b01: if (MRDY) EX <= 0;
-        default: begin
-           QX <= 1'b0;
-           EX <= 1'b0;
-        end
-      endcase
-`endif
-   end
-
-   assign A11X = ADDR[11] ^ access_vector;
-   assign nRD = !(E & RnW);
-   assign nWR = !(E & !RnW);
-   assign nCSUART  = !(E & uart_access);
-
-   assign nCSROM0  = !(((enmmu & MMU_DATA[7:6] == 2'b00) | (!enmmu &  ADDR[15])) & !io_access);
-   assign nCSROM1  = !(  enmmu & MMU_DATA[7:6] == 2'b01                          & !io_access);
-   assign nCSRAM   = !(((enmmu & MMU_DATA[7:6] == 2'b10) | (!enmmu & !ADDR[15])) & !io_access);
-   assign nCSEXT   = !(  enmmu & MMU_DATA[7:6] == 2'b11                          & !io_access);
-   assign nCSEXTIO = !(io_access_ext);
-
-   assign nBUFEN   = BA ^ !(!nCSEXT | !nCSEXTIO);
-   assign BUFDIR   = BA ^ RnW;
+   assign DATA = DATA_oe ? DATA_out : 8'hZZ;
+   assign MMU_DATA = MMU_DATA_oe ? MMU_DATA_out : 8'hZZ;
 
 endmodule
 
