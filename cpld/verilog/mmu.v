@@ -44,43 +44,45 @@ module mmu
 
    parameter IO_ADDR_MIN  = 16'hFC00;
    parameter IO_ADDR_MAX  = 16'hFEFF;
+
    parameter UART_BASE    = 16'hFE00;
    parameter MMU_REG_BASE = 16'hFE10;
    parameter MMU_RAM_BASE = 16'hFE20;
 
-   (* keep *) wire io_access = ADDR >= IO_ADDR_MIN && ADDR <= IO_ADDR_MAX;
-
-   (* keep *) wire io_access_int = {ADDR[15:4], 4'b0} == UART_BASE | {ADDR[15:4], 4'b0} == MMU_REG_BASE | {ADDR[15:4], 4'b0} == MMU_RAM_BASE;
-
-   (* keep *) wire io_access_ext = io_access & !io_access_int;
-
-   (* keep *) wire mmu_access = {ADDR[15:3], 3'b000} == MMU_RAM_BASE;
-
-   wire mmu_access_rd = mmu_access & RnW;     // TODO: Fix Reads when MMU disabled
-   wire mmu_access_wr = mmu_access & !RnW;
-   wire access_vector = (!BA & BS & RnW);
-
    // Internal Registers
    reg            enmmu;
    reg            mode8k;
+   reg            protect;
    reg [4:0]      access_key;
    reg [4:0]      task_key;
    reg            U;
 
+   // Is the hardware accessible to the current task?
+   wire           hw_en = !enmmu | !U | !protect;
+
+   (* keep *) wire io_access      = hw_en && ADDR >= IO_ADDR_MIN && ADDR <= IO_ADDR_MAX;
+   (* keep *) wire uart_access    = hw_en && {ADDR[15:4], 4'b0000} == UART_BASE;
+   (* keep *) wire mmu_reg_access = hw_en && {ADDR[15:4], 4'b0000} == MMU_REG_BASE;
+   (* keep *) wire mmu_ram_access = hw_en && {ADDR[15:4], 4'b0000} == MMU_RAM_BASE;
+   (* keep *) wire mmu_access     = mmu_reg_access | mmu_ram_access;
+   (* keep *) wire io_access_ext  = io_access & !mmu_access & !uart_access;
+
+   wire access_vector = (!BA & BS & RnW);
+
    always @(negedge E, negedge nRESET) begin
       if (!nRESET) begin
-         {mode8k, enmmu} <= 2'b0;
+         {protect, mode8k, enmmu} <= 3'b0;
          access_key <= 5'b0;
          task_key <= 5'b0;
          U <= 1'b0;
       end else begin
-         if (!RnW && ADDR == MMU_REG_BASE) begin
-            {mode8k, enmmu} <= DATA[1:0];
+         if (!RnW && hw_en && ADDR == MMU_REG_BASE) begin
+            {protect, mode8k, enmmu} <= DATA[2:0];
          end
-         if (!RnW && ADDR == MMU_REG_BASE + 1) begin
+         if (!RnW && hw_en && ADDR == MMU_REG_BASE + 1) begin
             access_key <= DATA[4:0];
          end
-         if (!RnW && ADDR == MMU_REG_BASE + 2) begin
+         if (!RnW && hw_en && ADDR == MMU_REG_BASE + 2) begin
             task_key <= DATA[4:0];
          end
          if (access_vector) begin
@@ -97,43 +99,39 @@ module mmu
 
    always @(*) begin
       case (ADDR)
-        MMU_REG_BASE     : data_out = {5'b0, !U, mode8k, enmmu};
+        MMU_REG_BASE     : data_out = {4'b0, !U, protect, mode8k, enmmu};
         MMU_REG_BASE + 1 : data_out = {3'b0, access_key};
         MMU_REG_BASE + 2 : data_out = {3'b0, task_key};
         MMU_REG_BASE + 3 : data_out = {8'h3b};
         default:
-          if ({ADDR[15:4], 4'b0} == MMU_RAM_BASE)
+          if ({ADDR[15:4], 4'b0000} == MMU_RAM_BASE)
             data_out = MMU_DATA;
           else
             data_out = 8'h00;
       endcase
    end
 
-   wire data_en = E & RnW & (mmu_access | ({ADDR[15:4], 4'b0} == MMU_REG_BASE));
+   wire data_en = E & RnW & mmu_access;
 
    //Yosys will only infer tristate buffers when the ZZ is in the outer most MUX.
    assign DATA = data_en ? data_out : 8'hZZ;
 
    //DB: mask out bottom part ADDR when in 16k mode
-   assign MMU_ADDR[2:0] = mmu_access ? ADDR[2:0] : { ADDR[15:14], ADDR[13] & mode8k };
+   assign MMU_ADDR[2:0] = mmu_ram_access ? ADDR[2:0] : { ADDR[15:14], ADDR[13] & mode8k };
 
    // Note: ORing works because the two conditions are mutually exclusive, which
    // they are if MMU access is only allowed when U=0.
-   assign MMU_ADDR[7:3] = access_key & {5{mmu_access}} | task_key & {5{(!access_vector & U)}};
+   assign MMU_ADDR[7:3] = access_key & {5{mmu_ram_access}} | task_key & {5{(!access_vector & U)}};
 
-// assign MMU_ADDR[7:3] = mmu_access            ? access_key :
-//                        (!access_vector & !S) ? task_key   :
-//                        5'b0;
-
-   // assign MMU_nCS  = 1'b0;
-   assign MMU_nRD  = !(enmmu & !mmu_access_wr);
+   // TODO: There is a good changce this expression is wrong
+   assign MMU_nRD  = !(E &  RnW & mmu_ram_access | enmmu & !io_access);
 
    //DB: I add an extra gating signal here, this might not work for a non-E part?
-   assign MMU_nWR  = !(E &  mmu_access_wr);
+   assign MMU_nWR  = !(E & !RnW & mmu_ram_access);
 
-   wire [7:0] mmu_data_out = mmu_access_wr ? DATA : {5'b00000, ADDR[15:13]};
+   wire [7:0] mmu_data_out = (mmu_ram_access & !RnW) ? DATA : {5'b00000, ADDR[15:13]};
 
-   wire       mmu_data_en = (mmu_access_wr & E) | !enmmu;
+   wire       mmu_data_en  = (mmu_ram_access & !RnW & E) | !enmmu;
 
    //Yosys will only infer tristate buffers when the ZZ is in the outer most MUX.
    assign MMU_DATA = mmu_data_en ? mmu_data_out : 8'hZZ;
@@ -164,7 +162,7 @@ module mmu
    assign A11X = ADDR[11] ^ access_vector;
    assign nRD = !(E & RnW);
    assign nWR = !(E & !RnW);
-   assign nCSUART  = !(E & {ADDR[15:4], 4'b0000} == UART_BASE);
+   assign nCSUART  = !(E & uart_access);
 
    assign nCSROM0  = !(((enmmu & MMU_DATA[7:6] == 2'b00) | (!enmmu &  ADDR[15])) & !io_access);
    assign nCSROM1  = !(  enmmu & MMU_DATA[7:6] == 2'b01                          & !io_access);
