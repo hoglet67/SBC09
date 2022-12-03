@@ -42,6 +42,7 @@ module mmu
    output       nCSROM1,
    output       nCSRAM,
    output       nCSUART,
+   output       INTMASK,
 
    // External Bus Control
    output       BUFDIR,
@@ -106,6 +107,7 @@ module mmu
       .nCSROM1(nCSROM1),
       .nCSRAM(nCSRAM),
       .nCSUART(nCSUART),
+      .INTMASK(INTMASK),
       // External Bus Control
       .BUFDIR(BUFDIR),
       .nBUFEN(nBUFEN),
@@ -154,6 +156,7 @@ endmodule
 //PIN: DATA_7     : 48
 //PIN: EX         : 8
 //PIN: E          : 2
+//PIN: INTMASK    : 21
 //PIN: MMU_ADDR_0 : 65
 //PIN: MMU_ADDR_1 : 64
 //PIN: MMU_ADDR_2 : 67

@@ -10,6 +10,7 @@ module mmu_int
    input        RnW,
    input        nRESET,
    input [7:0]  DATA_in,
+   output       INTMASK,
    output [7:0] DATA_out,
    output       DATA_oe,
 
@@ -57,7 +58,7 @@ module mmu_int
    reg [4:0]      access_key;
    reg [4:0]      task_key;
    reg            U;
-
+   reg [1:0]      mask_count;
    wire [7:0]     DATA = DATA_in;
    wire [7:0]     MMU_DATA = MMU_DATA_in;
 
@@ -79,6 +80,7 @@ module mmu_int
          access_key <= 5'b0;
          task_key <= 5'b0;
          U <= 1'b0;
+         mask_count <= 2'b00;
       end else begin
          if (!RnW && mmu_reg_access && ADDR[2:0] == 3'b000) begin
             {protect, mode8k, enmmu} <= DATA[2:0];
@@ -96,8 +98,15 @@ module mmu_int
             //DB: switch task automatically when access RTI
             U <= 1'b1;
          end
+         if (access_vector) begin
+            mask_count <= 2'b11;
+         end else if (|mask_count) begin
+            mask_count <= mask_count - 1;
+         end
       end
    end
+
+   assign INTMASK = access_vector | (|mask_count);
 
    reg [7:0] data_tmp;
 
