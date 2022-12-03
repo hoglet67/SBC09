@@ -43,7 +43,7 @@ module mmu
    parameter IO_ADDR_MIN  = 16'hFC00;
    parameter IO_ADDR_MAX  = 16'hFEFF;
    parameter UART_BASE    = 16'hFE00;
-   parameter MMU_BASE     = 16'hFE10;
+   parameter MMU_BASE     = 16'hFE20;
 
    wire [7:0]  DATA_out;
    wire        DATA_oe;

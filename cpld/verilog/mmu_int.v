@@ -48,7 +48,7 @@ module mmu_int
    parameter IO_ADDR_MAX  = 16'hFEFF;
 
    parameter UART_BASE    = 16'hFE00; // 16 bytes
-   parameter MMU_BASE     = 16'hFE10; // 16 bytes (8 bytes of regs, 8 bytes of ram)
+   parameter MMU_BASE     = 16'hFE20; // 32 bytes
 
    // Internal Registers
    reg            enmmu;
@@ -66,9 +66,9 @@ module mmu_int
 
    (* xkeep *) wire io_access      = hw_en && ADDR >= IO_ADDR_MIN && ADDR <= IO_ADDR_MAX;
    (* xkeep *) wire uart_access    = hw_en && {ADDR[15:4], 4'b0000} == UART_BASE;
-   (* xkeep *) wire mmu_access     = hw_en && {ADDR[15:4], 4'b0000} == MMU_BASE;
-   (* xkeep *) wire mmu_reg_access = mmu_access & !ADDR[3];
-   (* xkeep *) wire mmu_ram_access = mmu_access &  ADDR[3];
+   (* xkeep *) wire mmu_access     = hw_en && {ADDR[15:5], 5'b00000} == MMU_BASE;
+   (* xkeep *) wire mmu_reg_access = mmu_access & !ADDR[4];
+   (* xkeep *) wire mmu_ram_access = mmu_access &  ADDR[4];
    (* xkeep *) wire io_access_ext  = io_access & !mmu_access & !uart_access;
 
    wire access_vector = (!BA & BS & RnW);
@@ -102,7 +102,7 @@ module mmu_int
    reg [7:0] data_tmp;
 
    always @(*) begin
-      if (ADDR[3])
+      if (ADDR[4])
         data_tmp = MMU_DATA;
       else
         case (ADDR[2:0])
