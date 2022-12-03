@@ -52,6 +52,7 @@ set_global_assignment -name MAX_CORE_JUNCTION_TEMP 85
 set_global_assignment -name EDA_SIMULATION_TOOL "ModelSim-Altera (VHDL)"
 set_global_assignment -name EDA_OUTPUT_DATA_FORMAT VHDL -section_id eda_simulation
 set_global_assignment -name VERILOG_FILE ../mmu.v
+set_global_assignment -name VERILOG_FILE ../mmu_int.v
 set_global_assignment -name MAX7000_OPTIMIZATION_TECHNIQUE AREA
 set_global_assignment -name SYNTH_TIMING_DRIVEN_SYNTHESIS OFF
 set_global_assignment -name MAX7000_DEVICE_IO_STANDARD TTL
@@ -62,7 +63,7 @@ set_location_assignment PIN_17 -to ADDR[0]
 set_location_assignment PIN_5 -to QX
 set_location_assignment PIN_8 -to EX
 set_location_assignment PIN_9 -to BUFDIR
-set_location_assignment PIN_10 -to MRDY
+set_location_assignment PIN_10 -to nCSEXTIO
 set_location_assignment PIN_11 -to nBUFEN
 set_location_assignment PIN_12 -to BS
 set_location_assignment PIN_15 -to BA
@@ -117,3 +118,4 @@ set_location_assignment PIN_4 -to nCSEXT
 set_location_assignment PIN_80 -to nCSRAM
 set_location_assignment PIN_81 -to nCSROM0
 set_location_assignment PIN_83 -to CLKX4
+set_location_assignment PIN_84 -to MRDY
