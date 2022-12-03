@@ -4,7 +4,21 @@ module mmu
   (
    // CPU
    input        E,
-   input [15:0] ADDR,
+   input        ADDR0,
+   input        ADDR1,
+   input        ADDR2,
+   input        ADDR4,
+   input        ADDR5,
+   input        ADDR6,
+   input        ADDR7,
+   input        ADDR8,
+   input        ADDR9,
+   input        ADDR10,
+   input        ADDR11,
+   input        ADDR12,
+   input        ADDR13,
+   input        ADDR14,
+   input        ADDR15,
    input        BA,
    input        BS,
    input        RnW,
@@ -49,6 +63,11 @@ module mmu
    wire        DATA_oe;
    wire [7:0]  MMU_DATA_out;
    wire        MMU_DATA_oe;
+
+   wire [15:0] ADDR = {ADDR15, ADDR14, ADDR13, ADDR12,
+                       ADDR11, ADDR10,  ADDR9,  ADDR8,
+                        ADDR7,  ADDR6,  ADDR5,  ADDR4,
+                         1'b0,  ADDR2,  ADDR1,  ADDR0};
 
    mmu_int
      #(
@@ -106,22 +125,21 @@ endmodule
 //
 //PIN: CHIP "mmu" ASSIGNED TO AN PLCC84
 //PIN: A11X       : 50
-//PIN: ADDR_0     : 17
-//PIN: ADDR_1     : 18
-//PIN: ADDR_2     : 20
-//PIN: ADDR_3     : 21
-//PIN: ADDR_4     : 22
-//PIN: ADDR_5     : 24
-//PIN: ADDR_6     : 25
-//PIN: ADDR_7     : 27
-//PIN: ADDR_8     : 28
-//PIN: ADDR_9     : 29
-//PIN: ADDR_10    : 30
-//PIN: ADDR_11    : 31
-//PIN: ADDR_12    : 33
-//PIN: ADDR_13    : 34
-//PIN: ADDR_14    : 35
-//PIN: ADDR_15    : 36
+//PIN: ADDR0      : 17
+//PIN: ADDR1      : 18
+//PIN: ADDR2      : 20
+//PIN: ADDR4      : 22
+//PIN: ADDR5      : 24
+//PIN: ADDR6      : 25
+//PIN: ADDR7      : 27
+//PIN: ADDR8      : 28
+//PIN: ADDR9      : 29
+//PIN: ADDR10     : 30
+//PIN: ADDR11     : 31
+//PIN: ADDR12     : 33
+//PIN: ADDR13     : 34
+//PIN: ADDR14     : 35
+//PIN: ADDR15     : 36
 //PIN: BA         : 15
 //PIN: BS         : 12
 //PIN: BUFDIR     : 9
