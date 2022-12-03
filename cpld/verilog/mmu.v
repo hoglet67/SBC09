@@ -51,6 +51,7 @@ module mmu
    // Clock Generator (for the E Parts)
    input        CLKX4,
    input        MRDY,
+   input        nENCLK,
    output       QX,
    output       EX
    );
@@ -64,6 +65,10 @@ module mmu
    wire        DATA_oe;
    wire [7:0]  MMU_DATA_out;
    wire        MMU_DATA_oe;
+   wire        EX_int;
+   wire        QX_int;
+
+   (* keep *) wire ENCLK = !nENCLK;
 
    wire [15:0] ADDR = {ADDR15, ADDR14, ADDR13, ADDR12,
                        ADDR11, ADDR10,  ADDR9,  ADDR8,
@@ -114,12 +119,14 @@ module mmu
       // Clock Generator (for the E Parts)
       .CLKX4(CLKX4),
       .MRDY(MRDY),
-      .QX(QX),
-      .EX(EX)
+      .QX(QX_int),
+      .EX(EX_int)
       );
 
    assign DATA = DATA_oe ? DATA_out : 8'hZZ;
    assign MMU_DATA = MMU_DATA_oe ? MMU_DATA_out : 8'hZZ;
+   assign EX = ENCLK ? EX_int : 1'bZ;
+   assign QX = ENCLK ? QX_int : 1'bZ;
 
 endmodule
 
@@ -156,6 +163,7 @@ endmodule
 //PIN: DATA_7     : 48
 //PIN: EX         : 8
 //PIN: E          : 2
+//PIN: nENCLK     : 6
 //PIN: INTMASK    : 21
 //PIN: MMU_ADDR_0 : 65
 //PIN: MMU_ADDR_1 : 64
