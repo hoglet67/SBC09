@@ -141,7 +141,7 @@ module mmu_int
    //DB: I add an extra gating signal here, this might not work for a non-E part?
    assign MMU_nWR  = !(E & !RnW & mmu_ram_access);
 
-   assign MMU_DATA_out = (mmu_ram_access & !RnW) ? DATA : {5'b00000, ADDR[15:13]};
+   assign MMU_DATA_out = (mmu_ram_access & !RnW) ? DATA : {6'b000000, ADDR[15:14]};
 
    assign MMU_DATA_oe  = (mmu_ram_access & !RnW & E) | !enmmu;
 
