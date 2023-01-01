@@ -80,8 +80,8 @@ WRMMU1 = E & CSIOINT & A5 & !RnW;
 
 CSUART = E & CSIOINT & !A5 & !A4;
 
-RD = E & RnW;
+RD = RnW;
 
-WR = E & !RnW & (!16KMODE # !QA19);
+WR = !RnW;
 
 QA13 = (16KMODE & A13)  # (!16KMODE & QA19);

@@ -5,7 +5,7 @@
 
 CUPL(WM)        5.0a Serial# MW-10400000
 Device          g22v10  Library DLIB-h-40-1
-Created         Thu Nov 03 08:57:20 2022
+Created         Sun Jan 01 15:08:22 2023
 Name            PAL2        
 Partno          00          
 Revision        01          
@@ -19,61 +19,63 @@ Location
                             Expanded Product Terms
 ===============================================================================
 
+16KMODE =>
+    1 
+
 CSEXT =>
-    A8 & ENMMU & QA20 & QA21
-  # !A10 & ENMMU & QA20 & QA21
-  # !A11 & ENMMU & QA20 & QA21
-  # !A12 & ENMMU & QA20 & QA21
-  # !A13 & ENMMU & QA20 & QA21
-  # !A14 & ENMMU & QA20 & QA21
-  # !A15 & ENMMU & QA20 & QA21
-  # !A9 & A10 & A11 & A12 & A13 & A14 & A15 & ENMMU
-  # A6 & !A8 & A10 & A11 & A12 & A13 & A14 & A15 & ENMMU
-  # A7 & !A8 & A10 & A11 & A12 & A13 & A14 & A15 & ENMMU
+    A8 & E & ENMMU & QA20 & QA21
+  # !A10 & E & ENMMU & QA20 & QA21
+  # !A11 & E & ENMMU & QA20 & QA21
+  # !A12 & E & ENMMU & QA20 & QA21
+  # !A13 & E & ENMMU & QA20 & QA21
+  # !A14 & E & ENMMU & QA20 & QA21
+  # !A15 & E & ENMMU & QA20 & QA21
+  # !A9 & A10 & A11 & A12 & A13 & A14 & A15 & E & ENMMU
+  # A6 & !A8 & A10 & A11 & A12 & A13 & A14 & A15 & E & ENMMU
+  # A7 & !A8 & A10 & A11 & A12 & A13 & A14 & A15 & E & ENMMU
 
 CSIOINT =>
     !A6 & !A7 & !A8 & A9 & A10 & A11 & A12 & A13 & A14 & A15
 
 CSRAM =>
-    !A15 & !ENMMU
-  # !A15 & !QA20 & QA21
-  # !A10 & ENMMU & !QA20 & QA21
-  # !A11 & ENMMU & !QA20 & QA21
-  # !A12 & ENMMU & !QA20 & QA21
-  # !A13 & ENMMU & !QA20 & QA21
-  # !A14 & ENMMU & !QA20 & QA21
-  # A8 & A9 & ENMMU & !QA20 & QA21
+    !A15 & E & !ENMMU
+  # !A15 & E & !QA20 & QA21
+  # !A10 & E & ENMMU & !QA20 & QA21
+  # !A11 & E & ENMMU & !QA20 & QA21
+  # !A12 & E & ENMMU & !QA20 & QA21
+  # !A13 & E & ENMMU & !QA20 & QA21
+  # !A14 & E & ENMMU & !QA20 & QA21
+  # A8 & A9 & E & ENMMU & !QA20 & QA21
 
 CSROM0 =>
-    !A10 & A15 & !ENMMU
-  # !A11 & A15 & !ENMMU
-  # !A12 & A15 & !ENMMU
-  # !A13 & A15 & !ENMMU
-  # !A14 & A15 & !ENMMU
-  # A8 & A9 & A15 & !ENMMU
-  # !A10 & A15 & !QA20 & !QA21
-  # !A11 & A15 & !QA20 & !QA21
-  # !A12 & A15 & !QA20 & !QA21
-  # !A13 & A15 & !QA20 & !QA21
-  # !A14 & A15 & !QA20 & !QA21
-  # !A15 & ENMMU & !QA20 & !QA21
-  # A8 & A9 & A15 & !QA20 & !QA21
+    !A10 & A15 & E & !ENMMU
+  # !A11 & A15 & E & !ENMMU
+  # !A12 & A15 & E & !ENMMU
+  # !A13 & A15 & E & !ENMMU
+  # !A14 & A15 & E & !ENMMU
+  # A8 & A9 & A15 & E & !ENMMU
+  # !A10 & A15 & E & !QA20 & !QA21
+  # !A11 & A15 & E & !QA20 & !QA21
+  # !A12 & A15 & E & !QA20 & !QA21
+  # !A13 & A15 & E & !QA20 & !QA21
+  # !A14 & A15 & E & !QA20 & !QA21
+  # !A15 & E & ENMMU & !QA20 & !QA21
+  # A8 & A9 & A15 & E & !QA20 & !QA21
 
 CSROM1 =>
-    !A10 & ENMMU & QA20 & !QA21
-  # !A11 & ENMMU & QA20 & !QA21
-  # !A12 & ENMMU & QA20 & !QA21
-  # !A13 & ENMMU & QA20 & !QA21
-  # !A14 & ENMMU & QA20 & !QA21
-  # !A15 & ENMMU & QA20 & !QA21
-  # A8 & A9 & ENMMU & QA20 & !QA21
+    !A10 & E & ENMMU & QA20 & !QA21
+  # !A11 & E & ENMMU & QA20 & !QA21
+  # !A12 & E & ENMMU & QA20 & !QA21
+  # !A13 & E & ENMMU & QA20 & !QA21
+  # !A14 & E & ENMMU & QA20 & !QA21
+  # !A15 & E & ENMMU & QA20 & !QA21
+  # A8 & A9 & E & ENMMU & QA20 & !QA21
 
 ENMMU0 =>
-    16KMODE & ENMMU
-  # !A13 & ENMMU
+    ENMMU
 
 ENMMU1 =>
-    !16KMODE & A13 & ENMMU
+    0 
 
 IO =>
     !A8 & A10 & A11 & A12 & A13 & A14 & A15
@@ -124,7 +126,7 @@ Pin Variable                                    Pterms   Max     Min
 Pol   Name              Ext     Pin     Type     Used   Pterms  Level   
 --- --------            ---     ---     ----    ------  ------  -----   
 
-    16KMODE                     13       V        -       -       -     
+    16KMODE                     0        I        1       -       -     
     A6                          2        V        -       -       -     
     A7                          3        V        -       -       -     
     A8                          4        V        -       -       -     
@@ -140,8 +142,9 @@ Pol   Name              Ext     Pin     Type     Used   Pterms  Level
  !  CSRAM                       17       V        8       14      2     
  !  CSROM0                      19       V        13      16      2     
  !  CSROM1                      18       V        7       16      2     
+    E                           13       V        -       -       -     
  !  ENMMU                       1        V        -       -       -     
- !  ENMMU0                      15       V        2       10      2     
+ !  ENMMU0                      15       V        1       10      2     
  !  ENMMU1                      14       V        1       8       2     
     IO                          0        I        2       -       -     
     IOINT                       0        I        1       -       -     
@@ -214,47 +217,47 @@ Pin #21  05812 Mode  x-
  01452 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
 Pin #20  05814 Mode  x- 
  01496 -------------------------------------------- 
- 01540 -xx---x-----x------------------------------- 
- 01584 -xx---x--------------x---------------------- 
- 01628 -xx---x------------------x------------------ 
- 01672 -xx---x----------------------x-------------- 
- 01716 -xx---x--------------------------x---------- 
- 01760 -xx---x------------------------------x------ 
- 01804 -xx---x----------------------------------x-- 
- 01848 -x---------------x--x---x---x---x---x---x--- 
- 01892 -x--x--------x------x---x---x---x---x---x--- 
- 01936 -x------x----x------x---x---x---x---x---x--- 
+ 01540 -xx---x-----x-----------------------------x- 
+ 01584 -xx---x--------------x--------------------x- 
+ 01628 -xx---x------------------x----------------x- 
+ 01672 -xx---x----------------------x------------x- 
+ 01716 -xx---x--------------------------x--------x- 
+ 01760 -xx---x------------------------------x----x- 
+ 01804 -xx---x----------------------------------xx- 
+ 01848 -x---------------x--x---x---x---x---x---x-x- 
+ 01892 -x--x--------x------x---x---x---x---x---x-x- 
+ 01936 -x------x----x------x---x---x---x---x---x-x- 
  01980 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
  02024 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
  02068 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
  02112 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
 Pin #19  05816 Mode  x- 
  02156 -------------------------------------------- 
- 02200 x--------------------x------------------x--- 
- 02244 x------------------------x--------------x--- 
- 02288 x----------------------------x----------x--- 
- 02332 x--------------------------------x------x--- 
- 02376 x------------------------------------x--x--- 
- 02420 x-----------x---x-----------------------x--- 
- 02464 ---x---x-------------x------------------x--- 
- 02508 ---x---x-----------------x--------------x--- 
- 02552 ---x---x---------------------x----------x--- 
- 02596 ---x---x-------------------------x------x--- 
- 02640 ---x---x-----------------------------x--x--- 
- 02684 -x-x---x---------------------------------x-- 
- 02728 ---x---x----x---x-----------------------x--- 
+ 02200 x--------------------x------------------x-x- 
+ 02244 x------------------------x--------------x-x- 
+ 02288 x----------------------------x----------x-x- 
+ 02332 x--------------------------------x------x-x- 
+ 02376 x------------------------------------x--x-x- 
+ 02420 x-----------x---x-----------------------x-x- 
+ 02464 ---x---x-------------x------------------x-x- 
+ 02508 ---x---x-----------------x--------------x-x- 
+ 02552 ---x---x---------------------x----------x-x- 
+ 02596 ---x---x-------------------------x------x-x- 
+ 02640 ---x---x-----------------------------x--x-x- 
+ 02684 -x-x---x---------------------------------xx- 
+ 02728 ---x---x----x---x-----------------------x-x- 
  02772 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
  02816 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
  02860 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
 Pin #18  05818 Mode  x- 
  02904 -------------------------------------------- 
- 02948 -xx----x-------------x---------------------- 
- 02992 -xx----x-----------------x------------------ 
- 03036 -xx----x---------------------x-------------- 
- 03080 -xx----x-------------------------x---------- 
- 03124 -xx----x-----------------------------x------ 
- 03168 -xx----x---------------------------------x-- 
- 03212 -xx----x----x---x--------------------------- 
+ 02948 -xx----x-------------x--------------------x- 
+ 02992 -xx----x-----------------x----------------x- 
+ 03036 -xx----x---------------------x------------x- 
+ 03080 -xx----x-------------------------x--------x- 
+ 03124 -xx----x-----------------------------x----x- 
+ 03168 -xx----x---------------------------------xx- 
+ 03212 -xx----x----x---x-------------------------x- 
  03256 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
  03300 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
  03344 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
@@ -266,14 +269,14 @@ Pin #18  05818 Mode  x-
  03608 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
 Pin #17  05820 Mode  x- 
  03652 -------------------------------------------- 
- 03696 x----------------------------------------x-- 
- 03740 ---x--x----------------------------------x-- 
- 03784 -x-x--x--------------x---------------------- 
- 03828 -x-x--x------------------x------------------ 
- 03872 -x-x--x----------------------x-------------- 
- 03916 -x-x--x--------------------------x---------- 
- 03960 -x-x--x------------------------------x------ 
- 04004 -x-x--x-----x---x--------------------------- 
+ 03696 x----------------------------------------xx- 
+ 03740 ---x--x----------------------------------xx- 
+ 03784 -x-x--x--------------x--------------------x- 
+ 03828 -x-x--x------------------x----------------x- 
+ 03872 -x-x--x----------------------x------------x- 
+ 03916 -x-x--x--------------------------x--------x- 
+ 03960 -x-x--x------------------------------x----x- 
+ 04004 -x-x--x-----x---x-------------------------x- 
  04048 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
  04092 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
  04136 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
@@ -296,8 +299,8 @@ Pin #16  05822 Mode  --
  04840 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
 Pin #15  05824 Mode  x- 
  04884 -------------------------------------------- 
- 04928 -x----------------------------------------x- 
- 04972 -x-------------------------------x---------- 
+ 04928 -x------------------------------------------ 
+ 04972 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
  05016 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
  05060 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
  05104 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
@@ -308,7 +311,7 @@ Pin #15  05824 Mode  x-
  05324 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
 Pin #14  05826 Mode  x- 
  05368 -------------------------------------------- 
- 05412 -x------------------------------x----------x 
+ 05412 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
  05456 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
  05500 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
  05544 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
@@ -338,6 +341,6 @@ LEGEND    X : fuse not blown
                       A13 x---|9           16|---x QA14                     
                       A14 x---|10          15|---x !ENMMU0                  
                       A15 x---|11          14|---x !ENMMU1                  
-                      GND x---|12          13|---x 16KMODE                  
+                      GND x---|12          13|---x E                        
                               |______________|
 

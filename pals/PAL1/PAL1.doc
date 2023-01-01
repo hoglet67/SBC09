@@ -5,7 +5,7 @@
 
 CUPL(WM)        5.0a Serial# MW-10400000
 Device          g22v10  Library DLIB-h-40-1
-Created         Thu Nov 03 11:57:20 2022
+Created         Sun Jan 01 15:08:22 2023
 Name            PAL1        
 Partno          00          
 Revision        01          
@@ -55,11 +55,10 @@ QX.sp  =>
     0 
 
 RD =>
-    E & RnW
+    RnW
 
 WR =>
-    !16KMODE & E & !RnW
-  # E & !QA19 & !RnW
+    !RnW
 
 WRMMU0 =>
     A4 & CSIOINT & E & !RnW
@@ -132,7 +131,7 @@ Pol   Name              Ext     Pin     Type     Used   Pterms  Level
     QX                  sp      23       X        1       1       1     
  !  RD                          20       V        1       14      2     
     RnW                         5        V        -       -       -     
- !  WR                          19       V        2       16      2     
+ !  WR                          19       V        1       16      2     
  !  WRMMU0                      18       V        1       16      2     
  !  WRMMU1                      17       V        1       14      2     
     count                       0        F        -       -       -     
@@ -201,7 +200,7 @@ Pin #21  05812 Mode  --
  01452 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
 Pin #20  05814 Mode  x- 
  01496 -------------------------------------------- 
- 01540 ----------------x-------------------------x- 
+ 01540 ----------------x--------------------------- 
  01584 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
  01628 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
  01672 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
@@ -217,8 +216,8 @@ Pin #20  05814 Mode  x-
  02112 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
 Pin #19  05816 Mode  x- 
  02156 -------------------------------------------- 
- 02200 -----------------x-------------------x----x- 
- 02244 -----------------x-----------------------xx- 
+ 02200 -----------------x-------------------------- 
+ 02244 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
  02288 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
  02332 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
  02376 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 

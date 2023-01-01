@@ -21,7 +21,7 @@ PIN 8    = A12;
 PIN 9    = A13;
 PIN 10   = A14;
 PIN 11   = A15;
-PIN 13   = 16KMODE;
+PIN 13   = E;
 
 PIN 14   = !ENMMU1;
 PIN 15   = !ENMMU0;
@@ -35,6 +35,7 @@ PIN 22   = QA21;
 PIN 23   = QA20;
 
 // Intermediates
+16KMODE  = 'b'1;
 
 // Decode &FC00-&FEFF
 IO       = A15 & A14 & A13 & A12 & A11 & A10 & (!A9 # !A8);
@@ -51,10 +52,10 @@ IOINT    = A15 & A14 & A13 & A12 & A11 & A10 & A9 & !A8 & !A7 & !A6;
 
 // Outputs
 
-CSROM0  = ((ENMMU & !QA21 & !QA20) # (!ENMMU & A15)) & !IO;
-CSROM1  =  (ENMMU & !QA21 &  QA20) & !IO;
-CSRAM   = ((ENMMU &  QA21 & !QA20) # (!ENMMU & !A15)) & !IO;
-CSEXT   =  (ENMMU & (QA21 &  QA20 # IO) & !IOINT);
+CSROM0  = ((ENMMU & !QA21 & !QA20) # (!ENMMU & A15)) & !IO & E;
+CSROM1  =  (ENMMU & !QA21 &  QA20) & !IO & E;
+CSRAM   = ((ENMMU &  QA21 & !QA20) # (!ENMMU & !A15)) & !IO & E;
+CSEXT   =  (ENMMU & (QA21 &  QA20 # IO) & !IOINT) & E;
 CSIOINT = IOINT;
 ENMMU0  = (ENMMU & !16KMODE & !A13) # (ENMMU & 16KMODE);
 ENMMU1  =  ENMMU & !16KMODE &  A13 ;
