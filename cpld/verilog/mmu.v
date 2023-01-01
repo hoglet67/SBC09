@@ -26,7 +26,7 @@ module mmu
    inout [7:0]  DATA,
 
    // MMU RAM
-   output [7:0] MMU_ADDR,
+   output [4:0] MMU_ADDR,
    output       MMU_nRD,
    output       MMU_nWR,
    inout [7:0]  MMU_DATA,
@@ -43,6 +43,11 @@ module mmu
    output       nCSRAM,
    output       nCSUART,
    output       INTMASK,
+
+   // SD Card
+   output       SCLK,
+   output       MOSI,
+   input        MISO,
 
    // External Bus Control
    output       BUFDIR,
@@ -67,6 +72,7 @@ module mmu
    wire        MMU_DATA_oe;
    wire        EX_int;
    wire        QX_int;
+   wire [7:0]  MMU_ADDR_int;
 
    (* keep *) wire ENCLK = !nENCLK;
 
@@ -95,7 +101,7 @@ module mmu
       .DATA_out(DATA_out),
       .DATA_oe(DATA_oe),
       // MMU RAM
-      .MMU_ADDR(MMU_ADDR),
+      .MMU_ADDR(MMU_ADDR_int),
       .MMU_nRD(MMU_nRD),
       .MMU_nWR(MMU_nWR),
       .MMU_DATA_in(MMU_DATA),
@@ -113,6 +119,10 @@ module mmu
       .nCSRAM(nCSRAM),
       .nCSUART(nCSUART),
       .INTMASK(INTMASK),
+      // SD Card
+      .SCLK(SCLK),
+      .MISO(MISO),
+      .MOSI(MOSI),
       // External Bus Control
       .BUFDIR(BUFDIR),
       .nBUFEN(nBUFEN),
@@ -127,6 +137,7 @@ module mmu
    assign MMU_DATA = MMU_DATA_oe ? MMU_DATA_out : 8'hZZ;
    assign EX = ENCLK ? EX_int : 1'bZ;
    assign QX = ENCLK ? QX_int : 1'bZ;
+   assign MMU_ADDR = MMU_ADDR_int[4:0];
 
 endmodule
 
@@ -170,9 +181,12 @@ endmodule
 //PIN: MMU_ADDR_2 : 67
 //PIN: MMU_ADDR_3 : 68
 //PIN: MMU_ADDR_4 : 70
-//PIN: MMU_ADDR_5 : 73
-//PIN: MMU_ADDR_6 : 76
-//PIN: MMU_ADDR_7 : 74
+//xxx: MMU_ADDR_5 : 73
+//xxx: MMU_ADDR_6 : 76
+//xxx: MMU_ADDR_7 : 74
+//PIN: SCLK       : 73
+//PIN: MOSI       : 76
+//PIN: MISO       : 74
 //PIN: MMU_DATA_0 : 60
 //PIN: MMU_DATA_1 : 58
 //PIN: MMU_DATA_2 : 57

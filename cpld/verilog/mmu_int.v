@@ -34,6 +34,11 @@ module mmu_int
    output       nCSRAM,
    output       nCSUART,
 
+   // SD Card Interface (SCS driven by UART)
+   output       SCLK,
+   output       MOSI,
+   input        MISO,
+
    // External Bus Control
    output       BUFDIR,
    output       nBUFEN,
@@ -61,6 +66,11 @@ module mmu_int
    reg [1:0]      mask_count;
    wire [7:0]     DATA = DATA_in;
    wire [7:0]     MMU_DATA = MMU_DATA_in;
+
+   reg [7:0]      sd_data;    // 8-bit shift register for data
+   reg [3:0]      sd_count;   // 4-bit counter
+   reg            sd_active;  // indicates the SD interface is shifting
+   reg            sd_tmp;     // latches the MISO input
 
    // Is the hardware accessible to the current task?
    (* xkeep *) wire hw_en = !enmmu | !U | !protect;
@@ -119,6 +129,7 @@ module mmu_int
           3'b001 : data_tmp = {3'b0, access_key};
           3'b010 : data_tmp = {3'b0, task_key};
           3'b011 : data_tmp = {8'h3b};
+          3'b100 : data_tmp = sd_data;
         default:
           data_tmp = 8'h00;
       endcase
@@ -181,5 +192,73 @@ module mmu_int
 
    assign nBUFEN   = BA ^ !(!nCSEXT | !nCSEXTIO);
    assign BUFDIR   = BA ^ RnW;
+
+
+   // SD Card Interface
+   //
+   // SD Card should operate in SPI Mode 0
+   // - positive clock pulse (idle clock is zero)
+   // - receiver(s) latch on rising SCLK edge
+   // - transmitter(s) shift on falling SCLK edge
+   //
+   // SCLK MOSI MISO
+   //  0    x    x                       (count =  0, active = 0)
+   //  0    D7   latch D7 on rising edge (count =  0, active = 1)
+   //  1    D7                           (count =  1, active = 1)
+   //  0    D6   latch D6 on rising edge (count =  2, active = 1)
+   //  1    D6                           (count =  3, active = 1)
+   //  0    D5   latch D5 on rising edge (count =  4, active = 1)
+   //  1    D5                           (count =  5, active = 1)
+   //  0    D4   latch D4 on rising edge (count =  6, active = 1)
+   //  1    D4                           (count =  7, active = 1)
+   //  0    D3   latch D3 on rising edge (count =  8, active = 1)
+   //  1    D3                           (count =  9, active = 1)
+   //  0    D2   latch D2 on rising edge (count = 10, active = 1)
+   //  1    D2                           (count = 11, active = 1)
+   //  0    D1   latch D1 on rising edge (count = 12, active = 1)
+   //  1    D1                           (count = 13, active = 1)
+   //  0    D0   latch D0 on rising edge (count = 14, active = 1)
+   //  1    D0                           (count = 15, active = 1)
+   //  0    x   x                        (count = 0,  active = 0)
+   //
+   // This is 17 states (including the idle state)
+   //
+   // So we use the following state bits:
+   //    sd_active (1 bit register)
+   //    sd_count  (4 bit register)
+   //
+   // With this arrangement, sd_count[0] is SCLK and sd_data[7] is MOSI
+   //
+   // In addition, one further register is needed to latch MISO on the rising SCLK edge
+
+   always @(negedge E, negedge nRESET) begin
+      if (!nRESET) begin
+         sd_data   <= 8'b00000000;
+         sd_count  <= 4'b0000;
+         sd_active <= 1'b0;
+         sd_tmp    <= 1'b0;
+      end else if (sd_active) begin
+         sd_count <= sd_count + 1;
+         if (sd_count[0]) begin
+            // Shift data on the falling SCLK edge
+            sd_data <= {sd_data[6:0], sd_tmp};
+         end else begin
+            // Latch MISO on the rising SCLK edge
+            sd_tmp <= MISO;
+         end
+         // When count reaches 4'b1111 then active gets set back to false
+         sd_active <= !(&sd_count);
+      end else if (!RnW && mmu_reg_access && ADDR[2:0] == 3'b100) begin
+         sd_active <= 1'b1;
+         sd_data <= DATA;
+      end else if (!RnW && mmu_reg_access && ADDR[2:0] == 3'b101) begin
+         // A write to the control register allows the SCLK,MOSI to be manually set during initialization
+         sd_count[0] <= DATA[0]; // SCLK
+         sd_data[7]  <= DATA[1]; // MOSI
+      end
+   end
+
+   assign SCLK = sd_count[0];
+   assign MOSI = sd_data[7];
 
 endmodule
