@@ -4,6 +4,7 @@ module mmu_int
   (
    // CPU
    input        E,
+   input        Q,
    input [15:0] ADDR,
    input        BA,
    input        BS,

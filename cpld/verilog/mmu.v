@@ -3,7 +3,6 @@
 module mmu
   (
    // CPU
-   input        E,
    input [15:0] ADDR,
    input        BA,
    input        BS,
@@ -42,8 +41,8 @@ module mmu
    input        CLKX4,
    input        MRDY,
    input        nENCLK,
-   output       QX,
-   output       EX
+   inout        QX,
+   inout        EX
    );
 
    parameter IO_ADDR_MIN  = 16'hFC00;
@@ -71,7 +70,8 @@ module mmu
    e_mmu_int
      (
       // CPU
-      .E(E),
+      .E(EX),
+      .Q(QX),
       .ADDR(ADDR),
       .BA(BA),
       .BS(BS),
@@ -152,8 +152,8 @@ endmodule
 //PIN: DATA_5     : 45
 //PIN: DATA_6     : 46
 //PIN: DATA_7     : 48
-//PIN: EX         : 8
-//PIN: E          : 2
+//PIN: EX         : 81
+//XXX: SPARE      : 2
 //PIN: nENCLK     : 6
 //PIN: INTMASK    : 52
 //PIN: MMU_ADDR_0 : 65
@@ -190,7 +190,7 @@ endmodule
 //PIN: nCSEXT     : 4
 //PIN: nCSEXTIO   : 10
 //PIN: nCSRAM     : 80
-//PIN: nCSROM0    : 81
+//PIN: nCSROM0    : 8
 //PIN: nCSROM1    : 79
 //PIN: nCSUART    : 77
 //PIN: nRW        : 49
