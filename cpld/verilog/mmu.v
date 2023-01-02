@@ -4,21 +4,7 @@ module mmu
   (
    // CPU
    input        E,
-   input        ADDR0,
-   input        ADDR1,
-   input        ADDR2,
-   input        ADDR4,
-   input        ADDR5,
-   input        ADDR6,
-   input        ADDR7,
-   input        ADDR8,
-   input        ADDR9,
-   input        ADDR10,
-   input        ADDR11,
-   input        ADDR12,
-   input        ADDR13,
-   input        ADDR14,
-   input        ADDR15,
+   input [15:0] ADDR,
    input        BA,
    input        BS,
    input        RnW,
@@ -34,8 +20,7 @@ module mmu
    // Memory / Device Selects
    output       A11X,
    output       QA13,
-   output       nRD,
-   output       nWR,
+   output       nRW,
    output       nCSEXT,
    output       nCSEXTIO,
    output       nCSROM0,
@@ -76,11 +61,6 @@ module mmu
 
    (* keep *) wire ENCLK = !nENCLK;
 
-   wire [15:0] ADDR = {ADDR15, ADDR14, ADDR13, ADDR12,
-                       ADDR11, ADDR10,  ADDR9,  ADDR8,
-                        ADDR7,  ADDR6,  ADDR5,  ADDR4,
-                         1'b0,  ADDR2,  ADDR1,  ADDR0};
-
    mmu_int
      #(
        .IO_ADDR_MIN(IO_ADDR_MIN),
@@ -110,8 +90,7 @@ module mmu
       // Memory / Device Selects
       .A11X(A11X),
       .QA13(QA13),
-      .nRD(nRD),
-      .nWR(nWR),
+      .nRW(nRW),
       .nCSEXT(nCSEXT),
       .nCSEXTIO(nCSEXTIO),
       .nCSROM0(nCSROM0),
@@ -145,21 +124,22 @@ endmodule
 //
 //PIN: CHIP "mmu" ASSIGNED TO AN PLCC84
 //PIN: A11X       : 50
-//PIN: ADDR0      : 17
-//PIN: ADDR1      : 18
-//PIN: ADDR2      : 20
-//PIN: ADDR4      : 22
-//PIN: ADDR5      : 24
-//PIN: ADDR6      : 25
-//PIN: ADDR7      : 27
-//PIN: ADDR8      : 28
-//PIN: ADDR9      : 29
-//PIN: ADDR10     : 30
-//PIN: ADDR11     : 31
-//PIN: ADDR12     : 33
-//PIN: ADDR13     : 34
-//PIN: ADDR14     : 35
-//PIN: ADDR15     : 36
+//PIN: ADDR_0     : 17
+//PIN: ADDR_1     : 18
+//PIN: ADDR_2     : 20
+//PIN: ADDR_3     : 21
+//PIN: ADDR_4     : 22
+//PIN: ADDR_5     : 24
+//PIN: ADDR_6     : 25
+//PIN: ADDR_7     : 27
+//PIN: ADDR_8     : 28
+//PIN: ADDR_9     : 29
+//PIN: ADDR_10    : 30
+//PIN: ADDR_11    : 31
+//PIN: ADDR_12    : 33
+//PIN: ADDR_13    : 34
+//PIN: ADDR_14    : 35
+//PIN: ADDR_15    : 36
 //PIN: BA         : 15
 //PIN: BS         : 12
 //PIN: BUFDIR     : 9
@@ -175,7 +155,7 @@ endmodule
 //PIN: EX         : 8
 //PIN: E          : 2
 //PIN: nENCLK     : 6
-//PIN: INTMASK    : 21
+//PIN: INTMASK    : 52
 //PIN: MMU_ADDR_0 : 65
 //PIN: MMU_ADDR_1 : 64
 //PIN: MMU_ADDR_2 : 67
@@ -198,7 +178,7 @@ endmodule
 //PIN: MMU_nRD    : 69
 //PIN: MMU_nWR    : 75
 //PIN: MRDY       : 84
-//PIN: QA13       : 52
+//PIN: QA13       : 51
 //PIN: QX         : 5
 //PIN: RESET      : 1
 //PIN: RnW        : 16
@@ -213,5 +193,4 @@ endmodule
 //PIN: nCSROM0    : 81
 //PIN: nCSROM1    : 79
 //PIN: nCSUART    : 77
-//PIN: nRD        : 49
-//PIN: nWR        : 51
+//PIN: nRW        : 49

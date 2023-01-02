@@ -25,8 +25,7 @@ module mmu_int
    // Memory / Device Selects
    output       A11X,
    output       QA13,
-   output       nRD,
-   output       nWR,
+   output       nRW,
    output       nCSEXT,
    output       nCSEXTIO,
    output       nCSROM0,
@@ -180,14 +179,13 @@ module mmu_int
    end
 
    assign A11X = ADDR[11] ^ access_vector;
-   assign nRD = !(E & RnW);
-   assign nWR = !(E & !RnW);
+   assign nRW = !RnW;
    assign nCSUART  = !(E & uart_access);
 
-   assign nCSROM0  = !(((enmmu & MMU_DATA[7:6] == 2'b00) | (!enmmu &  ADDR[15])) & !io_access);
-   assign nCSROM1  = !(  enmmu & MMU_DATA[7:6] == 2'b01                          & !io_access);
-   assign nCSRAM   = !(((enmmu & MMU_DATA[7:6] == 2'b10) | (!enmmu & !ADDR[15])) & !io_access);
-   assign nCSEXT   = !(  enmmu & MMU_DATA[7:6] == 2'b11                          & !io_access);
+   assign nCSROM0  = !(E & (((enmmu & MMU_DATA[7:6] == 2'b00) | (!enmmu &  ADDR[15])) & !io_access));
+   assign nCSROM1  = !(E & (  enmmu & MMU_DATA[7:6] == 2'b01                          & !io_access));
+   assign nCSRAM   = !(E & (((enmmu & MMU_DATA[7:6] == 2'b10) | (!enmmu & !ADDR[15])) & !io_access));
+   assign nCSEXT   = !(       enmmu & MMU_DATA[7:6] == 2'b11                          & !io_access);
    assign nCSEXTIO = !(io_access_ext);
 
    assign nBUFEN   = BA ^ !(!nCSEXT | !nCSEXTIO);
