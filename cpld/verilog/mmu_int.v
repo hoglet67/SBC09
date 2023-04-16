@@ -73,16 +73,15 @@ module mmu_int
    reg            sd_tmp;     // latches the MISO input
 
    // Is the hardware accessible to the current task?
-   (* xkeep *) wire hw_en = !enmmu | !U | !protect;
+   wire hw_en          = !enmmu | !U | !protect;
 
-   (* xkeep *) wire io_access      = hw_en && ADDR >= IO_ADDR_MIN && ADDR <= IO_ADDR_MAX;
-   (* xkeep *) wire uart_access    = hw_en && {ADDR[15:4], 4'b0000} == UART_BASE;
-   (* xkeep *) wire mmu_access     = hw_en && {ADDR[15:5], 5'b00000} == MMU_BASE;
-   (* xkeep *) wire mmu_reg_access = mmu_access & !ADDR[4];
-   (* xkeep *) wire mmu_ram_access = mmu_access &  ADDR[4];
-   (* xkeep *) wire io_access_ext  = io_access & !mmu_access & !uart_access;
-
-   wire access_vector = (!BA & BS & RnW);
+   wire io_access      = hw_en && ADDR >= IO_ADDR_MIN && ADDR <= IO_ADDR_MAX;
+   wire uart_access    = hw_en && {ADDR[15:4], 4'b0000} == UART_BASE;
+   wire mmu_access     = hw_en && {ADDR[15:5], 5'b00000} == MMU_BASE;
+   wire mmu_reg_access = mmu_access & !ADDR[4];
+   wire mmu_ram_access = mmu_access &  ADDR[4];
+   wire io_access_ext  = io_access & !mmu_access & !uart_access;
+   wire access_vector  = (!BA & BS & RnW);
 
    always @(negedge E, negedge nRESET) begin
       if (!nRESET) begin
@@ -111,7 +110,7 @@ module mmu_int
          if (access_vector) begin
             mask_count <= 2'b11;
          end else if (|mask_count) begin
-            mask_count <= mask_count - 1;
+            mask_count <= mask_count - 1'b1;
          end
       end
    end
@@ -237,7 +236,7 @@ module mmu_int
          sd_active <= 1'b0;
          sd_tmp    <= 1'b0;
       end else if (sd_active) begin
-         sd_count <= sd_count + 1;
+         sd_count <= sd_count + 1'b1;
          if (sd_count[0]) begin
             // Shift data on the falling SCLK edge
             sd_data <= {sd_data[6:0], sd_tmp};

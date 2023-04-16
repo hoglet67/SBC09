@@ -40,7 +40,7 @@ module mmu
    // Clock Generator (for the E Parts)
    input        CLKX4,
    input        MRDY,
-   input        nENCLK,
+   input        ENCLK,
    inout        QX,
    inout        EX
    );
@@ -57,8 +57,6 @@ module mmu
    wire        EX_int;
    wire        QX_int;
    wire [7:0]  MMU_ADDR_int;
-
-   (* keep *) wire ENCLK = !nENCLK;
 
    mmu_int
      #(
@@ -153,17 +151,14 @@ endmodule
 //PIN: DATA_6     : 46
 //PIN: DATA_7     : 48
 //PIN: EX         : 81
-//XXX: SPARE      : 2
-//PIN: nENCLK     : 6
+//PIN: SPARE      : 2
+//PIN: ENCLK      : 84
 //PIN: INTMASK    : 52
 //PIN: MMU_ADDR_0 : 65
 //PIN: MMU_ADDR_1 : 64
 //PIN: MMU_ADDR_2 : 67
 //PIN: MMU_ADDR_3 : 68
 //PIN: MMU_ADDR_4 : 70
-//xxx: MMU_ADDR_5 : 73
-//xxx: MMU_ADDR_6 : 76
-//xxx: MMU_ADDR_7 : 74
 //PIN: SCLK       : 73
 //PIN: MOSI       : 76
 //PIN: MISO       : 74
@@ -177,15 +172,15 @@ endmodule
 //PIN: MMU_DATA_7 : 63
 //PIN: MMU_nRD    : 69
 //PIN: MMU_nWR    : 75
-//PIN: MRDY       : 84
+//PIN: MRDY       : 6
 //PIN: QA13       : 51
 //PIN: QX         : 5
 //PIN: RESET      : 1
 //PIN: RnW        : 16
-//PIN: TCK        : 62
-//PIN: TDI        : 14
-//PIN: TDO        : 71
-//PIN: TMS        : 23
+//xxx: TCK        : 62
+//xxx: TDI        : 14
+//xxx: TDO        : 71
+//xxx: TMS        : 23
 //PIN: nBUFEN     : 11
 //PIN: nCSEXT     : 4
 //PIN: nCSEXTIO   : 10
