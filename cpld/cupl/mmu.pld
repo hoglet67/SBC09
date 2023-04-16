@@ -10,17 +10,26 @@ Device   f1508ispplcc84 ;
 
 // Using defaults allow fitter command line overrides to work properly
 //
-//property	atmel {cascade_logic  on       };
-//property	atmel {fast_inlatch   on       };
-//property	atmel {foldback_logic on       };
-//property	atmel {logic_doubling on       };
-//property	atmel {optimize       on       };
-//property	atmel {output_fast    off      };
-//property	atmel {pin_keep       off      };
-//property	atmel {preassign      keep     };
-//property	atmel {security       off      };
-//property	atmel {xor_synthesis  off      };
+//property atmel {cascade_logic  on       };
+//property atmel {fast_inlatch   on       };
+//property atmel {foldback_logic on       };
+//property atmel {logic_doubling on       };
+//property atmel {optimize       on       };
+//property atmel {output_fast    off      };
+//property atmel {pin_keep       off      };
+//property atmel {preassign      keep     };
+//property atmel {security       off      };
+//property atmel {xor_synthesis  off      };
 
+// Parameters
+$DEFINE IO_ADDR_MIN   'h'FC00
+$DEFINE IO_ADDR_MAX   'h'FEFF
+$DEFINE UART_ADDR_MIN 'h'FE00
+$DEFINE UART_ADDR_MAX 'h'FE0F
+$DEFINE MMU_ADDR_MIN  'h'FE20
+$DEFINE MMU_ADDR_MAX  'h'FE3F
+
+// Pins
 pin 50 = A11X;
 pin 17 = ADDR0;
 pin 18 = ADDR1;
@@ -50,16 +59,18 @@ pin 44 = DATA4;
 pin 45 = DATA5;
 pin 46 = DATA6;
 pin 48 = DATA7;
-pin  8 = EX;
-pin  2 = E;
+pin 81 = EX;
+pin  2 = SPARE;
+pin 84 = ENCLK;
+pin 52 = INTMASK;
 pin 65 = MMU_ADDR0;
 pin 64 = MMU_ADDR1;
 pin 67 = MMU_ADDR2;
 pin 68 = MMU_ADDR3;
 pin 70 = MMU_ADDR4;
-pin 73 = MMU_ADDR5;
-pin 76 = MMU_ADDR6;
-pin 74 = MMU_ADDR7;
+pin 73 = SCLK;
+pin 76 = MOSI;
+pin 74 = MISO;
 pin 60 = MMU_DATA0;
 pin 58 = MMU_DATA1;
 pin 57 = MMU_DATA2;
@@ -70,47 +81,64 @@ pin 61 = MMU_DATA6;
 pin 63 = MMU_DATA7;
 pin 69 = MMU_nRD;
 pin 75 = MMU_nWR;
-pin 84 = MRDY;       // Changed from 10
-pin 52 = QA13;
+pin  6 = MRDY;
+pin 51 = QA13;
 pin  5 = QX;
 pin  1 = !RESET;
 pin 16 = RnW;
 pin 11 = nBUFEN;
 pin  4 = nCSEXT;
-pin 10 = nCSEXTIO;   // Changed from 6
+pin 10 = nCSEXTIO;
 pin 80 = nCSRAM;
-pin 81 = nCSROM0;
+pin  8 = nCSROM0;
 pin 79 = nCSROM1;
 pin 77 = nCSUART;
-pin 49 = nRD;
-pin 51 = nWR;
+pin 49 = nRW;
 
 // Internal combinatorial nodes (to prevent an explosion of product terms)
 
 // These are needed in order that the design fits
+//pinnode = hw_en;
 pinnode = io_access;
+pinnode = uart_access;
+//pinnode = mmu_access;
+pinnode = mmu_reg_access;
+pinnode = mmu_ram_access;
 pinnode = io_access_ext;
-pinnode = mmu_access;
 
 // These just make the fitter file more readable
 pinnode = data_oe;
 pinnode = mmu_data_oe;
+pinnode = clk_oe;
 
 // Internal registers
 
 pinnode = enmmu;
 pinnode = mode8k;
-pinnode = S;
+pinnode = protect;
+pinnode = U;
 pinnode = access_key0;
 pinnode = access_key1;
-pinnode = access_key2;
-pinnode = access_key3;
-pinnode = access_key4;
 pinnode = task_key0;
 pinnode = task_key1;
-pinnode = task_key2;
-pinnode = task_key3;
-pinnode = task_key4;
+pinnode = mask_count0;
+pinnode = mask_count1;
+pinnode = sd_data0;
+pinnode = sd_data1;
+pinnode = sd_data2;
+pinnode = sd_data3;
+pinnode = sd_data4;
+pinnode = sd_data5;
+pinnode = sd_data6;
+pinnode = sd_data7;
+pinnode = sd_count0;
+pinnode = sd_count1;
+pinnode = sd_count2;
+pinnode = sd_count3;
+pinnode = sd_active;
+pinnode = sd_tmp;
+
+E = EX;
 
 // In E-mode, drive E and Q to the CPU
 //
@@ -138,97 +166,78 @@ SEQUENCE count {
 EX.CK = CLKX4;
 QX.CK = CLKX4;
 
+clk_oe = ENCLK;
+EX.OE = clk_oe;
+QX.OE = clk_oe;
+
 FIELD a = [ADDR15..ADDR0];
 
 // Address definitions
+hw_en          = !enmmu # !U # !protect;
+io_access      = hw_en & a:[IO_ADDR_MIN..IO_ADDR_MAX];
+uart_access    = hw_en & a:[UART_ADDR_MIN..UART_ADDR_MAX];
+mmu_access     = hw_en & a:[MMU_ADDR_MIN..MMU_ADDR_MAX];
+mmu_reg_access = mmu_access & !ADDR4;
+mmu_ram_access = mmu_access & !ADDR4;
+io_access_ext  = io_access & !mmu_access & !uart_access;
 
-// IO Space includes &FCxx and &FDxx
-//addr_io       = a:['h'FC00..FEFF];
-//addr_io_ext   = a:['h'FC00..FDFF] # a:['h'FE30..FEFF];
-
-// IO Space excludes &FCxx and &FDxx
-addr_io       = a:['h'FE00..FEFF];
-addr_io_ext   = a:['h'FE30..FEFF];
-
-addr_uart     = a:['h'FE00..FE0F];
-addr_mmu      = a:['h'FE10..FE2F];
-addr_mmu_r0   = a:'h'FE10;
-addr_mmu_r1   = a:'h'FE11;
-addr_mmu_r2   = a:'h'FE12;
-addr_mmu_r3   = a:'h'FE13;
-addr_mmu_ram  = a:['h'FE20..FE27];
-
-io_access     = addr_io;
-io_access_ext = addr_io_ext;
-mmu_access    = addr_mmu_ram;
-mmu_access_rd = addr_mmu_ram &  RnW;
-mmu_access_wr = addr_mmu_ram & !RnW;
+// Register definitions
+reg0           = !ADDR2 & !ADDR1 & !ADDR0;
+reg1           = !ADDR2 & !ADDR1 &  ADDR0;
+reg2           = !ADDR2 &  ADDR1 & !ADDR0;
+reg3           = !ADDR2 &  ADDR1 &  ADDR0;
+reg4           =  ADDR2 & !ADDR1 & !ADDR0;
+reg5           =  ADDR2 & !ADDR1 &  ADDR0;
+reg6           =  ADDR2 &  ADDR1 & !ADDR0;
+reg7           =  ADDR2 &  ADDR1 &  ADDR0;
 
 access_vector = !BA & BS & RnW;
 
+protect.CK = !E;
+protect.AR = RESET;
+protect.CE = !RnW & mmu_reg_access & reg0;
+protect.D = DATA2;
+
 mode8k.CK = !E;
 mode8k.AR = RESET;
-mode8k.CE = !RnW & addr_mmu_r0;
+mode8k.CE = !RnW & mmu_reg_access & reg0;
 mode8k.D = DATA1;
 
 enmmu.CK = !E;
 enmmu.AR = RESET;
-enmmu.CE = !RnW & addr_mmu_r0;
+enmmu.CE = !RnW & mmu_reg_access & reg0;
 enmmu.D = DATA0;
 
 access_key0.CK = !E;
 access_key1.CK = !E;
-access_key2.CK = !E;
-access_key3.CK = !E;
-access_key4.CK = !E;
 
 access_key0.AR = RESET;
 access_key1.AR = RESET;
-access_key2.AR = RESET;
-access_key3.AR = RESET;
-access_key4.AR = RESET;
 
-access_key0.CE =!RnW & addr_mmu_r1;
-access_key1.CE =!RnW & addr_mmu_r1;
-access_key2.CE =!RnW & addr_mmu_r1;
-access_key3.CE =!RnW & addr_mmu_r1;
-access_key4.CE =!RnW & addr_mmu_r1;
+access_key0.CE = !RnW & mmu_reg_access & reg1;
+access_key1.CE = !RnW & mmu_reg_access & reg1;
 
 access_key0.D = DATA0;
 access_key1.D = DATA1;
-access_key2.D = DATA2;
-access_key3.D = DATA3;
-access_key4.D = DATA4;
 
 task_key0.CK = !E;
 task_key1.CK = !E;
-task_key2.CK = !E;
-task_key3.CK = !E;
-task_key4.CK = !E;
 
 task_key0.AR = RESET;
 task_key1.AR = RESET;
-task_key2.AR = RESET;
-task_key3.AR = RESET;
-task_key4.AR = RESET;
 
-task_key0.CE =!RnW & addr_mmu_r2;
-task_key1.CE =!RnW & addr_mmu_r2;
-task_key2.CE =!RnW & addr_mmu_r2;
-task_key3.CE =!RnW & addr_mmu_r2;
-task_key4.CE =!RnW & addr_mmu_r2;
+task_key0.CE = !RnW & mmu_reg_access & reg2;
+task_key1.CE = !RnW & mmu_reg_access & reg2;
 
 task_key0.D = DATA0;
 task_key1.D = DATA1;
-task_key2.D = DATA2;
-task_key3.D = DATA3;
-task_key4.D = DATA4;
 
-S.CK = !E;
-S.AP = RESET;
-S.D = access_vector # (S & !(RnW & addr_mmu_r3));
+U.CK = !E;
+U.AP = RESET;
+// TODO: rework this!
+U.D = !(access_vector # (!U & !(RnW & mmu_reg_access & reg3)));
 
-data_oe = E & RnW & addr_mmu;
+data_oe = E & RnW & mmu_access;
 
 DATA0.OE = data_oe;
 DATA1.OE = data_oe;
@@ -239,31 +248,27 @@ DATA5.OE = data_oe;
 DATA6.OE = data_oe;
 DATA7.OE = data_oe;
 
-
 // 3B RTI = 0011 1011
 
-DATA0 = addr_mmu_r0 & enmmu  # addr_mmu_r1 & access_key0 # addr_mmu_r2 & task_key0 # addr_mmu_r3 # addr_mmu_ram & MMU_DATA0;
-DATA1 = addr_mmu_r0 & mode8k # addr_mmu_r1 & access_key1 # addr_mmu_r2 & task_key1 # addr_mmu_r3 # addr_mmu_ram & MMU_DATA1;
-DATA2 = addr_mmu_r0 & S      # addr_mmu_r1 & access_key2 # addr_mmu_r2 & task_key2               # addr_mmu_ram & MMU_DATA2;
-DATA3 =                        addr_mmu_r1 & access_key3 # addr_mmu_r2 & task_key3 # addr_mmu_r3 # addr_mmu_ram & MMU_DATA3;
-DATA4 =                        addr_mmu_r1 & access_key4 # addr_mmu_r2 & task_key4 # addr_mmu_r3 # addr_mmu_ram & MMU_DATA4;
-DATA5 =                                                                              addr_mmu_r3 # addr_mmu_ram & MMU_DATA5;
-DATA6 =                                                                                            addr_mmu_ram & MMU_DATA6;
-DATA7 =                                                                                            addr_mmu_ram & MMU_DATA7;
+DATA0 = !ADDR4 & reg0 & enmmu  # !ADDR4 & reg1 & access_key0 # !ADDR4 & reg2 & task_key0 # !ADDR4 & reg3 # !ADDR4 & reg4 & sd_data0 # ADDR4 & MMU_DATA0;
+DATA1 = !ADDR4 & reg0 & mode8k # !ADDR4 & reg1 & access_key1 # !ADDR4 & reg2 & task_key1 # !ADDR4 & reg3 # !ADDR4 & reg4 & sd_data1 # ADDR4 & MMU_DATA1;
+DATA2 = !ADDR4 & reg0 & !U                                                                               # !ADDR4 & reg4 & sd_data2 # ADDR4 & MMU_DATA2;
+DATA3 =                                                                                    !ADDR4 & reg3 # !ADDR4 & reg4 & sd_data3 # ADDR4 & MMU_DATA3;
+DATA4 =                                                                                    !ADDR4 & reg3 # !ADDR4 & reg4 & sd_data4 # ADDR4 & MMU_DATA4;
+DATA5 =                                                                                    !ADDR4 & reg3 # !ADDR4 & reg4 & sd_data5 # ADDR4 & MMU_DATA5;
+DATA6 =                                                                                                    !ADDR4 & reg4 & sd_data6 # ADDR4 & MMU_DATA6;
+DATA7 =                                                                                                    !ADDR4 & reg4 & sd_data7 # ADDR4 & MMU_DATA7;
 
-MMU_ADDR0 = mmu_access & ADDR0       # !mmu_access & ADDR13 & mode8k;
-MMU_ADDR1 = mmu_access & ADDR1       # !mmu_access & ADDR14;
-MMU_ADDR2 = mmu_access & ADDR2       # !mmu_access & ADDR15;
-MMU_ADDR3 = mmu_access & access_key0 # !mmu_access & !access_vector & !S & task_key0;
-MMU_ADDR4 = mmu_access & access_key1 # !mmu_access & !access_vector & !S & task_key1;
-MMU_ADDR5 = mmu_access & access_key2 # !mmu_access & !access_vector & !S & task_key2;
-MMU_ADDR6 = mmu_access & access_key3 # !mmu_access & !access_vector & !S & task_key3;
-MMU_ADDR7 = mmu_access & access_key4 # !mmu_access & !access_vector & !S & task_key4;
+MMU_ADDR0 = mmu_ram_access & ADDR0       # !mmu_ram_access & ADDR13 & mode8k;
+MMU_ADDR1 = mmu_ram_access & ADDR1       # !mmu_ram_access & ADDR14;
+MMU_ADDR2 = mmu_ram_access & ADDR2       # !mmu_ram_access & ADDR15;
+MMU_ADDR3 = mmu_ram_access & access_key0 # !mmu_ram_access & !access_vector & U & task_key0;
+MMU_ADDR4 = mmu_ram_access & access_key1 # !mmu_ram_access & !access_vector & U & task_key1;
 
-MMU_nRD  = !(enmmu & !mmu_access_wr);  // TODO: Fix Reads when MMU disabled
-MMU_nWR  = !(E & mmu_access_wr);
+MMU_nRD  = !(E &  RnW & mmu_ram_access # enmmu & !io_access);
+MMU_nWR  = !(E & !RnW & mmu_ram_access);
 
-mmu_data_oe = (mmu_access_wr & E) # !enmmu;
+mmu_data_oe = (mmu_ram_access & !RnW & E) # !enmmu;
 
 MMU_DATA0.OE = mmu_data_oe;
 MMU_DATA1.OE = mmu_data_oe;
@@ -274,30 +279,174 @@ MMU_DATA5.OE = mmu_data_oe;
 MMU_DATA6.OE = mmu_data_oe;
 MMU_DATA7.OE = mmu_data_oe;
 
-MMU_DATA0 = mmu_access_wr & DATA0 # !mmu_access_wr & ADDR13;
-MMU_DATA1 = mmu_access_wr & DATA1 # !mmu_access_wr & ADDR14;
-MMU_DATA2 = mmu_access_wr & DATA2 # !mmu_access_wr & ADDR15;
-MMU_DATA3 = mmu_access_wr & DATA3;
-MMU_DATA4 = mmu_access_wr & DATA4;
-MMU_DATA5 = mmu_access_wr & DATA5;
-MMU_DATA6 = mmu_access_wr & DATA6;
-MMU_DATA7 = mmu_access_wr & DATA7;
+MMU_DATA0 = mmu_ram_access & !RnW & DATA0 # !(mmu_ram_access & !RnW) & ADDR14;
+MMU_DATA1 = mmu_ram_access & !RnW & DATA1 # !(mmu_ram_access & !RnW) & ADDR15;
+MMU_DATA2 = mmu_ram_access & !RnW & DATA2;
+MMU_DATA3 = mmu_ram_access & !RnW & DATA3;
+MMU_DATA4 = mmu_ram_access & !RnW & DATA4;
+MMU_DATA5 = mmu_ram_access & !RnW & DATA5;
+MMU_DATA6 = mmu_ram_access & !RnW & DATA6;
+MMU_DATA7 = mmu_ram_access & !RnW & DATA7;
 
 QA13 = mode8k & MMU_DATA5 # !mode8k & ADDR13;
 
 A11X = ADDR11 $ access_vector;
 
-nRD = !(E & RnW);
+nRW = !RnW;
 
-nWR = !(E & !RnW);
-
-nCSUART = !(E & addr_uart);
-
-nCSROM0  = !(((enmmu & !MMU_DATA7 & !MMU_DATA6) # (!enmmu &  ADDR15)) & !io_access);
-nCSROM1  = !(  enmmu & !MMU_DATA7 &  MMU_DATA6                        & !io_access);
-nCSRAM   = !(((enmmu &  MMU_DATA7 & !MMU_DATA6) # (!enmmu & !ADDR15)) & !io_access);
-nCSEXT   = !(  enmmu &  MMU_DATA7 &  MMU_DATA6                        & !io_access);
+nCSUART  = !(E & uart_access);
+nCSROM0  = !(E & ((enmmu & !MMU_DATA7 & !MMU_DATA6) # (!enmmu &  ADDR15)) & !io_access);
+nCSROM1  = !(E &   enmmu & !MMU_DATA7 &  MMU_DATA6                        & !io_access);
+nCSRAM   = !(E & ((enmmu &  MMU_DATA7 & !MMU_DATA6) # (!enmmu & !ADDR15)) & !io_access);
+nCSEXT   = !(      enmmu &  MMU_DATA7 &  MMU_DATA6                        & !io_access);
 nCSEXTIO = !(io_access_ext);
 
-nBUFEN   = BA $ (nCSEXT & nCSEXTIO);
+nBUFEN   = BA $ !(!nCSEXT # !nCSEXTIO);
 BUFDIR   = BA $ RnW;
+
+// INTMASK state machine
+
+mask_count0.CK = !E;
+mask_count1.CK = !E;
+
+mask_count0.AR = RESET;
+mask_count1.AR = RESET;
+
+FIELD mask_count = [mask_count1, mask_count0];
+
+SEQUENCE mask_count {
+  PRESENT s0
+    IF access_vector NEXT s3;
+    DEFAULT NEXT s0;
+  PRESENT s1
+    IF access_vector NEXT s3;
+    DEFAULT NEXT s0;
+  PRESENT s2
+    IF access_vector NEXT s3;
+    DEFAULT NEXT s1;
+  PRESENT s3
+    IF access_vector NEXT s3;
+    DEFAULT NEXT s2;
+}
+
+INTMASK = access_vector # mask_count0 # mask_count1;
+
+// SD Card
+
+sd_data0.CK = !E;
+sd_data1.CK = !E;
+sd_data2.CK = !E;
+sd_data3.CK = !E;
+sd_data4.CK = !E;
+sd_data5.CK = !E;
+sd_data6.CK = !E;
+sd_data7.CK = !E;
+sd_count0.CK = !E;
+sd_count1.CK = !E;
+sd_count2.CK = !E;
+sd_count3.CK = !E;
+sd_active.CK = !E;
+sd_tmp.CK = !E;
+
+sd_data0.AR = RESET;
+sd_data1.AR = RESET;
+sd_data2.AR = RESET;
+sd_data3.AR = RESET;
+sd_data4.AR = RESET;
+sd_data5.AR = RESET;
+sd_data6.AR = RESET;
+sd_data7.AR = RESET;
+sd_count0.AR = RESET;
+sd_count1.AR = RESET;
+sd_count2.AR = RESET;
+sd_count3.AR = RESET;
+sd_active.AR = RESET;
+sd_tmp.AR = RESET;
+
+FIELD sd_count = [sd_count3, sd_count2, sd_count1, sd_count0];
+
+$DEFINE  c0 'b'0000
+$DEFINE  c1 'b'0001
+$DEFINE  c2 'b'0010
+$DEFINE  c3 'b'0011
+$DEFINE  c4 'b'0100
+$DEFINE  c5 'b'0101
+$DEFINE  c6 'b'0110
+$DEFINE  c7 'b'0111
+$DEFINE  c8 'b'1000
+$DEFINE  c9 'b'1001
+$DEFINE c10 'b'1010
+$DEFINE c11 'b'1011
+$DEFINE c12 'b'1100
+$DEFINE c13 'b'1101
+$DEFINE c14 'b'1110
+$DEFINE c15 'b'1111
+
+SEQUENCE sd_count {
+    PRESENT c0
+        IF sd_active NEXT c1;
+        DEFAULT NEXT c0;
+    PRESENT c1
+        IF sd_active NEXT c2;
+        DEFAULT NEXT c1;
+    PRESENT c2
+        IF sd_active NEXT c3;
+        DEFAULT NEXT c2;
+    PRESENT c3
+        IF sd_active NEXT c4;
+        DEFAULT NEXT c3;
+    PRESENT c4
+        IF sd_active NEXT c5;
+        DEFAULT NEXT c4;
+    PRESENT c5
+        IF sd_active NEXT c6;
+        DEFAULT NEXT c5;
+    PRESENT c6
+        IF sd_active NEXT c7;
+        DEFAULT NEXT c6;
+    PRESENT c7
+        IF sd_active NEXT c8;
+        DEFAULT NEXT c7;
+    PRESENT c8
+        IF sd_active NEXT c9;
+        DEFAULT NEXT c8;
+    PRESENT c9
+        IF sd_active NEXT c10;
+        DEFAULT NEXT c9;
+    PRESENT c10
+        IF sd_active NEXT c11;
+        DEFAULT NEXT c10;
+    PRESENT c11
+        IF sd_active NEXT c12;
+        DEFAULT NEXT c11;
+    PRESENT c12
+        IF sd_active NEXT c13;
+        DEFAULT NEXT c12;
+    PRESENT c13
+        IF sd_active NEXT c14;
+        DEFAULT NEXT c13;
+    PRESENT c14
+        IF sd_active NEXT c15;
+        DEFAULT NEXT c14;
+    PRESENT c15
+        IF sd_active NEXT c0;
+        DEFAULT NEXT c15;
+}
+
+sd_tmp.D = (!sd_active & sd_tmp) # (sd_active & sd_count0 & sd_tmp) # (sd_active & !sd_count0 & MISO);
+
+sd_data0.D = (!sd_active & sd_data0) # (sd_active & !sd_count0 & sd_data0) # (sd_active & sd_count0 & sd_tmp);
+sd_data1.D = (!sd_active & sd_data1) # (sd_active & !sd_count0 & sd_data1) # (sd_active & sd_count0 & sd_data0);
+sd_data2.D = (!sd_active & sd_data2) # (sd_active & !sd_count0 & sd_data2) # (sd_active & sd_count0 & sd_data1);
+sd_data3.D = (!sd_active & sd_data3) # (sd_active & !sd_count0 & sd_data3) # (sd_active & sd_count0 & sd_data2);
+sd_data4.D = (!sd_active & sd_data4) # (sd_active & !sd_count0 & sd_data4) # (sd_active & sd_count0 & sd_data3);
+sd_data5.D = (!sd_active & sd_data5) # (sd_active & !sd_count0 & sd_data5) # (sd_active & sd_count0 & sd_data4);
+sd_data6.D = (!sd_active & sd_data6) # (sd_active & !sd_count0 & sd_data6) # (sd_active & sd_count0 & sd_data5);
+sd_data7.D = (!sd_active & sd_data7) # (sd_active & !sd_count0 & sd_data7) # (sd_active & sd_count0 & sd_data6);
+
+
+sd_active.D = (!sd_active & !RnW & mmu_reg_access & ADDR2 & !ADDR1 & ADDR0) #
+              ( sd_active & !(sd_count0 & sd_count1 & sd_count2 & sd_count3));
+
+SCLK = sd_count0;
+MOSI = sd_data7;
