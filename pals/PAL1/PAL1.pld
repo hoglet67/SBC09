@@ -10,63 +10,33 @@ Device   g22v10      ;
 
 /* *************** INPUT PINS *********************/
 
-PIN 1    = CLKX4;
-PIN 2    = MRDY;
-PIN 3    = BA;
-PIN 4    = BS;
-PIN 5    = RnW;
-PIN 6    = A4;
-PIN 7    = A5;
-PIN 8    = A8;
-PIN 9    = A13;
-PIN 10   = 16KMODE;
-PIN 11   = QA19;
-PIN 13   = E;
+PIN 1    = A4;
+PIN 2    = RnW;
+PIN 3    = A5;
+PIN 4    = !CSINTIO;
+PIN 5    = A11;
+PIN 6    = A12;
+PIN 7    = A13;
+PIN 8    = A14;
+PIN 9    = BS;
+PIN 10   = !ENMMU;
+PIN 11   = BA;
+PIN 13   = QA19;
 
-PIN 14   = QA13;
-PIN 15   = !CSIOINT; // input
-PIN 16   = !CSUART;
-PIN 17   = !WRMMU1;
-PIN 18   = !WRMMU0;
-PIN 19   = !WR;
-PIN 20   = !RD;
-PIN 21   = A8X;
-PIN 22   = EX;
-PIN 23   = QX;
+PIN 14   = !ENMMU0;
+PIN 15   = !ENMMU1;
+PIN 16   = 16KMODE;
+PIN 17   = !WRMMU0;
+PIN 18   = !WRMMU1;
+PIN 19   = A11X;
+PIN 20   = !CSUART;
+PIN 21   = QA14;
+PIN 22   = A14TO11;
+PIN 23   = QA13;
 
-
-// In E-mode, drive E and Q to the CPU
-//
-// Note: E lags Q
-
-FIELD count = [EX, QX];
-
-$DEFINE s0 'b'00
-$DEFINE s1 'b'01
-$DEFINE s2 'b'11
-$DEFINE s3 'b'10
-
-SEQUENCE count {
-  PRESENT s0
-    NEXT s1;
-  PRESENT s1
-    NEXT s2;
-  PRESENT s2
-    NEXT s3;
-  PRESENT s3
-    IF MRDY NEXT s0;
-    DEFAULT NEXT s3;
-}
-
-
-EX.AR = 'b'0;
-EX.SP = 'b'0;
-QX.AR = 'b'0;
-QX.SP = 'b'0;
-
-// Tristate A8X when BA is high, as buffers reversed
-A8X = A8 $ (BS & !BA & RnW);
-A8X.OE = !BA;
+// Tristate A11X when BA is high, as buffers reversed
+A11X = A11 $ (BS & !BA & RnW);
+A11X.OE = !BA;
 
 // A5 A4
 //  0  0 UART
@@ -74,14 +44,19 @@ A8X.OE = !BA;
 //  1  0 MMU1
 //  0  1  1 MMU0+1
 
-WRMMU0 = E & CSIOINT & A4 & !RnW;
+WRMMU0 = CSINTIO & A4 & !RnW;
 
-WRMMU1 = E & CSIOINT & A5 & !RnW;
+WRMMU1 = CSINTIO & A5 & !RnW;
 
-CSUART = E & CSIOINT & !A5 & !A4;
-
-RD = RnW;
-
-WR = !RnW;
+CSUART = CSINTIO & !A5 & !A4;
 
 QA13 = (16KMODE & A13)  # (!16KMODE & QA19);
+
+// When MMU Disabled, pass through A14->QA14 else tristate
+QA14    = A14;
+QA14.OE = !ENMMU;
+
+ENMMU0  = (ENMMU & !16KMODE & !A13) # (ENMMU & 16KMODE);
+ENMMU1  =  ENMMU & !16KMODE &  A13 ;
+
+A14TO111 = A11 & A12 & A13 & A14;
