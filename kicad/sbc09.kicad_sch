@@ -8095,7 +8095,7 @@
   (symbol (lib_id "Jumper:Jumper_2_Open") (at 77.47 166.37 0) (unit 1)
     (in_bom yes) (on_board yes) (fields_autoplaced)
     (uuid 0e2787ab-80be-4a95-a797-bce764a849ff)
-    (property "Reference" "JP6" (id 0) (at 77.47 162.56 0))
+    (property "Reference" "JP8" (id 0) (at 77.47 162.56 0))
     (property "Value" "Jumper_2_Open" (id 1) (at 77.47 162.56 0)
       (effects (font (size 1.27 1.27)) hide)
     )
@@ -8161,7 +8161,7 @@
   (symbol (lib_id "Jumper:Jumper_2_Open") (at 321.31 106.68 0) (unit 1)
     (in_bom yes) (on_board yes) (fields_autoplaced)
     (uuid 130c6330-426e-42df-8afc-33c8cdc2b003)
-    (property "Reference" "JP9" (id 0) (at 321.31 102.87 0))
+    (property "Reference" "JP5" (id 0) (at 321.31 102.87 0))
     (property "Value" "Jumper_2_Open" (id 1) (at 321.31 102.87 0)
       (effects (font (size 1.27 1.27)) hide)
     )
@@ -8830,7 +8830,7 @@
   (symbol (lib_id "Jumper:Jumper_2_Bridged") (at 77.47 153.67 0) (unit 1)
     (in_bom yes) (on_board yes) (fields_autoplaced)
     (uuid 5f1b7134-8a71-496d-bc99-562e6861342f)
-    (property "Reference" "JP5" (id 0) (at 77.47 149.86 0))
+    (property "Reference" "JP7" (id 0) (at 77.47 149.86 0))
     (property "Value" "Jumper_2_Bridged" (id 1) (at 77.47 149.86 0)
       (effects (font (size 1.27 1.27)) hide)
     )
@@ -9061,7 +9061,7 @@
   (symbol (lib_id "Jumper:Jumper_2_Open") (at 344.17 63.5 90) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 74533a9e-591a-415d-88a9-e4b95f02a9c4)
-    (property "Reference" "JP10" (id 0) (at 336.55 62.23 90)
+    (property "Reference" "JP4" (id 0) (at 336.55 62.23 90)
       (effects (font (size 1.27 1.27)) (justify right))
     )
     (property "Value" "Jumper_2_Open" (id 1) (at 340.36 63.5 0)
@@ -9452,7 +9452,7 @@
   (symbol (lib_id "Jumper:Jumper_2_Bridged") (at 77.47 142.24 0) (unit 1)
     (in_bom yes) (on_board yes) (fields_autoplaced)
     (uuid 9b834385-85ef-4efc-b8ae-26ae45801089)
-    (property "Reference" "JP4" (id 0) (at 77.47 139.065 0))
+    (property "Reference" "JP9" (id 0) (at 77.47 138.43 0))
     (property "Value" "Jumper_2_Bridged" (id 1) (at 77.47 138.43 0)
       (effects (font (size 1.27 1.27)) hide)
     )
@@ -9518,7 +9518,7 @@
   (symbol (lib_id "Jumper:Jumper_2_Open") (at 77.47 179.07 0) (unit 1)
     (in_bom yes) (on_board yes) (fields_autoplaced)
     (uuid a2f4a47d-0052-4f50-9c3a-f8518d8d5b75)
-    (property "Reference" "JP7" (id 0) (at 77.47 175.26 0))
+    (property "Reference" "JP6" (id 0) (at 77.47 175.26 0))
     (property "Value" "Jumper_2_Open" (id 1) (at 77.47 175.26 0)
       (effects (font (size 1.27 1.27)) hide)
     )
@@ -9970,7 +9970,7 @@
   (symbol (lib_id "Jumper:Jumper_3_Bridged12") (at 157.48 240.03 90) (mirror x) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid cf0544d4-3c74-4380-9e0e-133d2f215538)
-    (property "Reference" "JP8" (id 0) (at 156.21 241.3 90)
+    (property "Reference" "JP10" (id 0) (at 156.21 241.3 90)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Value" "Jumper_3_Bridged12" (id 1) (at 154.94 238.7601 90)
@@ -10525,26 +10525,26 @@
     (path "/5d0e3baa-cae1-47a4-9de4-a4bc56875495"
       (reference "JP3") (unit 1) (value "Jumper_2_Open") (footprint "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical")
     )
-    (path "/9b834385-85ef-4efc-b8ae-26ae45801089"
-      (reference "JP4") (unit 1) (value "Jumper_2_Bridged") (footprint "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical")
-    )
-    (path "/5f1b7134-8a71-496d-bc99-562e6861342f"
-      (reference "JP5") (unit 1) (value "Jumper_2_Bridged") (footprint "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical")
-    )
-    (path "/0e2787ab-80be-4a95-a797-bce764a849ff"
-      (reference "JP6") (unit 1) (value "Jumper_2_Open") (footprint "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical")
-    )
-    (path "/a2f4a47d-0052-4f50-9c3a-f8518d8d5b75"
-      (reference "JP7") (unit 1) (value "Jumper_2_Open") (footprint "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical")
-    )
-    (path "/cf0544d4-3c74-4380-9e0e-133d2f215538"
-      (reference "JP8") (unit 1) (value "Jumper_3_Bridged12") (footprint "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical")
+    (path "/74533a9e-591a-415d-88a9-e4b95f02a9c4"
+      (reference "JP4") (unit 1) (value "Jumper_2_Open") (footprint "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical")
     )
     (path "/130c6330-426e-42df-8afc-33c8cdc2b003"
-      (reference "JP9") (unit 1) (value "Jumper_2_Open") (footprint "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical")
+      (reference "JP5") (unit 1) (value "Jumper_2_Open") (footprint "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical")
     )
-    (path "/74533a9e-591a-415d-88a9-e4b95f02a9c4"
-      (reference "JP10") (unit 1) (value "Jumper_2_Open") (footprint "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical")
+    (path "/a2f4a47d-0052-4f50-9c3a-f8518d8d5b75"
+      (reference "JP6") (unit 1) (value "Jumper_2_Open") (footprint "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical")
+    )
+    (path "/5f1b7134-8a71-496d-bc99-562e6861342f"
+      (reference "JP7") (unit 1) (value "Jumper_2_Bridged") (footprint "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical")
+    )
+    (path "/0e2787ab-80be-4a95-a797-bce764a849ff"
+      (reference "JP8") (unit 1) (value "Jumper_2_Open") (footprint "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical")
+    )
+    (path "/9b834385-85ef-4efc-b8ae-26ae45801089"
+      (reference "JP9") (unit 1) (value "Jumper_2_Bridged") (footprint "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical")
+    )
+    (path "/cf0544d4-3c74-4380-9e0e-133d2f215538"
+      (reference "JP10") (unit 1) (value "Jumper_3_Bridged12") (footprint "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical")
     )
     (path "/262aa419-0fa8-4016-95e2-b1df66d01220"
       (reference "Q1") (unit 1) (value "2N7000") (footprint "Package_TO_SOT_THT:TO-92_Inline")
