@@ -8641,7 +8641,7 @@
   (symbol (lib_id "Connector_Generic:Conn_02x25_Odd_Even") (at 363.22 68.58 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 4334d44f-de7d-4517-a909-c9112eb26575)
-    (property "Reference" "J6" (id 0) (at 364.49 35.56 0))
+    (property "Reference" "J1" (id 0) (at 364.49 35.56 0))
     (property "Value" "Conn_02x25_Odd_Even" (id 1) (at 364.49 34.29 0)
       (effects (font (size 1.27 1.27)) hide)
     )
@@ -8771,7 +8771,7 @@
     (property "Reference" "R6" (id 0) (at 137.16 218.44 90)
       (effects (font (size 1.27 1.27)) (justify left))
     )
-    (property "Value" "" (id 1) (at 138.43 223.52 90)
+    (property "Value" "330R" (id 1) (at 138.43 223.52 90)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" (id 2) (at 135.89 222.758 90)
@@ -10096,7 +10096,7 @@
   (symbol (lib_id "Connector:Conn_01x04_Male") (at 327.66 142.24 0) (mirror x) (unit 1)
     (in_bom yes) (on_board yes) (fields_autoplaced)
     (uuid d7ab0ff9-7261-48ad-92eb-b63b9921aed9)
-    (property "Reference" "J1" (id 0) (at 326.39 140.9699 0)
+    (property "Reference" "J5" (id 0) (at 326.39 140.9699 0)
       (effects (font (size 1.27 1.27)) (justify right))
     )
     (property "Value" "Conn_01x04_Male" (id 1) (at 328.295 147.32 0)
@@ -10581,8 +10581,8 @@
     (path "/aec67b2c-17ba-4429-80e9-89cc778d77b9"
       (reference "H4") (unit 1) (value "2.7mm") (footprint "MountingHole:MountingHole_2.7mm")
     )
-    (path "/d7ab0ff9-7261-48ad-92eb-b63b9921aed9"
-      (reference "J1") (unit 1) (value "Conn_01x04_Male") (footprint "Connector_Molex:Molex_KK-254_AE-6410-04A_1x04_P2.54mm_Vertical")
+    (path "/4334d44f-de7d-4517-a909-c9112eb26575"
+      (reference "J1") (unit 1) (value "Conn_02x25_Odd_Even") (footprint "Connector_IDC:IDC-Header_2x25_P2.54mm_Horizontal")
     )
     (path "/c8679364-5ecf-4ff5-92b0-70a3c93f3773"
       (reference "J2") (unit 1) (value "Conn_01x06_Male") (footprint "Connector_PinSocket_2.54mm:PinSocket_1x06_P2.54mm_Horizontal")
@@ -10593,8 +10593,8 @@
     (path "/acbf984b-95e6-48f0-909b-46f570b1f9ff"
       (reference "J4") (unit 1) (value "Conn_01x06_Male") (footprint "Connector_PinSocket_2.54mm:PinSocket_1x06_P2.54mm_Horizontal")
     )
-    (path "/4334d44f-de7d-4517-a909-c9112eb26575"
-      (reference "J6") (unit 1) (value "Conn_02x25_Odd_Even") (footprint "Connector_IDC:IDC-Header_2x25_P2.54mm_Horizontal")
+    (path "/d7ab0ff9-7261-48ad-92eb-b63b9921aed9"
+      (reference "J5") (unit 1) (value "Conn_01x04_Male") (footprint "Connector_Molex:Molex_KK-254_AE-6410-04A_1x04_P2.54mm_Vertical")
     )
     (path "/fe230f19-7585-4378-b283-9afb8d5f868f"
       (reference "JP1") (unit 1) (value "Jumper_2_Open") (footprint "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical")
