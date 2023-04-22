@@ -5,7 +5,7 @@
 
 CUPL(WM)        5.0a Serial# MW-10400000
 Device          g22v10  Library DLIB-h-40-1
-Created         Fri Apr 21 10:25:08 2023
+Created         Fri Apr 21 16:12:32 2023
 Name            PAL2        
 Partno          00          
 Revision        01          
@@ -85,6 +85,9 @@ QX.sp  =>
 count =>
     EX , QX
 
+nRW =>
+    !RnW
+
 CSEXT.oe  =>
     1 
 
@@ -110,6 +113,9 @@ QA21.oe  =>
     0 
 
 QX.oe  =>
+    1 
+
+nRW.oe  =>
     1 
 
 
@@ -151,7 +157,7 @@ Pol   Name              Ext     Pin     Type     Used   Pterms  Level
     QX                  sp      23       X        1       1       1     
     RnW                         2        V        -       -       -     
     count                       0        F        -       -       -     
-    nRW                         16       V        -       -       -     
+    nRW                         16       V        1       12      2     
     CSEXT               oe      19       D        1       1       0     
     CSEXTIO             oe      20       D        1       1       0     
     CSINTIO             oe      21       D        1       1       0     
@@ -161,6 +167,7 @@ Pol   Name              Ext     Pin     Type     Used   Pterms  Level
     EX                  oe      22       D        1       1       0     
     QA21                oe      14       D        1       1       0     
     QX                  oe      23       D        1       1       0     
+    nRW                 oe      16       D        1       1       0     
 
 
 LEGEND    D : default variable         F : field      G : group
@@ -283,9 +290,9 @@ Pin #17  05820 Mode  x-
  04180 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
  04224 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
  04268 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
-Pin #16  05822 Mode  xx 
- 04312 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
- 04356 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
+Pin #16  05822 Mode  -- 
+ 04312 -------------------------------------------- 
+ 04356 -----x-------------------------------------- 
  04400 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
  04444 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
  04488 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 

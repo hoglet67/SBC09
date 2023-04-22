@@ -5,7 +5,7 @@
 
 CUPL(WM)        5.0a Serial# MW-10400000
 Device          g22v10  Library DLIB-h-40-1
-Created         Fri Apr 21 10:25:08 2023
+Created         Fri Apr 21 16:12:32 2023
 Name            PAL1        
 Partno          00          
 Revision        01          
@@ -28,7 +28,7 @@ A11X =>
 A11X.oe  =>
     !BA
 
-A14TO111 =>
+A14TO11 =>
     A11 & A12 & A13 & A14
 
 CSUART =>
@@ -59,6 +59,9 @@ WRMMU1 =>
 
 16KMODE.oe  =>
     0 
+
+A14TO11.oe  =>
+    1 
 
 CSUART.oe  =>
     1 
@@ -96,8 +99,7 @@ Pol   Name              Ext     Pin     Type     Used   Pterms  Level
     A12                         6        V        -       -       -     
     A13                         7        V        -       -       -     
     A14                         8        V        -       -       -     
-    A14TO11                     22       V        -       -       -     
-    A14TO111                    0        I        1       -       -     
+    A14TO11                     22       V        1       10      2     
     BA                          11       V        -       -       -     
     BS                          9        V        -       -       -     
  !  CSINTIO                     4        V        -       -       -     
@@ -113,6 +115,7 @@ Pol   Name              Ext     Pin     Type     Used   Pterms  Level
  !  WRMMU0                      17       V        1       14      2     
  !  WRMMU1                      18       V        1       16      2     
     16KMODE             oe      16       D        1       1       0     
+    A14TO11             oe      22       D        1       1       0     
     CSUART              oe      20       D        1       1       0     
     ENMMU0              oe      14       D        1       1       0     
     ENMMU1              oe      15       D        1       1       0     
@@ -147,9 +150,9 @@ Pin #23  05808 Mode  --
  00308 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
  00352 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
  00396 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
-Pin #22  05810 Mode  xx 
- 00440 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
- 00484 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
+Pin #22  05810 Mode  -- 
+ 00440 -------------------------------------------- 
+ 00484 ----------------x---x---x---x--------------- 
  00528 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
  00572 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
  00616 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 

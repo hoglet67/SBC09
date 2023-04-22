@@ -78,6 +78,8 @@ INTIO    = A15 & A14TO11 & A10 & A9 & !A8 & !A7 & !A6;
 
 // Outputs
 
+nRW     = !RnW;
+
 CSROM   = ((ENMMU &  !QA21 & !QA20)         # (!ENMMU &  A15)) & !IO & E;
 CSRAM   = ((ENMMU &   QA21 & (RnW # !QA20)) # (!ENMMU & !A15)) & !IO & E;
 CSEXT   =  (ENMMU & (!QA21 &  QA20 # IO) & !INTIO)                   & E;
