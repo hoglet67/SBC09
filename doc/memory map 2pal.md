@@ -11,6 +11,16 @@
 
 TODO: Ask Dave, It looks to me as though the address lines 14..21 remain "MMU'd" during I/O accesses?
 
+What's the intent with nCSEXT and nCSEXTIO - I'm a bit confused about the selection logic in PAL2
+
+        CSEXT   =  (ENMMU & (!QA21 &  QA20 # IO) & !INTIO)                   & E;
+
+What is the "IO" term doing in there? Should it not be
+
+        CSEXT   =  (ENMMU & (!QA21 &  QA20) & !IO)                           & E;
+
+I'm probably missing something obvious...
+
 # Logical Memory map - 16K MMU mode
 
 MMU byte to physical address mapping is:
@@ -100,7 +110,7 @@ Dave?: I think the intention is that this allows selecting a 16K bank but can't 
 
         QA13 = (16KMODE & A13)  # (!16KMODE & QA19 & A13) # (!16KMODE & !QA19 & !A13);
 
-Or am I missing something?
+Or am I missing something? (Probably!)
 
 
 # Physical Memory map i.e. after MMU
