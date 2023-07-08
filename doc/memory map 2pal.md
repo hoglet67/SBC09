@@ -11,6 +11,23 @@
 
 TODO: Ask Dave, It looks to me as though the address lines 14..21 remain "MMU'd" during I/O accesses?
 
+DMB:
+
+"address lines" is a slightly ambiguous term here, and you will
+get into difficulties if you try to cast things as a flat 22-bit
+physical address space.
+
+A0..A15 are always driven by the CPU.
+
+QA14..21 are pulled down to zero when the MMU is disabled. Otherwise
+they are always driven by the MMU. QA13 is a special case depending on
+the 8K/16K mode.
+
+It's best to think of QA14..19 as being a memory block select, and as
+being invalid during I/O accesses (CPU address FC00-FEFF). In reality
+they are driven by MMU mapping of the top block, but the memory device
+selects are forced to be disabled.
+
 What's the intent with nCSEXT and nCSEXTIO - I'm a bit confused about the selection logic in PAL2
 
         CSEXT   =  (ENMMU & (!QA21 &  QA20 # IO) & !INTIO)                   & E;
@@ -20,6 +37,29 @@ What is the "IO" term doing in there? Should it not be
         CSEXT   =  (ENMMU & (!QA21 &  QA20) & !IO)                           & E;
 
 I'm probably missing something obvious...
+
+DMB:
+
+nCSEXT is a unqualified external access chip select. It's asserted on
+all external bus cycles. If there were data bus buffers, this signal
+would work as a buffer enable.
+
+nCSEXTIO is asserted only for external bus cycles that result from an
+address in the range FC00-FDFF and FE40-FEFF.
+
+Your version of nCSEXT is more like a nCSEXTMEM signal, that's only
+valid for memory cycles. This would have been nice to add to the bus
+if we had the resources.
+
+BTW, my version does require the MMU to be enabled for external I/O
+accesses, which seems wrong. So maybe it should be:
+
+        CSEXT = ((ENMMU & !QA21 & QA20) # (IO & !INTIO)) & E;
+
+BTW, I did wonder if we should move the internal I/O space to the top
+of page FE. Then we would have two contiguous regions:
+- external I/O: FC00-FEBF
+- internal I/O: FEC0-FEFF
 
 # Logical Memory map - 16K MMU mode
 
@@ -69,7 +109,12 @@ PA[21..0] = MMU[7..6] & "0" & MMU[4..0] & MMU[5] & LA[12:0]
 
 ### FE10-FE3F - MMU
 
-Dave?: MMU register are write only? 
+Dave?: MMU register are write only?
+
+DMB: Yes they are write only. Making them readable would have required
+an 8-bit buffer (between QA14..21 and CPU D0..7) and an extra PAL
+output. I think in the CPLD version they are read-write, as this data
+path can be provided "for free" within the CPLD.
 
 #### 16K mode
 
@@ -102,7 +147,7 @@ These registers also repeat at FE14-FE1F
 | FE22           | A000 - BFFF  |
 | FE23           | E000 - FFFF  |
 
-These registers also repeat at FE14-FE1F
+These registers also repeat at FE24-FE2F
 
 In addition writing to the range FE30-FE3F will write both sets of registers at the same time.
 
@@ -111,6 +156,25 @@ Dave?: I think the intention is that this allows selecting a 16K bank but can't 
         QA13 = (16KMODE & A13)  # (!16KMODE & QA19 & A13) # (!16KMODE & !QA19 & !A13);
 
 Or am I missing something? (Probably!)
+
+DMB: Ed originally had the idea of allowing both MMUs to be written in
+parallel in 8K mode to remap a 16K region. This would allow a BBC MOS
+to remap a ROM with a single write, even in 8K mode. However, we later
+realised that for it to work different MMU data would need to be
+written into the two MMUs, and that was difficult to achieve without
+adding extra chips.
+
+You suggestion above is an alternative approach that avoids the needs to
+perturb the MMU input data by instead perturbing the MMU output data
+(QA13 = QA19 xor A13).
+
+This is quite clever, but I think imposes constraints in 8K mode on
+how the blocks are allocated (i.e. they must be allocated in
+pairs). Which I think either amounts to a 16K mode, or else halving
+the amount of physical memory.
+
+So I think the bottom line here is that this feature (writing to both
+MMUs at the same time) is useful at present.
 
 
 # Physical Memory map i.e. after MMU
